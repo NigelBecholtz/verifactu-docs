@@ -48,6 +48,10 @@ echo "Phone: +34 123 456 789"
 - **Phone**: [Contact Phone]
 - **Address**: [Company Address]
 
+**Important Cost Information**:
+- **Persona Física** (Personal): FREE
+- **Persona Jurídica** (Business): €14-20
+
 ### Step 2: Certificate Generation
 
 #### 2.1 Download Certificate Generation Tool

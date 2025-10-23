@@ -40,7 +40,8 @@ The AEAT VERI*FACTU webservice uses **mutual TLS authentication** (also known as
    - Visit [FNMT website](https://www.sede.fnmt.gob.es/)
    - Navigate to "Certificados de Persona Física" or "Certificados de Persona Jurídica"
    - Complete online registration
-   - **FREE** for individuals and companies
+   - **FREE** for individuals (Persona Física)
+   - **€14-20** for companies (Persona Jurídica)
 
 2. **Certificate Types**:
    - **Persona Física**: For individuals
@@ -51,7 +52,7 @@ The AEAT VERI*FACTU webservice uses **mutual TLS authentication** (also known as
    - Valid Spanish NIF/NIE
    - Company registration documents (for legal entities)
    - Proof of identity
-   - **NO payment required** (FREE)
+   - **Payment**: FREE for individuals, €14-20 for companies
 
 ### Alternative Certificate Authorities
 
@@ -75,7 +76,7 @@ The AEAT VERI*FACTU webservice uses **mutual TLS authentication** (also known as
 - Go to [FNMT website](https://www.sede.fnmt.gob.es/)
 - Click "Certificados de Persona Física" (individuals) or "Certificados de Persona Jurídica" (companies)
 - Complete online application
-- **FREE** - no costs involved
+   - **Cost**: FREE for individuals, €14-20 for companies
 
 **2. Identity Verification:**
 - Visit FNMT registration point or AEAT office
@@ -88,7 +89,7 @@ The AEAT VERI*FACTU webservice uses **mutual TLS authentication** (also known as
 - Install on your system
 - Test with VERI*FACTU test environment
 
-**Total Time: 1-2 weeks | Cost: FREE**
+**Total Time: 1-2 weeks | Cost: FREE (Personal) / €14-20 (Business)**
 
 ## Certificate Formats
 
