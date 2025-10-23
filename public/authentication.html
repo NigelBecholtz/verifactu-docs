@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication - AEAT VERI*FACTU API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
+            padding: 2rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar h2 {
+            padding: 0 2rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar li {
+            margin: 0;
+        }
+        
+        .sidebar a {
+            display: block;
+            padding: 0.75rem 2rem;
+            color: #64748b;
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar a:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+            border-left-color: #3b82f6;
+        }
+        
+        .sidebar a.active {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-left-color: #3b82f6;
+            font-weight: 500;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+        }
+        
+        .header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .header h1 {
+            color: #1e293b;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .section h2 {
+            color: #1e293b;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .section h3 {
+            color: #374151;
+            font-size: 1.3rem;
+            margin: 2rem 0 1rem 0;
+            font-weight: 600;
+        }
+        
+        .section h4 {
+            color: #4b5563;
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.5rem 0;
+            font-weight: 600;
+        }
+        
+        .section p {
+            margin-bottom: 1rem;
+            color: #4b5563;
+        }
+        
+        .section ul, .section ol {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .section li {
+            margin: 0.5rem 0;
+            color: #4b5563;
+        }
+        
+        .code {
+            background: #1e293b;
+            color: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        
+        .inline-code {
+            background: #f1f5f9;
+            color: #1e293b;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .note {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .note strong {
+            color: #92400e;
+        }
+        
+        .warning {
+            background: #fef2f2;
+            border: 1px solid #f87171;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .warning strong {
+            color: #dc2626;
+        }
+        
+        .success {
+            background: #f0fdf4;
+            border: 1px solid #22c55e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .success strong {
+            color: #16a34a;
+        }
+        
+        .card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .card h4 {
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card p {
+            color: #64748b;
+            margin: 0;
+        }
+        
+        .card a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .card a:hover {
+            text-decoration: underline;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <h2>Documentation</h2>
+            <ul>
+                <li><a href="index.html">Welcome</a></li>
+                <li><a href="authentication.html" class="active">Authentication</a></li>
+                <li><a href="index.html#api-operations">API Operations</a></li>
+                <li><a href="index.html#implementation">Implementation Guide</a></li>
+                <li><a href="index.html#resources">Resources</a></li>
+            </ul>
+            
+            <h2>API Reference</h2>
+            <ul>
+                <li><a href="alta-register-invoice.html">Register Invoice</a></li>
+                <li><a href="baja-cancel-invoice.html">Cancel Invoice</a></li>
+                <li><a href="consulta-query-invoice.html">Query Invoice</a></li>
+                <li><a href="parameters-and-fields.html">Parameters & Fields</a></li>
+                <li><a href="error-handling.html">Error Handling</a></li>
+                <li><a href="xsd-schema-reference.html">XSD Schema</a></li>
+            </ul>
+            
+            <h2>Getting Started</h2>
+            <ul>
+                <li><a href="authentication.html">Authentication Setup</a></li>
+                <li><a href="node-implementation.html">Node.js Implementation</a></li>
+                <li><a href="examples.html">Examples</a></li>
+                <li><a href="quick-reference.html">Quick Reference</a></li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <div class="header">
+                <h1>Authentication & Certificates</h1>
+            </div>
+            
+            <section class="section">
+                <h2>Overview</h2>
+                <p>The AEAT VERI*FACTU webservice uses <strong>mutual TLS authentication</strong> (also known as client certificate authentication). This means both the client (your application) and the server (AEAT) authenticate each other using digital certificates.</p>
+                
+                <div class="card">
+                    <h4>Key Requirements</h4>
+                    <ul>
+                        <li><strong>Protocol</strong>: HTTPS</li>
+                        <li><strong>Authentication</strong>: Qualified electronic certificate required</li>
+                        <li><strong>Encoding</strong>: UTF-8</li>
+                        <li><strong>SOAP Version</strong>: SOAP 1.1 Document/Literal style</li>
+                        <li><strong>Message Format</strong>: XML messages according to XSD schemas</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>Prerequisites</h2>
+                <h3>What you need before starting:</h3>
+                <div class="success">
+                    <ul>
+                        <li>✅ <strong>FNMT Certificate</strong> (you already have one)</li>
+                        <li>✅ <strong>Your CRM system</strong> (running and accessible)</li>
+                    </ul>
+                </div>
+                
+                <h3>Certificate Requirements:</h3>
+                <ul>
+                    <li><strong>Format</strong>: X.509 certificate with private key</li>
+                    <li><strong>Storage</strong>: Must be securely stored on your server</li>
+                    <li><strong>Validity</strong>: Check expiration date (typically 2-3 years)</li>
+                </ul>
+            </section>
+            
+            <section class="section">
+                <h2>Certificate Setup</h2>
+                
+                <h3>Required Certificates</h3>
+                
+                <div class="grid">
+                    <div class="card">
+                        <h4>Client Certificate</h4>
+                        <ul>
+                            <li><strong>Purpose</strong>: Authenticates your application to AEAT</li>
+                            <li><strong>Format</strong>: X.509 certificate with private key</li>
+                            <li><strong>Storage</strong>: Must be securely stored on your server</li>
+                            <li><strong>Validity</strong>: Typically 2-3 years, must be renewed before expiration</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Server Certificate</h4>
+                        <ul>
+                            <li><strong>Purpose</strong>: Verifies AEAT's identity</li>
+                            <li><strong>Format</strong>: X.509 certificate</li>
+                            <li><strong>Source</strong>: Provided by AEAT</li>
+                            <li><strong>Verification</strong>: Your application must verify this certificate</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Certificate Authority (CA) Chain</h4>
+                        <ul>
+                            <li><strong>Purpose</strong>: Establishes trust between client and server</li>
+                            <li><strong>Components</strong>: Root CA + Intermediate CA certificates</li>
+                            <li><strong>Source</strong>: AEAT provides the complete chain</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>Obtaining Certificates</h2>
+                
+                <h3>FNMT Certificate Process</h3>
+                <ol>
+                    <li>Visit the <a href="https://www.sede.fnmt.gob.es/" target="_blank">FNMT website</a></li>
+                    <li>Complete the registration process</li>
+                    <li>Choose certificate type:
+                        <ul>
+                            <li><strong>For Individuals (Persona Física)</strong>: FREE</li>
+                            <li><strong>For Companies (Persona Jurídica)</strong>: €14-20</li>
+                        </ul>
+                    </li>
+                    <li>Navigate to "Certificados de Persona Física" or "Certificados de Persona Jurídica"</li>
+                    <li>Follow the online registration process</li>
+                </ol>
+                
+                <div class="note">
+                    <strong>Important:</strong> The certificate must be obtained from FNMT (Fábrica Nacional de Moneda y Timbre) as it's the only certificate authority accepted by AEAT for VERI*FACTU webservice.
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>Certificate Storage</h2>
+                
+                <h3>Security Requirements</h3>
+                <ul>
+                    <li>Store certificates in a secure location on your server</li>
+                    <li>Use proper file permissions (readable only by your application)</li>
+                    <li>Consider using a secure key management system</li>
+                    <li>Never commit certificates to version control</li>
+                </ul>
+                
+                <h3>File Formats</h3>
+                <div class="code">
+# Common certificate formats
+.p12  # PKCS#12 format (recommended)
+.pem  # PEM format
+.crt  # Certificate file
+.key  # Private key file
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>CRM Integration</h2>
+                
+                <h3>Database Schema Updates</h3>
+                <div class="code">
+-- Add these columns to your invoices table
+ALTER TABLE invoices ADD COLUMN aeat_csv_code VARCHAR(100);
+ALTER TABLE invoices ADD COLUMN aeat_status VARCHAR(20);
+ALTER TABLE invoices ADD COLUMN aeat_error TEXT;
+                </div>
+                
+                <h3>Certificate Configuration</h3>
+                <div class="code">
+// This is where your certificate is stored
+const certificate = {
+  file: '/path/to/your/certificate.p12',
+  password: 'your_password',
+  environment: 'test' // or 'production'
+};
+                </div>
+            </section>
+            
+            <div class="note">
+                <strong>Next Steps:</strong> After setting up authentication, proceed to <a href="node-implementation.html">Node.js Implementation</a> for database setup and code implementation.
+            </div>
+        </main>
+    </div>
+</body>
+</html>
