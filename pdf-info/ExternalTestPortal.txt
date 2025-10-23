@@ -1,0 +1,15 @@
+Start
+The purpose of this portal is to provide external users of the Tax Agency with access to proof of tax return submission and review, completely free of charge, with the sole condition that they authenticate themselves using an electronic certificate.
+
+Declarations submitted through this Portal are stored in a database in the AEAT's test environment and have no tax implications.
+
+Setting up pre-production websites over the Internet
+
+https://prewww2.aeat.es is equivalent in terms of requirements to https://www2.agenciatributaria.gob.es
+https://prewww1.aeat.es is equivalent in terms of requirements to https://www1.agenciatributaria.gob.es
+https://prewww10.aeat.es (Web Services tests for Taxpayers with a seal certificate) equivalent in terms of requirements to https://www10.agenciatributaria.gob.es
+What can this PREPRODUCTION environment be used for?
+
+These websites are intended exclusively to offer testing in a PRE-PRODUCTION environment to facilitate the integration and validation of services that the Tax Agency determines to be published in this environment and that have been authorized for use in testing. These services will only allow testing of models and viewing of submitted content under the same conditions as the Pre-Production services.
+
+Please note that this environment should only be used for this type of ad hoc testing and under no circumstances for mass testing, validations integrated into production submission processes, etc. If abuse is detected, measures may be taken to block access.

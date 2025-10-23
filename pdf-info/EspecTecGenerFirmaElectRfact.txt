@@ -1,0 +1,477 @@
+ Departamento de Informática Tributaria
+Subdirección General de Aplicaciones
+Aplicación: VERI*FACTU Versión: 0.1.5
+VERI*FACTU Página: 1/15
+VERI*FACTU - Especificaciones técnicas
+para generación de la firma electrónica de los
+registros de facturación
+Autor: AEAT Fecha: 06/03/2025 Versión: 0.1.5
+Revisiones:
+Edic. Rev. Fecha Descripción A (*) Páginas
+0 1 02/09/2024 Versión inicial 14
+0 2 31/10/2024 Se especifican los formatos de representación R 14
+0 3 21/11/2024 Mejoras en el código fuente de ejemplo de
+generación de firma
+R 15
+0 4 17/01/2025 Aclaraciones sobre uso de SHA-256 y SHA-1.
+Disponibilidad del valor del DigestValue de la
+política de firma.
+R 15
+0 5 30/01/2025 Cambios en los namespaces del ejemplo del
+registro de facturación a firmar y firmado.
+Aclaración sobre el uso de algoritmos de
+firma.
+R 15
+0 6 06/03/2025 Aclaraciones sobre los nodos del XML de
+entrada a firmar.
+R 15
+(*) Acción: A = Añadir R = Reemplazar
+ Departamento de Informática Tributaria
+Subdirección General de Aplicaciones
+Aplicación: VERI*FACTU Versión: 0.1.5
+VERI*FACTU Página: 2/15
+Índice
+1. OBJETO 3
+2. ALCANCE 4
+3. CERTIFICADOS 5
+4. FORMATO DE FIRMA ELECTRÓNICA 6
+5. DATOS DE ENTRADA 7
+6. DATOS DE SALIDA 8
+7. EJEMPLO DE OPERACIÓN DE FIRMA EN LENGUAJE JAVA 9
+7.1. Ejemplo de uso de política de firma 9
+7.2. Ejemplo de operación de firma con política de firma 10
+8. EJEMPLOS DE REGISTROS DE FACTURACIÓN 11
+8.1. Registro de facturación sin firmar 11
+8.2. Registro de facturación firmado 13
+ Departamento de Informática Tributaria
+Subdirección General de Aplicaciones
+Aplicación: VERI*FACTU Versión: 0.1.5
+VERI*FACTU Página: 3/15
+1. Objeto
+En este documento se proporcionan los detalles técnicos necesarios para
+completar y hacer posible la implementación y cumplimiento de las
+especificaciones del artículo 14 “Firma electrónica de los registros de
+facturación” de la Orden Ministerial HAC7/1177/2024, por la que se regulan los
+Sistemas Informáticos de Facturación y VERI*FACTU, que desarrolla las
+especificaciones técnicas, funcionales y de contenido referidas en el reglamento
+que establece los requisitos que deben adoptar los sistemas y programas
+informáticos o electrónicos que soporten los procesos de facturación de
+empresarios y profesionales, y la estandarización de formatos de los registros de
+facturación, aprobado por el Real Decreto 1007/2023, de 5 de diciembre, y en el
+artículo 6.5 del reglamento por el que se regulan las obligaciones de facturación,
+aprobado por el Real Decreto 1619/2012, de 30 de noviembre.
+ Departamento de Informática Tributaria
+Subdirección General de Aplicaciones
+Aplicación: VERI*FACTU Versión: 0.1.5
+VERI*FACTU Página: 4/15
+2. Alcance
+La firma electrónica de los registros de facturación sólo será exigible para los
+sistemas no VERI*FACTU, al no estar incluidos en las excepciones de los
+sistemas de remisión de facturas verificables recogidas en el artículo 3
+“Particularidades aplicables a los “Sistemas VERI*FACTU” del Real Decreto
+1007/2023.
+Las operaciones sujetas a la generación y guardado de firma electrónica son las
+alta y anulación en el ámbito de los siguientes diseños de registros de
+facturación, tanto para su remisión por requerimiento como para su
+conservación en los sistemas no VERI*FACTU.
+Igualmente será necesario en la firma de los registros de eventos.
+Los Diseños de Registro (DR) están disponibles en Sede Electrónica.
+ Departamento de Informática Tributaria
+Subdirección General de Aplicaciones
+Aplicación: VERI*FACTU Versión: 0.1.5
+VERI*FACTU Página: 5/15
+3. Certificados
+La firma electrónica deberá ser generada con una clave privada asociada a un
+certificado electrónico cualificado de firma electrónica en vigor, no revocado
+y no caducado, en la fecha del registro de facturación o evento.
+El titular de dicho certificado debe corresponder a la empresa que emite el
+registro (obligado tributario) o a un representante autorizado por la misma,
+pudiendo ser un apoderado suyo a este trámite o un colaborador social.
+Dicho certificado debe haber sido emitido por un proveedor de servicios de
+confianza cualificado incluidos en la lista de prestadores cualificados de servicios
+electrónicos de confianza (TSL) elaborada por el Ministerio de Energía, Turismo
+y Agenda Digital y que cumple con los requisitos establecidos en el Reglamento
+(UE) 910/2014, del Parlamento Europeo y del Consejo, de 23 de julio de 2014,
+relativo a la identificación electrónica y los servicios de confianza para las
+transacciones electrónicas en el mercado interior y por el que se deroga la
+directiva 1999/93/CE.
+Los certificados electrónicos admitidos por la Agencia Tributaria conforme a lo
+dispuesto en la Orden HAP/800/2014, de 9 de mayo, por la que se establecen
+normas específicas sobre sistemas de identificación y autenticación por medios
+electrónicos con la Agencia Estatal de Administración Tributaria, serán los
+emitidos por los prestadores incluidos en la lista de certificados de confianza
+de la UE (EU/EEA Trusted List).
+ Departamento de Informática Tributaria
+Subdirección General de Aplicaciones
+Aplicación: VERI*FACTU Versión: 0.1.5
+VERI*FACTU Página: 6/15
+4. Formato de firma electrónica
+El formato de firma elegido es «XAdES» (XML AdvancedElectronicSignatures)
+Enveloped, según el estándar europeo ETSI EN 319 132.
+La firma electrónica de los registros de facturación y de evento se basará en la
+especificación técnica del Instituto Europeo de Normas de Telecomunicaciones
+ETSI TS 101 903 que define el formato XML Advanced Electronic Signatures
+«XAdES», usando el tipo de firma «XAdES Enveloped signature».
+Dentro de las distintas clases del formato XAdES se deberá adecuar para la
+generación de, al menos, la clase básica, añadiendo información sobre las
+especificaciones de firma, clase EPES, de acuerdo a la última Política de Firma
+de la AGE publicada en:
+https://sede.administracion.gob.es/politica_de_firma_anexo_1.pdf
+Los parámetros necesarios según la política de firma anterior, serán los
+siguientes:
+Parámetro Valor
+OID urn:oid:2.16.724.1.3.1.1.2.1.9
+URL https://sede.administracion.gob.es/politica_de_firma_anexo_1.pdf
+Algoritmo de
+hash(*)
+Algorithm="http://www.w3.org/2000/09/xmldsig#sha1”
+DigestValue G7roucf600+f03r/o0bAOQ6WAs0=
+(*) El uso algoritmo sha-1 proviene de los requisitos de la Política de firma de la AGE y aplica
+únicamente sobre la misma y su comprobación de validez mediante el servicio V@lide. Para la
+realización de la firma del registro de facturación se podrán utilizar cualquiera de los siguientes
+algoritmos para la firma electrónica incluidos en la política de firma, preferiblemente
+RSA/SHA256 y RSA/SHA512, que es el recomendado para archivado de documentos
+electrónicos (very long term signatures).
+No se requiere que la firma incluya Sellado de tiempo o TimeStamping
+proporcionados por servicios de TSA en el momento de firma, pudiéndose incluir
+opcionalmente siempre y cuando estén bajo la definición de XadES-T.
+ Departamento de Informática Tributaria
+Subdirección General de Aplicaciones
+Aplicación: VERI*FACTU Versión: 0.1.5
+VERI*FACTU Página: 7/15
+Se deberán utilizar algoritmos basados en RSA admitidos en ETSI TS 119 312
+V1.4.3 con las siguientes consideraciones:
+ Tamaño de la clave será igual o superior a 1024.
+ Algoritmo de hash SHA-256 durante la realización de la firma del
+registro de facturación.
+5. Datos de entrada
+La firma electrónica se realizará sobre los datos del XML del registro de
+facturación o de eventos (nodo RegistroAlta o RegistroAnulacion,
+dependiendo del tipo de registro de facturación o nodo RegistroEvento, si es
+registro de evento), especificándose el nodo completo sobre el que realizar la
+firma, dependiendo de la tipología del diseño de registro y operación:
+a. DR Registro de Facturación
+i. Alta: RegistroAlta
+ii. Anulación: RegistroAnulacion
+b. DR Evento: RegistroEvento
+NOTA: La firma electrónica no debe realizarse en ningún caso sobre los nodos
+superiores RegFactuSistemaFacturacion o RegistroFactura.
+ Departamento de Informática Tributaria
+Subdirección General de Aplicaciones
+Aplicación: VERI*FACTU Versión: 0.1.5
+VERI*FACTU Página: 8/15
+6. Datos de salida
+La firma electrónica generada deberá almacenarse junto con el registro de
+facturación al que corresponde, concretamente en el nodo Signature
+a. DR Registro de Facturación
+i. Alta: RegistroFactura/RegistroAlta/Signature
+ii. Anulación: RegistroFactura/RegistroAnulacion/Signature
+b. DR Evento: RegistroEvento/Evento/Signature
+ Departamento de Informática Tributaria
+Subdirección General de Aplicaciones
+Aplicación: VERI*FACTU Versión: 0.1.5
+VERI*FACTU Página: 9/15
+7. Ejemplo de operación de firma en lenguaje
+java
+A continuación, se incluye un ejemplo de operación de firma sobre un registro
+de facturación en lenguaje de programación JAVA.
+7.1. Ejemplo de uso de política de firma
+Los nodos más relevantes del XML sobre política de firma, detallados en el punto 4
+(“Formato de firma electrónica”), son los siguientes:
+ Departamento de Informática Tributaria
+Subdirección General de Aplicaciones
+Aplicación: VERI*FACTU Versión: 0.1.5
+VERI*FACTU Página: 10/15
+7.2. Ejemplo de operación de firma con política de firma
+ Departamento de Informática Tributaria
+Subdirección General de Aplicaciones
+Aplicación: VERI*FACTU Versión: 0.1.5
+VERI*FACTU Página: 11/15
+8. Ejemplos de registros de facturación
+En los siguientes ejemplos se incluye un registro de facturación sin firmar y
+firmado, siguiendo la operación de firma del punto anterior.
+8.1. Registro de facturación sin firmar
+ejemploRegistro.xml
+(Consultar en “Anexos ejemplos firma registros de facturación.zip”)
+<sum1:RegistroAlta
+xmlns:sum1="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/
+es/aeat/tike/cont/ws/SuministroInformacion.xsd">
+<sum1:IDVersion>1.0</sum1:IDVersion>
+<sum1:IDFactura>
+<sum1:IDEmisorFactura>89890001K</sum1:IDEmisorFactura>
+<sum1:NumSerieFactura>12345678-G66</sum1:NumSerieFactura>
+<sum1:FechaExpedicionFactura>03-02-2025</sum1:FechaExpedicionFactura>
+</sum1:IDFactura>
+<sum1:NombreRazonEmisor>certificado uno telematicas</sum1:NombreRazonEmisor>
+<sum1:Subsanacion>N</sum1:Subsanacion>
+<sum1:RechazoPrevio>N</sum1:RechazoPrevio>
+<sum1:TipoFactura>R3</sum1:TipoFactura>
+<sum1:TipoRectificativa>I</sum1:TipoRectificativa>
+<sum1:FacturasRectificadas>
+<sum1:IDFacturaRectificada>
+<sum1:IDEmisorFactura>89890001K</sum1:IDEmisorFactura>
+<sum1:NumSerieFactura>12345600-G66</sum1:NumSerieFactura>
+<sum1:FechaExpedicionFactura>01-04-2024</sum1:FechaExpedicionFactura>
+</sum1:IDFacturaRectificada>
+</sum1:FacturasRectificadas>
+<sum1:FechaOperacion>03-02-2025</sum1:FechaOperacion>
+<sum1:DescripcionOperacion>fecha entrega</sum1:DescripcionOperacion>
+<sum1:Destinatarios>
+<sum1:IDDestinatario>
+<sum1:NombreRazon>certificado dos telematicas</sum1:NombreRazon>
+<sum1:NIF>89890002E</sum1:NIF>
+</sum1:IDDestinatario>
+</sum1:Destinatarios>
+<sum1:Desglose>
+<sum1:DetalleDesglose>
+<sum1:ClaveRegimen>01</sum1:ClaveRegimen>
+<sum1:CalificacionOperacion>S1</sum1:CalificacionOperacion>
+<sum1:TipoImpositivo>4</sum1:TipoImpositivo>
+<sum1:BaseImponibleOimporteNoSujeto>10</sum1:BaseImponibleOimporteNoSujeto>
+<sum1:CuotaRepercutida>0.4</sum1:CuotaRepercutida>
+</sum1:DetalleDesglose>
+<sum1:DetalleDesglose>
+<sum1:ClaveRegimen>01</sum1:ClaveRegimen>
+<sum1:CalificacionOperacion>S1</sum1:CalificacionOperacion>
+<sum1:TipoImpositivo>21</sum1:TipoImpositivo>
+<sum1:BaseImponibleOimporteNoSujeto>100</sum1:BaseImponibleOimporteNoSujeto>
+<sum1:CuotaRepercutida>21</sum1:CuotaRepercutida>
+</sum1:DetalleDesglose>
+<sum1:DetalleDesglose>
+<sum1:ClaveRegimen>05</sum1:ClaveRegimen>
+<sum1:CalificacionOperacion>S1</sum1:CalificacionOperacion>
+<sum1:TipoImpositivo>10</sum1:TipoImpositivo>
+ Departamento de Informática Tributaria
+Subdirección General de Aplicaciones
+Aplicación: VERI*FACTU Versión: 0.1.5
+VERI*FACTU Página: 12/15
+<sum1:BaseImponibleOimporteNoSujeto>100</sum1:BaseImponibleOimporteNoSujeto>
+<sum1:CuotaRepercutida>10</sum1:CuotaRepercutida>
+</sum1:DetalleDesglose>
+</sum1:Desglose>
+<sum1:CuotaTotal>41.4</sum1:CuotaTotal>
+<sum1:ImporteTotal>241.4</sum1:ImporteTotal>
+<sum1:Encadenamiento>
+<sum1:RegistroAnterior>
+<sum1:IDEmisorFactura>89890001K</sum1:IDEmisorFactura>
+<sum1:NumSerieFactura>12345677-G33</sum1:NumSerieFactura>
+<sum1:FechaExpedicionFactura>15-04-2024</sum1:FechaExpedicionFactura>
+<sum1:Huella>C9AF4AF1EF5EBBA700350DE3EEF12C2D355C56AC56F13DB2A25E0031BD2B7ED5</sum1:Huel
+la>
+</sum1:RegistroAnterior>
+</sum1:Encadenamiento>
+<sum1:SistemaInformatico>
+<sum1:NombreRazon>CERTIFICADO UNO TELEMATICAS</sum1:NombreRazon>
+<sum1:NIF>89890001K</sum1:NIF>
+<sum1:NombreSistemaInformatico>NombreSistemaInformatico</sum1:NombreSistemaInformatico>
+<sum1:IdSistemaInformatico>77</sum1:IdSistemaInformatico>
+<sum1:Version>1.0.03</sum1:Version>
+<sum1:NumeroInstalacion>383</sum1:NumeroInstalacion>
+<sum1:TipoUsoPosibleSoloVerifactu>S</sum1:TipoUsoPosibleSoloVerifactu>
+<sum1:TipoUsoPosibleMultiOT>N</sum1:TipoUsoPosibleMultiOT>
+<sum1:IndicadorMultiplesOT>N</sum1:IndicadorMultiplesOT>
+</sum1:SistemaInformatico>
+<sum1:FechaHoraHusoGenRegistro>2025-02-03T14:30:00+01:00</sum1:FechaHoraHusoGenRegistro>
+<sum1:TipoHuella>01</sum1:TipoHuella>
+<sum1:Huella>FF954378B64ED331A9B2366AD317D86E9DEC1716B12DD0ACCB172A6DC4C105AA</sum1:Huel
+la>
+</sum1:RegistroAlta>
+ Departamento de Informática Tributaria
+Subdirección General de Aplicaciones
+Aplicación: VERI*FACTU Versión: 0.1.5
+VERI*FACTU Página: 13/15
+8.2. Registro de facturación firmado
+ejemploRegistro-firmado-epes-xades4j.xml
+(Consultar en “Anexos ejemplos firma registros de facturación.zip”)
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><sum1:RegistroAlta
+xmlns:sum1="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/
+es/aeat/tike/cont/ws/SuministroInformacion.xsd">
+<sum1:IDVersion>1.0</sum1:IDVersion>
+<sum1:IDFactura>
+<sum1:IDEmisorFactura>89890001K</sum1:IDEmisorFactura>
+<sum1:NumSerieFactura>12345678-G66</sum1:NumSerieFactura>
+<sum1:FechaExpedicionFactura>03-02-2025</sum1:FechaExpedicionFactura>
+</sum1:IDFactura>
+<sum1:NombreRazonEmisor>certificado uno telematicas</sum1:NombreRazonEmisor>
+<sum1:Subsanacion>N</sum1:Subsanacion>
+<sum1:RechazoPrevio>N</sum1:RechazoPrevio>
+<sum1:TipoFactura>R3</sum1:TipoFactura>
+<sum1:TipoRectificativa>I</sum1:TipoRectificativa>
+<sum1:FacturasRectificadas>
+<sum1:IDFacturaRectificada>
+<sum1:IDEmisorFactura>89890001K</sum1:IDEmisorFactura>
+<sum1:NumSerieFactura>12345600-G66</sum1:NumSerieFactura>
+<sum1:FechaExpedicionFactura>01-04-2024</sum1:FechaExpedicionFactura>
+</sum1:IDFacturaRectificada>
+</sum1:FacturasRectificadas>
+<sum1:FechaOperacion>03-02-2025</sum1:FechaOperacion>
+<sum1:DescripcionOperacion>fecha entrega</sum1:DescripcionOperacion>
+<sum1:Destinatarios>
+<sum1:IDDestinatario>
+<sum1:NombreRazon>certificado dos telematicas</sum1:NombreRazon>
+<sum1:NIF>89890002E</sum1:NIF>
+</sum1:IDDestinatario>
+</sum1:Destinatarios>
+<sum1:Desglose>
+<sum1:DetalleDesglose>
+<sum1:ClaveRegimen>01</sum1:ClaveRegimen>
+<sum1:CalificacionOperacion>S1</sum1:CalificacionOperacion>
+<sum1:TipoImpositivo>4</sum1:TipoImpositivo>
+<sum1:BaseImponibleOimporteNoSujeto>10</sum1:BaseImponibleOimporteNoSujeto>
+<sum1:CuotaRepercutida>0.4</sum1:CuotaRepercutida>
+</sum1:DetalleDesglose>
+<sum1:DetalleDesglose>
+<sum1:ClaveRegimen>01</sum1:ClaveRegimen>
+<sum1:CalificacionOperacion>S1</sum1:CalificacionOperacion>
+<sum1:TipoImpositivo>21</sum1:TipoImpositivo>
+<sum1:BaseImponibleOimporteNoSujeto>100</sum1:BaseImponibleOimporteNoSujeto>
+<sum1:CuotaRepercutida>21</sum1:CuotaRepercutida>
+</sum1:DetalleDesglose>
+<sum1:DetalleDesglose>
+<sum1:ClaveRegimen>05</sum1:ClaveRegimen>
+<sum1:CalificacionOperacion>S1</sum1:CalificacionOperacion>
+<sum1:TipoImpositivo>10</sum1:TipoImpositivo>
+<sum1:BaseImponibleOimporteNoSujeto>100</sum1:BaseImponibleOimporteNoSujeto>
+<sum1:CuotaRepercutida>10</sum1:CuotaRepercutida>
+</sum1:DetalleDesglose>
+</sum1:Desglose>
+<sum1:CuotaTotal>41.4</sum1:CuotaTotal>
+<sum1:ImporteTotal>241.4</sum1:ImporteTotal>
+<sum1:Encadenamiento>
+<sum1:RegistroAnterior>
+<sum1:IDEmisorFactura>89890001K</sum1:IDEmisorFactura>
+ Departamento de Informática Tributaria
+Subdirección General de Aplicaciones
+Aplicación: VERI*FACTU Versión: 0.1.5
+VERI*FACTU Página: 14/15
+<sum1:NumSerieFactura>12345677-G33</sum1:NumSerieFactura>
+<sum1:FechaExpedicionFactura>15-04-2024</sum1:FechaExpedicionFactura>
+<sum1:Huella>C9AF4AF1EF5EBBA700350DE3EEF12C2D355C56AC56F13DB2A25E0031BD2B7ED5</sum1:Huel
+la>
+</sum1:RegistroAnterior>
+</sum1:Encadenamiento>
+<sum1:SistemaInformatico>
+<sum1:NombreRazon>CERTIFICADO UNO TELEMATICAS</sum1:NombreRazon>
+<sum1:NIF>89890001K</sum1:NIF>
+<sum1:NombreSistemaInformatico>NombreSistemaInformatico</sum1:NombreSistemaInformatico>
+<sum1:IdSistemaInformatico>77</sum1:IdSistemaInformatico>
+<sum1:Version>1.0.03</sum1:Version>
+<sum1:NumeroInstalacion>383</sum1:NumeroInstalacion>
+<sum1:TipoUsoPosibleSoloVerifactu>S</sum1:TipoUsoPosibleSoloVerifactu>
+<sum1:TipoUsoPosibleMultiOT>N</sum1:TipoUsoPosibleMultiOT>
+<sum1:IndicadorMultiplesOT>N</sum1:IndicadorMultiplesOT>
+</sum1:SistemaInformatico>
+<sum1:FechaHoraHusoGenRegistro>2025-02-03T14:30:00+01:00</sum1:FechaHoraHusoGenRegistro>
+<sum1:TipoHuella>01</sum1:TipoHuella>
+<sum1:Huella>FF954378B64ED331A9B2366AD317D86E9DEC1716B12DD0ACCB172A6DC4C105AA</sum1:Huel
+la>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="xmldsig-90637596-e368-4bd0-bcf8-
+d9a7be617d9a">
+<ds:SignedInfo>
+<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+<ds:Reference Id="xmldsig-90637596-e368-4bd0-bcf8-d9a7be617d9a-ref0" URI="">
+<ds:Transforms>
+<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+</ds:Transforms>
+<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+<ds:DigestValue>89qWVKHvtwa2CijR5a+DLFjRkqNjKRiz7fClSu1w0Mk=</ds:DigestValue>
+</ds:Reference>
+<ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="#xmldsig-90637596-e368-
+4bd0-bcf8-d9a7be617d9a-signedprops">
+<ds:Transforms>
+<ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+</ds:Transforms>
+<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+<ds:DigestValue>7K+GICWKtBQtcs79MHxeWvN+U184qNGGbiXIcA4P6no=</ds:DigestValue>
+</ds:Reference>
+</ds:SignedInfo>
+<ds:SignatureValue Id="xmldsig-90637596-e368-4bd0-bcf8-d9a7be617d9a-sigvalue">
+ruvN8lGx0knqU7CIZmi82ez7kmAsgt7LPE1LW2j13kA5++PLthWqKkG90WpOFTtg1I1feBAeenCv&#13;
+SOxAfWGIwUAkSZNiU5xtS9QpLtdfetXLBgTz1EHkJRMET6X6MqJVWHvFgsLz6lYESYcO0UpEQNh1&#13;
+2D7K1sv/jQFfzTnW4Jvnq1iaDI+9XsV+jaJoHLOb3+iXgenMsmoMUvXrLv76LGpQLLsO7TIOSmb9&#13;
+tR13r3zqElBEs3nGvZZ1v7QkvUBRWARjx8fBMW08hF8P1ZwCgqolKvGURycG6zR73euNUZTqUUqk&#13;
+os/lwTqVeGsONhwNOTZgwdYvk7EXYFaNSyEeMw==
+</ds:SignatureValue>
+<ds:KeyInfo>
+<ds:X509Data>
+<ds:X509Certificate>
+MIIHajCCBlKgAwIBAgIQPDf81x29SspiXnp+j82FwTANBgkqhkiG9w0BAQsFADBLMQswCQYDVQQG&#13;
+EwJFUzERMA8GA1UECgwIRk5NVC1SQ00xDjAMBgNVBAsMBUNlcmVzMRkwFwYDVQQDDBBBQyBGTk1U&#13;
+IFVzdWFyaW9zMB4XDTIyMDQxOTA5MDE1MFoXDTI2MDQxOTA5MDE1MFowgYkxCzAJBgNVBAYTAkVT&#13;
+MRgwFgYDVQQFEw9JRENFUy04OTg5MDAwMUsxFDASBgNVBCoMC1RFTEVNQVRJQ0FTMRgwFgYDVQQE&#13;
+DA9DRVJUSUZJQ0FETyBVTk8xMDAuBgNVBAMMJ0NFUlRJRklDQURPIFVOTyBURUxFTUFUSUNBUyAt&#13;
+IDg5ODkwMDAxSzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL31wojJZfH476polUyK&#13;
+SHrQuYdPfspkmiLT43l6uHoCCTaSKf2mg6028rkF6LV3iuRLpkkm43Otxb/aCt1GG5rTaymE9ZGy&#13;
+zdNkaPchIx46pX1b+sRs5hQL0ZHu5FXrq95Hq2FnjjJxT8/LeDPnBnHgpwqNEVutOX//fmcu8ljs&#13;
+SmFmsER68wnkj3DjBFIKvF8gz1bk11nTIfkiz8VUsLiIG9KYAT/P5A9gaLxCUiwtRFXdAI3QceEt&#13;
+A/nt9f/xnvlx9HuRS92Gs6BILJrhpA0kgwqwA1Bzku3/j9IabcN78MTIjmw6QE0FjuDYH+j9LP3o&#13;
+U+1AcE+CQGFNcMe1pO0CAwEAAaOCBAkwggQFMHMGA1UdEQRsMGqkaDBmMRgwFgYJKwYBBAGsZgEE&#13;
+DAk4OTg5MDAwMUsxEjAQBgkrBgEEAaxmAQMMA1VOTzEaMBgGCSsGAQQBrGYBAgwLQ0VSVElGSUNB&#13;
+RE8xGjAYBgkrBgEEAaxmAQEMC1RFTEVNQVRJQ0FTMAwGA1UdEwEB/wQCMAAwDgYDVR0PAQH/BAQD&#13;
+AgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMEBggrBgEFBQcDAjAdBgNVHQ4EFgQUc6cngtAXH44hLlWw&#13;
+e3c+9oB21CcwHwYDVR0jBBgwFoAUsdRPxCN5+kQFCcbrOc/oNbC4IGQwgYIGCCsGAQUFBwEBBHYw&#13;
+dDA9BggrBgEFBQcwAYYxaHR0cDovL29jc3B1c3UuY2VydC5mbm10LmVzL29jc3B1c3UvT2NzcFJl&#13;
+ Departamento de Informática Tributaria
+Subdirección General de Aplicaciones
+Aplicación: VERI*FACTU Versión: 0.1.5
+VERI*FACTU Página: 15/15
+c3BvbmRlcjAzBggrBgEFBQcwAoYnaHR0cDovL3d3dy5jZXJ0LmZubXQuZXMvY2VydHMvQUNVU1Uu&#13;
+Y3J0MIIBFQYDVR0gBIIBDDCCAQgwgfoGCisGAQQBrGYDCgEwgeswKQYIKwYBBQUHAgEWHWh0dHA6&#13;
+Ly93d3cuY2VydC5mbm10LmVzL2RwY3MvMIG9BggrBgEFBQcCAjCBsAyBrUNlcnRpZmljYWRvIGN1&#13;
+YWxpZmljYWRvIGRlIGZpcm1hIGVsZWN0csOzbmljYS4gU3VqZXRvIGEgbGFzIGNvbmRpY2lvbmVz&#13;
+IGRlIHVzbyBleHB1ZXN0YXMgZW4gbGEgRFBDIGRlIGxhIEZOTVQtUkNNIGNvbiBOSUY6IFEyODI2&#13;
+MDA0LUogKEMvSm9yZ2UgSnVhbiAxMDYtMjgwMDktTWFkcmlkLUVzcGHDsWEpMAkGBwQAi+xAAQAw&#13;
+gboGCCsGAQUFBwEDBIGtMIGqMAgGBgQAjkYBATALBgYEAI5GAQMCAQ8wEwYGBACORgEGMAkGBwQA&#13;
+jkYBBgEwfAYGBACORgEFMHIwNxYxaHR0cHM6Ly93d3cuY2VydC5mbm10LmVzL3Bkcy9QRFNBQ1Vz&#13;
+dWFyaW9zX2VzLnBkZhMCZXMwNxYxaHR0cHM6Ly93d3cuY2VydC5mbm10LmVzL3Bkcy9QRFNBQ1Vz&#13;
+dWFyaW9zX2VuLnBkZhMCZW4wgbUGA1UdHwSBrTCBqjCBp6CBpKCBoYaBnmxkYXA6Ly9sZGFwdXN1&#13;
+LmNlcnQuZm5tdC5lcy9jbj1DUkw1NTY1LGNuPUFDJTIwRk5NVCUyMFVzdWFyaW9zLG91PUNFUkVT&#13;
+LG89Rk5NVC1SQ00sYz1FUz9jZXJ0aWZpY2F0ZVJldm9jYXRpb25MaXN0O2JpbmFyeT9iYXNlP29i&#13;
+amVjdGNsYXNzPWNSTERpc3RyaWJ1dGlvblBvaW50MA0GCSqGSIb3DQEBCwUAA4IBAQB6G4pvDN+4&#13;
+IwHgP3cy0NPrK5ZmDr8nhFy4RoBu/yonPdhQax8i7e7PxpEAu3+Tn8E2DLqmjE7X84RIZIzE9PCJ&#13;
+YHe+m5+FA1QBhP7hsL2OXrm3NTAXNYyA/C33t7w2tEbSIqgFrSuXrkDhYuUeSPscdEWJP/rYJ7xb&#13;
+mFhYUA/An9kDWOvyvJ1aPdcF7cwp15dhYMvHky9HpVc82lBjJCbppUoaywPxoKj92/BV4fpNT2eT&#13;
+Fp00XpJs1o5gfcAUu+6WegTX7kG8Peej9vuE67uZTWZhUu/F4YZXFzjq24uml42VlhZ+OmCMx6/e&#13;
+rkR//5K5ovmP35AyrpIxuYp6RzWz
+</ds:X509Certificate>
+</ds:X509Data>
+<ds:KeyValue>
+<ds:RSAKeyValue>
+<ds:Modulus>vfXCiMll8fjvqmiVTIpIetC5h09+ymSaItPjeXq4egIJNpIp/aaDrTbyuQXotXeK5EumSSbjc63F&#13;
+v9oK3UYbmtNrKYT1kbLN02Ro9yEjHjqlfVv6xGzmFAvRke7kVeur3kerYWeOMnFPz8t4M+cGceCn&#13;
+Co0RW605f/9+Zy7yWOxKYWawRHrzCeSPcOMEUgq8XyDPVuTXWdMh+SLPxVSwuIgb0pgBP8/kD2Bo&#13;
+vEJSLC1EVd0AjdBx4S0D+e31//Ge+XH0e5FL3YazoEgsmuGkDSSDCrADUHOS7f+P0hptw3vwxMiO&#13;
+bDpATQWO4Ngf6P0s/ehT7UBwT4JAYU1wx7Wk7Q==</ds:Modulus>
+<ds:Exponent>AQAB</ds:Exponent>
+</ds:RSAKeyValue>
+</ds:KeyValue>
+</ds:KeyInfo>
+<ds:Object><xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
+xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" Target="#xmldsig-90637596-e368-4bd0-bcf8-
+d9a7be617d9a"><xades:SignedProperties Id="xmldsig-90637596-e368-4bd0-bcf8-d9a7be617d9asignedprops"><xades:SignedSignatureProperties><xades:SigningTime>2025-02-
+03T16:15:55.105+01:00</xades:SigningTime><xades:SigningCertificate><xades:Cert><xades:CertDigest
+><ds:DigestMethod
+Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>tSSDv7r41SAdEZ1/5u61PjmIYxo=
+</ds:DigestValue></xades:CertDigest><xades:IssuerSerial><ds:X509IssuerName>cn=AC FNMT
+Usuarios,ou=Ceres,o=FNMTRCM,c=ES</ds:X509IssuerName><ds:X509SerialNumber>80044384284793334134753462931839354305</ds:X509
+SerialNumber></xades:IssuerSerial></xades:Cert><xades:Cert><xades:CertDigest><ds:DigestMethod
+Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>gIty5DtXTPWHfLhBqN+IOW04q5Q=
+</ds:DigestValue></xades:CertDigest><xades:IssuerSerial><ds:X509IssuerName>ou=AC RAIZ FNMTRCM,o=FNMTRCM,c=ES</ds:X509IssuerName><ds:X509SerialNumber>92211194145327068339343264961472359387</ds:X509
+SerialNumber></xades:IssuerSerial></xades:Cert><xades:Cert><xades:CertDigest><ds:DigestMethod
+Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>7FA1B7IVxJViGeKomltCmSxMLCA=
+</ds:DigestValue></xades:CertDigest><xades:IssuerSerial><ds:X509IssuerName>ou=AC RAIZ FNMTRCM,o=FNMTRCM,c=ES</ds:X509IssuerName><ds:X509SerialNumber>485876308206448804701554682760554759</ds:X509Se
+rialNumber></xades:IssuerSerial></xades:Cert></xades:SigningCertificate><xades:SignaturePolicyId
+entifier><xades:SignaturePolicyId><xades:SigPolicyId><xades:Identifier>urn:oid:2.16.724.1.3.1.1.
+2.1.9</xades:Identifier><xades:Description/></xades:SigPolicyId><xades:SigPolicyHash><ds:DigestM
+ethod
+Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>G7roucf600+f03r/o0bAOQ6WAs0=
+</ds:DigestValue></xades:SigPolicyHash><xades:SigPolicyQualifiers><xades:SigPolicyQualifier><xad
+es:SPURI>https://sede.administracion.gob.es/politica_de_firma_anexo_1.pdf</xades:SPURI></xades:S
+igPolicyQualifier></xades:SigPolicyQualifiers></xades:SignaturePolicyId></xades:SignaturePolicyI
+dentifier></xades:SignedSignatureProperties><xades:SignedDataObjectProperties><xades:DataObjectF
+ormat ObjectReference="#xmldsig-90637596-e368-4bd0-bcf8-d9a7be617d9aref0"><xades:ObjectIdentifier><xades:Identifier>urn:oid:1.2.840.10003.5.109.10</xades:Identifier
+><xades:Description/></xades:ObjectIdentifier><xades:MimeType>text/xml</xades:MimeType><xades:En
+coding>UTF8</xades:Encoding></xades:DataObjectFormat></xades:SignedDataObjectProperties></xades:SignedProp
+erties></xades:QualifyingProperties></ds:Object>
+</ds:Signature></sum1:RegistroAlta>

@@ -2,23 +2,29 @@
 
 ## Overview
 
-The AEAT VERI*FACTU webservice provides three main operations for invoice management. All operations use SOAP 1.2 protocol with mutual TLS authentication.
+The AEAT VERI*FACTU webservice provides three main operations for invoice management. All operations use SOAP 1.1 Document/Literal protocol with mutual TLS authentication.
 
 ## SOAP Endpoints
 
-### Test Environment
-- **URL**: `https://www7.aeat.es/jebi/ws/VeriFactu.wsdl`
+### Test Environment (VERI*FACTU)
+- **URL**: `https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP`
+- **WSDL**: `https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/SistemaFacturacion.wsdl`
 - **Purpose**: Development and testing
 - **Data**: Test data only, not real invoices
 - **Certificates**: Test certificates required
-- **Official Source**: [AEAT Test Environment](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html) (geopend 23-10-2025)
 
-### Production Environment
-- **URL**: `https://www1.aeat.es/jebi/ws/VeriFactu.wsdl`
+### Production Environment (VERI*FACTU)
+- **URL**: `https://www1.agenciatributaria.gob.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP`
+- **WSDL**: `https://www1.agenciatributaria.gob.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/SistemaFacturacion.wsdl`
 - **Purpose**: Live invoice processing
 - **Data**: Real invoice data
 - **Certificates**: Production certificates required
-- **Official Source**: [AEAT Production Environment](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html) (geopend 23-10-2025)
+
+### Production Environment (Certificate Seal)
+- **URL**: `https://www10.agenciatributaria.gob.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP`
+- **Purpose**: Production with certificate seal
+- **Data**: Real invoice data
+- **Certificates**: Production certificates with seal required
 
 ## Test Data and Sandbox
 
@@ -44,74 +50,61 @@ The AEAT VERI*FACTU webservice provides three main operations for invoice manage
 
 ## Main Operations
 
-### 1. Alta (Register Invoice)
+### 1. RegFactuSistemaFacturacion (Register Invoice)
 
 **Purpose**: Register a new invoice with AEAT for verification
 
-**SOAP Action**: `urn:VeriFactu/Alta`
+**SOAP Action**: `RegFactuSistemaFacturacion`
 
 **Description**: 
-The Alta operation is used to register invoices with the Spanish tax authority. This is the primary operation for invoice verification and must be performed before sending invoices to customers.
+The RegFactuSistemaFacturacion operation is used to register invoices with the Spanish tax authority. This is the primary operation for invoice verification and must be performed before sending invoices to customers.
 
 **Key Features**:
 - Real-time validation of invoice data
 - Generation of CSV (Código Seguro de Verificación)
 - Support for various invoice types
-- Batch processing capabilities
+- Batch processing capabilities (max 1,000 records per request)
+- Support for both voluntary and required submissions
 
 **When to Use**:
 - Before sending invoices to customers
 - For B2B transactions
 - For B2C transactions above threshold
 - For international transactions
+- Response to AEAT requirements
 
-### 2. Baja/Anulación (Cancel Invoice)
-
-**Purpose**: Cancel a previously registered invoice
-
-**SOAP Action**: `urn:VeriFactu/Baja`
-
-**Description**:
-The Baja operation allows cancellation of previously registered invoices. This is required when invoices need to be voided or corrected.
-
-**Key Features**:
-- Cancel by invoice reference
-- Support for partial cancellations
-- Reason codes for cancellation
-- Audit trail maintenance
-
-**When to Use**:
-- Invoice errors discovered after registration
-- Customer requests cancellation
-- Duplicate invoice registration
-- System corrections
-
-### 3. Consulta (Query Invoice)
+### 2. ConsultaFactuSistemaFacturacion (Query Invoice)
 
 **Purpose**: Retrieve information about registered invoices
 
-**SOAP Action**: `urn:VeriFactu/Consulta`
+**SOAP Action**: `ConsultaFactuSistemaFacturacion`
 
 **Description**:
-The Consulta operation allows querying of previously registered invoices to retrieve their status, CSV codes, and other relevant information.
+The ConsultaFactuSistemaFacturacion operation allows querying of previously registered invoices to retrieve their status, CSV codes, and other relevant information.
 
 **Key Features**:
-- Query by multiple criteria
+- Query by multiple criteria (issuer, recipient, date range)
 - Retrieve invoice status
 - Access to CSV codes
 - Historical data access
+- Pagination support
+- Filter by external reference (RefExterna)
+- Query by System Information (SIF)
 
 **When to Use**:
 - Verify invoice registration status
 - Retrieve CSV codes for customer verification
 - Audit and compliance checking
 - System synchronization
+- Response to customer inquiries
+
+**Note**: This service is only available for voluntary submissions (VERI*FACTU), not for required submissions.
 
 ## SOAP Protocol Details
 
 ### SOAP Version
-- **Version**: SOAP 1.2
-- **Namespace**: `http://www.w3.org/2003/05/soap-envelope`
+- **Version**: SOAP 1.1 Document/Literal
+- **Namespace**: `http://schemas.xmlsoap.org/soap/envelope/`
 - **Encoding**: UTF-8
 
 ### Required Headers
@@ -131,7 +124,7 @@ Content-Type: application/soap+xml; charset=utf-8
 ### XML Namespaces
 
 **Core Namespaces**:
-- `soap`: `http://www.w3.org/2003/05/soap-envelope`
+- `soap`: `http://schemas.xmlsoap.org/soap/envelope/`
 - `verifactu`: `urn:VeriFactu`
 - `xsi`: `http://www.w3.org/2001/XMLSchema-instance`
 - `xsd`: `http://www.w3.org/2001/XMLSchema`
@@ -147,7 +140,7 @@ Content-Type: application/soap+xml; charset=utf-8
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xmlns:xsd="http://www.w3.org/2001/XMLSchema">

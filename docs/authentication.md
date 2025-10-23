@@ -4,6 +4,13 @@
 
 The AEAT VERI*FACTU webservice uses **mutual TLS authentication** (also known as client certificate authentication). This means both the client (your application) and the server (AEAT) authenticate each other using digital certificates.
 
+**Key Requirements:**
+- **Protocol**: HTTPS
+- **Authentication**: Qualified electronic certificate required
+- **Encoding**: UTF-8
+- **SOAP Version**: SOAP 1.1 Document/Literal style
+- **Message Format**: XML messages according to XSD schemas
+
 ## Required Certificates
 
 ### Client Certificate
@@ -25,15 +32,15 @@ The AEAT VERI*FACTU webservice uses **mutual TLS authentication** (also known as
 
 ## Obtaining Certificates
 
-### From FNMT (Fábrica Nacional de Moneda y Timbre)
+### From FNMT (RECOMMENDED for VERI*FACTU)
 
 **FNMT is the primary certificate authority for Spanish government services:**
 
 1. **Registration Process**:
-   - Visit [FNMT website](https://www.fnmt.es/)
-   - Create account and verify identity
-   - Submit required documentation
-   - Pay applicable fees
+   - Visit [FNMT website](https://www.sede.fnmt.gob.es/)
+   - Navigate to "Certificados de Persona Física" or "Certificados de Persona Jurídica"
+   - Complete online registration
+   - **FREE** for individuals and companies
 
 2. **Certificate Types**:
    - **Persona Física**: For individuals
@@ -44,21 +51,44 @@ The AEAT VERI*FACTU webservice uses **mutual TLS authentication** (also known as
    - Valid Spanish NIF/NIE
    - Company registration documents (for legal entities)
    - Proof of identity
-   - Payment of fees
+   - **NO payment required** (FREE)
 
-### From AEAT Direct
+### Alternative Certificate Authorities
 
-**AEAT also provides certificates directly:**
+**Other recognized certificate authorities in Spain:**
 
-1. **AEAT Certificate Portal**:
-   - Access through AEAT website
-   - Requires existing FNMT certificate for initial setup
-   - Streamlined process for VERI*FACTU specifically
+1. **Camerfirma**:
+   - Visit [Camerfirma website](https://www.camerfirma.com/)
+   - Professional certificate services
+   - May have associated costs
 
-2. **Advantages**:
-   - Faster processing
-   - Direct integration with tax systems
-   - Specialized for tax-related services
+2. **Firmaprofesional**:
+   - Visit [Firmaprofesional website](https://www.firmaprofesional.com/)
+   - Business-focused certificates
+   - May have associated costs
+
+## Quick Start Guide
+
+### Step-by-Step FNMT Certificate Process
+
+**1. Online Registration:**
+- Go to [FNMT website](https://www.sede.fnmt.gob.es/)
+- Click "Certificados de Persona Física" (individuals) or "Certificados de Persona Jurídica" (companies)
+- Complete online application
+- **FREE** - no costs involved
+
+**2. Identity Verification:**
+- Visit FNMT registration point or AEAT office
+- Bring valid ID and company documents
+- Verification takes 5-10 minutes
+- Alternative: Use DNI Electrónico for online verification
+
+**3. Certificate Download:**
+- Download certificate after verification
+- Install on your system
+- Test with VERI*FACTU test environment
+
+**Total Time: 1-2 weeks | Cost: FREE**
 
 ## Certificate Formats
 

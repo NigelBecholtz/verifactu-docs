@@ -9,7 +9,7 @@ This document provides detailed XSD schema information for all VERI*FACTU fields
 ### Namespace Definitions
 
 ```xml
-xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
 xmlns:verifactu="urn:VeriFactu"
 xmlns:aeat="http://www.aeat.es/verifactu"
 xmlns:factura="urn:VeriFactu:Factura"
@@ -463,7 +463,7 @@ function validateAmount(amount) {
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xsi:schemaLocation="urn:VeriFactu https://www1.aeat.es/jebi/ws/VeriFactu.xsd">

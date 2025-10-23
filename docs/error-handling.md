@@ -39,7 +39,7 @@ This document provides comprehensive information about error handling in the AEA
 ### SOAP Fault Structure
 
 ```xml
-<soap:Fault xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+<soap:Fault xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Code>
     <soap:Value>soap:Client</soap:Value>
     <soap:Subcode>

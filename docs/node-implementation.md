@@ -14,7 +14,7 @@ The SOAP client must be configured to handle mutual TLS authentication, proper X
 **Key Configuration Elements**:
 - **Mutual TLS**: Client certificate authentication
 - **XML Namespaces**: Proper namespace handling
-- **SOAP Version**: SOAP 1.2 protocol
+- **SOAP Version**: SOAP 1.1 Document/Literal protocol
 - **Content Type**: application/soap+xml
 - **Character Encoding**: UTF-8
 
@@ -53,7 +53,7 @@ The implementation must handle client certificates, server certificate verificat
 The implementation must handle SOAP envelope parsing, namespace resolution, and data extraction.
 
 **Request Construction**:
-1. **SOAP Envelope**: Build proper SOAP 1.2 envelope
+1. **SOAP Envelope**: Build proper SOAP 1.1 Document/Literal envelope
 2. **Namespace Handling**: Include all required namespaces
 3. **Data Serialization**: Convert JavaScript objects to XML
 4. **Validation**: Validate data before sending
@@ -104,7 +104,7 @@ The implementation must handle errors at multiple levels: network, SOAP, and bus
 ### SOAP Libraries
 
 **Primary Recommendation: `soap`**:
-- **Features**: Full SOAP 1.1/1.2 support, WSDL parsing, client generation
+- **Features**: Full SOAP 1.1 Document/Literal support, WSDL parsing, client generation
 - **TLS Support**: Built-in HTTPS support with certificate handling
 - **Error Handling**: Comprehensive error handling
 - **Performance**: Good performance for most use cases
@@ -116,7 +116,7 @@ The implementation must handle errors at multiple levels: network, SOAP, and bus
 - **Performance**: Better performance for high-volume applications
 
 **Library Selection Criteria**:
-- **SOAP Version**: Must support SOAP 1.2
+- **SOAP Version**: Must support SOAP 1.1 Document/Literal
 - **TLS Support**: Must support mutual TLS
 - **Namespace Handling**: Must handle complex namespaces
 - **Error Handling**: Must provide detailed error information

@@ -13,7 +13,7 @@ VERI*FACTU (Verificación de Facturas) is the Spanish tax authority's (AEAT) sys
 
 ## Quick Start
 
-1. **Obtain Certificates**: Get your client certificate from FNMT or AEAT
+1. **Obtain Certificates**: Get your FREE client certificate from FNMT
 2. **Configure TLS**: Set up mutual TLS authentication
 3. **Register Invoice**: Use the Alta operation to register invoices
 4. **Handle Responses**: Process CSV codes and status information

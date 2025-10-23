@@ -64,7 +64,7 @@ const agent = new https.Agent({
 
 // SOAP request
 const soapRequest = `<?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu">
   <soap:Header />
   <soap:Body>

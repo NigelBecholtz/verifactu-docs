@@ -20,7 +20,7 @@ SOAPAction: "urn:VeriFactu/Alta"
 ## XML Namespaces
 
 ```xml
-xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
 xmlns:verifactu="urn:VeriFactu"
 xmlns:aeat="http://www.aeat.es/verifactu"
 xmlns:factura="urn:VeriFactu:Factura"
@@ -35,7 +35,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -123,7 +123,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -175,7 +175,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -218,7 +218,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xmlns:xsd="http://www.w3.org/2001/XMLSchema">
