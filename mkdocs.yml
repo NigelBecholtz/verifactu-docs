@@ -1,0 +1,102 @@
+site_name: AEAT VERI*FACTU API Documentation
+site_description: Complete technical documentation for AEAT VERI*FACTU SOAP webservice
+site_author: Your Name
+site_url: https://yourusername.github.io/verifactu-docs
+
+# Repository
+repo_name: yourusername/verifactu-docs
+repo_url: https://github.com/yourusername/verifactu-docs
+
+# Theme
+theme:
+  name: material
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+
+# Plugins
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+
+# Markdown extensions
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.snippets
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - attr_list
+  - md_in_html
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Page tree
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Overview: README.md
+    - Authentication: docs/authentication.md
+    - Endpoints: docs/endpoints.md
+  - API Operations:
+    - Register Invoice: docs/alta-register-invoice.md
+    - Cancel Invoice: docs/baja-cancel-invoice.md
+    - Query Invoice: docs/consulta-query-invoice.md
+  - Technical Details:
+    - Parameters & Fields: docs/parameters-and-fields.md
+    - Error Handling: docs/error-handling.md
+    - Node.js Implementation: docs/node-implementation.md
+  - Examples: docs/examples.md
+
+# Extra
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/yourusername
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/yourusername
