@@ -121,18 +121,6 @@ ALTER TABLE invoices ADD COLUMN aeat_error TEXT;
 - [FNMT Certificate Services](https://www.fnmt.es/)
 - [AEAT Security Guidelines](https://sede.agenciatributaria.gob.es/Sede/condiciones-uso-sede-electronica/validacion-certificado-sede/validacion-certificado-sede.html) (geopend 23-10-2025)
 
-## API Versioning and Changelog
-
-### Current Version
-- **API Version**: 1.0
-- **Last Updated**: October 23, 2025
-- **Compatibility**: Backward compatible with previous versions
-
-### Version History
-- **v1.0** (2024-01-15): Initial release with Alta, Baja, Consulta operations
-- **v1.1** (2024-06-01): Added batch processing support
-- **v1.2** (2024-10-01): Enhanced error handling and monitoring
-
 ### Breaking Changes
 - **None**: All versions are backward compatible
 - **Deprecation Notice**: 6 months advance notice for any breaking changes
