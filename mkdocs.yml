@@ -81,6 +81,7 @@ nav:
   - Home: index.md
   - Quick Reference: quick-reference.md
   - Getting Started:
+    - getting-started.md
     - Overview: README.md
     - Authentication: authentication.md
     - Endpoints: endpoints.md
