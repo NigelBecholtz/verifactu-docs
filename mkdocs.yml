@@ -1,11 +1,11 @@
 site_name: AEAT VERI*FACTU API Documentation
 site_description: Complete technical documentation for AEAT VERI*FACTU SOAP webservice
-site_author: Your Name
-site_url: https://yourusername.github.io/verifactu-docs
+site_author: Nigel Becholtz
+site_url: https://NigelBecholtz.github.io/verifactu-docs
 
 # Repository
-repo_name: yourusername/verifactu-docs
-repo_url: https://github.com/yourusername/verifactu-docs
+repo_name: NigelBecholtz/verifactu-docs
+repo_url: https://github.com/NigelBecholtz/verifactu-docs
 
 # Theme
 theme:
