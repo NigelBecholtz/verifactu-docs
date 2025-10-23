@@ -86,15 +86,20 @@ nav:
     - Authentication: authentication.md
     - Endpoints: endpoints.md
     - Certificate Guide: certificate-guide.md
+    - Certificate Visual Guide: certificate-visual-guide.md
   - API Operations:
     - Register Invoice: alta-register-invoice.md
     - Cancel Invoice: baja-cancel-invoice.md
     - Query Invoice: consulta-query-invoice.md
   - Technical Details:
     - Parameters & Fields: parameters-and-fields.md
+    - XSD Schema Reference: xsd-schema-reference.md
     - Error Handling: error-handling.md
     - Node.js Implementation: node-implementation.md
     - Implementation Examples: implementation-examples.md
+    - SLA & Performance: sla-performance.md
+  - Compliance:
+    - Legal Compliance: legal-compliance.md
   - Examples: examples.md
 
 # Extra
