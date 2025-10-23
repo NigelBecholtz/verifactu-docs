@@ -1,109 +1,54 @@
-# AEAT VERI*FACTU API - Complete Implementation Guide
+# AEAT VERI*FACTU API Documentation
 
-Welcome to the step-by-step guide for integrating the AEAT VERI*FACTU system with your CRM. This documentation will take you from zero to a fully working integration.
+Welcome to the AEAT VERI*FACTU API documentation for Spanish tax authority invoice verification integration.
 
-## 🎯 What is VERI*FACTU?
+## Base URL
 
-VERI*FACTU (Verificación de Facturas) is the Spanish tax authority's system for electronic invoice verification. It:
+**Test Environment:** `https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP`  
+**Production Environment:** `https://www1.agenciatributaria.gob.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP`
 
-- **Prevents tax fraud** by verifying invoice authenticity
-- **Ensures compliance** with Spanish tax regulations  
-- **Provides real-time validation** of invoice data
-- **Generates secure verification codes** (CSV) for invoices
+Find out all API operations in the `API Reference` section.
 
-## 📋 Complete Implementation Steps
+## Authentication
 
-### **STEP 1: Prerequisites**
+When working with the API, you need to use **mutual TLS authentication** with a qualified electronic certificate. The certificate must be obtained from FNMT (Spanish National Mint and Stamp Factory).
 
-**What you need:**
-- ✅ A certificate from FNMT (you already have one)
-- ✅ Your CRM system
+### Certificate Requirements
 
-**→ [Go to Step 1: Prerequisites](authentication.md#step-1-prerequisites)**
+- **Format**: X.509 certificate with private key
+- **Authority**: FNMT (Fábrica Nacional de Moneda y Timbre)
+- **Storage**: Must be securely stored on your server
+- **Validity**: Typically 2-3 years, must be renewed before expiration
 
----
+### Obtaining the Certificate
 
-### **STEP 2: Database Setup**
+To get your certificate, visit the [FNMT website](https://www.sede.fnmt.gob.es/) and complete the registration process:
 
-**Update your database schema:**
-```sql
--- Add these columns to your invoices table
-ALTER TABLE invoices ADD COLUMN aeat_csv_code VARCHAR(100);
-ALTER TABLE invoices ADD COLUMN aeat_status VARCHAR(20);
-ALTER TABLE invoices ADD COLUMN aeat_error TEXT;
-```
+1. **For Individuals (Persona Física)**: FREE
+2. **For Companies (Persona Jurídica)**: €14-20
 
-**→ [Go to Step 2: Database Setup](node-implementation.md#step-2-database-setup)**
+Navigate to "Certificados de Persona Física" or "Certificados de Persona Jurídica" and follow the online registration process.
 
----
+## API Operations
 
-### **STEP 3: Certificate Configuration**
+### Invoice Management
+- **[Register Invoice](alta-register-invoice.md)** - Register new invoices with AEAT
+- **[Cancel Invoice](baja-cancel-invoice.md)** - Cancel registered invoices
+- **[Query Invoice](consulta-query-invoice.md)** - Retrieve invoice information
 
-**Configure your certificate for AEAT:**
-- Store certificate securely
-- Set up TLS configuration
-- Test certificate connection
-
-**→ [Go to Step 3: Certificate Setup](authentication.md#step-3-certificate-setup)**
-
----
-
-### **STEP 4: Code Implementation**
-
-**Implement the core functions:**
-- Send invoice to AEAT
-- Handle responses
-- Error handling
-
-**→ [Go to Step 4: Code Implementation](node-implementation.md#step-4-code-implementation)**
-
----
-
-### **STEP 5: Testing**
-
-**Test your integration:**
-- Test environment setup
-- Create test invoices
-- Verify CSV codes
-
-**→ [Go to Step 5: Testing](examples.md#step-5-testing)**
-
----
-
-### **STEP 6: Production Deployment**
-
-**Go live:**
-- Production environment setup
-- Monitoring and logging
-- Error handling
-
-**→ [Go to Step 6: Production](endpoints.md#step-6-production)**
-
----
-
-## 🚀 Quick Start
-
-**If you want to get started immediately:**
-
-1. **Update Database**
-2. **Add Basic Code**  
-3. **Test Connection**
-
-**→ [Quick Start Guide](authentication.md#quick-start-30-minutes)**
-
-## 📚 Additional Documentation
-
-### 🔧 Technical Reference
+### Technical Reference
 - **[Parameters & Fields](parameters-and-fields.md)** - Detailed field explanations
 - **[Error Handling](error-handling.md)** - Error codes and troubleshooting
 - **[XSD Schema Reference](xsd-schema-reference.md)** - Complete schema documentation
 
-### 📋 API Operations
-- **[Register Invoice](alta-register-invoice.md)** - Complete guide to invoice registration
-- **[Cancel Invoice](baja-cancel-invoice.md)** - How to cancel registered invoices
-- **[Query Invoice](consulta-query-invoice.md)** - Retrieve invoice information
+## Implementation Guide
 
-### 📖 Implementation Examples
+### Getting Started
+- **[Authentication Setup](authentication.md)** - Certificate configuration and TLS setup
+- **[Database Setup](node-implementation.md)** - Database schema modifications
+- **[Code Implementation](node-implementation.md)** - Node.js implementation examples
+
+### Examples & Testing
 - **[Complete Examples](examples.md)** - Working examples for common scenarios
 - **[Quick Reference](quick-reference.md)** - Quick lookup for developers
 
@@ -117,16 +62,9 @@ ALTER TABLE invoices ADD COLUMN aeat_error TEXT;
 ## Official Resources
 
 - [AEAT Official Website](https://www.agenciatributaria.es/)
-- [VERI*FACTU Technical Documentation](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html) (geopend 23-10-2025)
+- [VERI*FACTU Technical Documentation](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html)
 - [FNMT Certificate Services](https://www.fnmt.es/)
-- [AEAT Security Guidelines](https://sede.agenciatributaria.gob.es/Sede/condiciones-uso-sede-electronica/validacion-certificado-sede/validacion-certificado-sede.html) (geopend 23-10-2025)
-
-### Breaking Changes
-- **None**: All versions are backward compatible
-- **Deprecation Notice**: 6 months advance notice for any breaking changes
-- **Migration Guide**: Available for any future breaking changes
-
-**Official Source**: [AEAT API Changelog](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html) (geopend 23-10-2025)
+- [AEAT Security Guidelines](https://sede.agenciatributaria.gob.es/Sede/condiciones-uso-sede-electronica/validacion-certificado-sede/validacion-certificado-sede.html)
 
 ---
 
