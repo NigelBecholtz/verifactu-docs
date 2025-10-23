@@ -1,11 +1,11 @@
 [build]
   command = "npm run build"
-  functions = "dist/server"
+  publish = "public"
 
 [build.environment]
   NODE_VERSION = "20"
 
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/entry"
+  to = "/index.html"
   status = 200

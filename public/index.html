@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEAT VERI*FACTU API Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.6;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .header h1 {
+            color: #2563eb;
+            margin-bottom: 0.5rem;
+        }
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        .section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .section h2 {
+            color: #1f2937;
+            margin-top: 0;
+        }
+        .section h3 {
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        .section ul {
+            margin: 0.5rem 0;
+        }
+        .section li {
+            margin: 0.25rem 0;
+        }
+        .code {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+        }
+        .note {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .note strong {
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>AEAT VERI*FACTU API Documentation</h1>
+        <p>Complete technical documentation for AEAT VERI*FACTU SOAP webservice</p>
+    </div>
+
+    <div class="section">
+        <h2>Base URL</h2>
+        <div class="code">https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP</div>
+        <p>Find out all APIs at <strong>API Reference</strong> section.</p>
+    </div>
+
+    <div class="section">
+        <h2>Authentication</h2>
+        <p>When working with the API, you need to use <strong>mutual TLS authentication</strong> with a qualified electronic certificate.</p>
+        
+        <h3>Certificate Requirements</h3>
+        <ul>
+            <li><strong>Format</strong>: X.509 certificate with private key</li>
+            <li><strong>Authority</strong>: FNMT (Fábrica Nacional de Moneda y Timbre)</li>
+            <li><strong>Storage</strong>: Must be securely stored on your server</li>
+            <li><strong>Validity</strong>: Typically 2-3 years, must be renewed before expiration</li>
+        </ul>
+
+        <h3>Obtaining the Certificate</h3>
+        <p>To get your certificate, visit the <a href="https://www.sede.fnmt.gob.es/">FNMT website</a> and complete the registration process:</p>
+        <ul>
+            <li><strong>For Individuals (Persona Física)</strong>: FREE</li>
+            <li><strong>For Companies (Persona Jurídica)</strong>: €14-20</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>API Operations</h2>
+        <h3>Invoice Management</h3>
+        <ul>
+            <li><strong>Register Invoice</strong> - Register new invoices with AEAT</li>
+            <li><strong>Cancel Invoice</strong> - Cancel registered invoices</li>
+            <li><strong>Query Invoice</strong> - Retrieve invoice information</li>
+        </ul>
+
+        <h3>Technical Reference</h3>
+        <ul>
+            <li><strong>Parameters & Fields</strong> - Detailed field explanations</li>
+            <li><strong>Error Handling</strong> - Error codes and troubleshooting</li>
+            <li><strong>XSD Schema Reference</strong> - Complete schema documentation</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Implementation Guide</h2>
+        <h3>Getting Started</h3>
+        <ul>
+            <li><strong>Authentication Setup</strong> - Certificate configuration and TLS setup</li>
+            <li><strong>Database Setup</strong> - Database schema modifications</li>
+            <li><strong>Code Implementation</strong> - Node.js implementation examples</li>
+        </ul>
+
+        <h3>Examples & Testing</h3>
+        <ul>
+            <li><strong>Complete Examples</strong> - Working examples for common scenarios</li>
+            <li><strong>Quick Reference</strong> - Quick lookup for developers</li>
+        </ul>
+    </div>
+
+    <div class="note">
+        <strong>Important Notes:</strong>
+        <ul>
+            <li><strong>Production vs Test</strong>: Always use test environment first</li>
+            <li><strong>Certificate Security</strong>: Store certificates securely</li>
+            <li><strong>Data Retention</strong>: Keep audit trail for legal compliance</li>
+            <li><strong>Error Handling</strong>: Implement robust error handling for production use</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Official Resources</h2>
+        <ul>
+            <li><a href="https://www.agenciatributaria.es/">AEAT Official Website</a></li>
+            <li><a href="https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html">VERI*FACTU Technical Documentation</a></li>
+            <li><a href="https://www.fnmt.es/">FNMT Certificate Services</a></li>
+            <li><a href="https://sede.agenciatributaria.gob.es/Sede/condiciones-uso-sede-electronica/validacion-certificado-sede/validacion-certificado-sede.html">AEAT Security Guidelines</a></li>
+        </ul>
+    </div>
+
+    <div class="note">
+        <strong>Note:</strong> This documentation is designed to complement, not replace, the official AEAT documentation. Always refer to the latest official sources for regulatory compliance.
+    </div>
+</body>
+</html>
