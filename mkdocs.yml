@@ -79,10 +79,12 @@ markdown_extensions:
 # Page tree
 nav:
   - Home: index.md
+  - Quick Reference: quick-reference.md
   - Getting Started:
     - Overview: README.md
     - Authentication: authentication.md
     - Endpoints: endpoints.md
+    - Certificate Guide: certificate-guide.md
   - API Operations:
     - Register Invoice: alta-register-invoice.md
     - Cancel Invoice: baja-cancel-invoice.md
@@ -91,6 +93,7 @@ nav:
     - Parameters & Fields: parameters-and-fields.md
     - Error Handling: error-handling.md
     - Node.js Implementation: node-implementation.md
+    - Implementation Examples: implementation-examples.md
   - Examples: examples.md
 
 # Extra
