@@ -599,3 +599,5 @@ A batch operation where some invoices succeed and others fail.
 - **Processing Time**: Consider processing time
 - **Memory Usage**: Monitor memory usage
 - **Caching**: Cache frequently used data
+
+**Official Source**: [AEAT XML Examples](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica/especificaciones-tecnicas-firma-electronica-registros-evento.html) (geopend 23-10-2025)

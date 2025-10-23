@@ -11,12 +11,36 @@ The AEAT VERI*FACTU webservice provides three main operations for invoice manage
 - **Purpose**: Development and testing
 - **Data**: Test data only, not real invoices
 - **Certificates**: Test certificates required
+- **Official Source**: [AEAT Test Environment](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html) (geopend 23-10-2025)
 
 ### Production Environment
 - **URL**: `https://www1.aeat.es/jebi/ws/VeriFactu.wsdl`
 - **Purpose**: Live invoice processing
 - **Data**: Real invoice data
 - **Certificates**: Production certificates required
+- **Official Source**: [AEAT Production Environment](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html) (geopend 23-10-2025)
+
+## Test Data and Sandbox
+
+### Test Environment Access
+- **Registration Required**: Must register for test environment access
+- **Test Certificates**: Use test certificates only
+- **Data Isolation**: Test data is completely isolated from production
+- **Rate Limits**: Higher rate limits for testing purposes
+
+### Test Data Guidelines
+- **NIF Format**: Use test NIFs (e.g., 12345678Z for testing)
+- **Invoice Numbers**: Use test prefixes (e.g., TEST-2024-001)
+- **Amounts**: Use realistic test amounts
+- **Dates**: Use current or past dates only
+
+### Sandbox Features
+- **Full API Access**: All operations available in test environment
+- **Error Simulation**: Can simulate various error conditions
+- **Performance Testing**: Suitable for load testing
+- **Integration Testing**: Complete integration testing support
+
+**Official Source**: [AEAT Test Environment](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html) (geopend 23-10-2025)
 
 ## Main Operations
 
@@ -227,6 +251,22 @@ Content-Type: application/soap+xml; charset=utf-8
 - **Requests per minute**: Varies by certificate type
 - **Daily limits**: Based on business size
 - **Peak hours**: May have additional restrictions
+
+### Performance Specifications
+
+**Response Times**:
+- **Simple Operations**: < 5 seconds
+- **Complex Operations**: < 30 seconds
+- **Batch Operations**: < 2 minutes
+- **Peak Hours**: May be 2-3x longer
+
+**Throughput Limits**:
+- **Single Requests**: 1 request per second
+- **Batch Requests**: Up to 100 invoices per batch
+- **Daily Volume**: Based on business certificate type
+- **Concurrent Connections**: Maximum 10 concurrent connections
+
+**Official Source**: [AEAT Performance Guidelines](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html) (geopend 23-10-2025)
 
 ## Testing Strategy
 

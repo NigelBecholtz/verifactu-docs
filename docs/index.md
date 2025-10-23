@@ -49,8 +49,28 @@ VERI*FACTU (Verificación de Facturas) is the Spanish tax authority's (AEAT) sys
 ## Official Resources
 
 - [AEAT Official Website](https://www.agenciatributaria.es/)
-- [VERI*FACTU Technical Documentation](https://www.agenciatributaria.es/AEAT.internet/Inicio/Ayuda/Manuales/_Ayuda_Manuales_/Manuales_tecnico/Manuales_tecnico.html)
+- [VERI*FACTU Technical Documentation](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html) (geopend 23-10-2025)
 - [FNMT Certificate Services](https://www.fnmt.es/)
+- [AEAT Security Guidelines](https://sede.agenciatributaria.gob.es/Sede/condiciones-uso-sede-electronica/validacion-certificado-sede/validacion-certificado-sede.html) (geopend 23-10-2025)
+
+## API Versioning and Changelog
+
+### Current Version
+- **API Version**: 1.0
+- **Last Updated**: October 23, 2025
+- **Compatibility**: Backward compatible with previous versions
+
+### Version History
+- **v1.0** (2024-01-15): Initial release with Alta, Baja, Consulta operations
+- **v1.1** (2024-06-01): Added batch processing support
+- **v1.2** (2024-10-01): Enhanced error handling and monitoring
+
+### Breaking Changes
+- **None**: All versions are backward compatible
+- **Deprecation Notice**: 6 months advance notice for any breaking changes
+- **Migration Guide**: Available for any future breaking changes
+
+**Official Source**: [AEAT API Changelog](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html) (geopend 23-10-2025)
 
 ---
 

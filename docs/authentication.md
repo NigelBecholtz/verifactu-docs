@@ -97,13 +97,14 @@ The AEAT VERI*FACTU webservice uses **mutual TLS authentication** (also known as
 **Node.js requires specific configuration for mutual TLS:**
 
 ```javascript
-// Conceptual example - not actual code
 const https = require('https');
 const fs = require('fs');
+const axios = require('axios');
 
 // Load client certificate and private key
 const clientCert = fs.readFileSync('path/to/client-cert.pem');
 const clientKey = fs.readFileSync('path/to/client-key.pem');
+const caChain = fs.readFileSync('path/to/ca-chain.pem');
 
 // Configure HTTPS agent
 const agent = new https.Agent({
@@ -113,7 +114,54 @@ const agent = new https.Agent({
   rejectUnauthorized: true, // Verify server certificate
   secureProtocol: 'TLSv1_2_method' // Use TLS 1.2
 });
+
+// Example usage with axios
+const response = await axios.post('https://www1.aeat.es/jebi/ws/VeriFactu.wsdl', soapData, {
+  httpsAgent: agent,
+  headers: {
+    'Content-Type': 'application/soap+xml; charset=utf-8',
+    'SOAPAction': 'urn:VeriFactu/Alta'
+  }
+});
 ```
+
+**Certificate Conversion (.p12 to .pem):**
+
+```bash
+# Convert .p12 to .pem files
+openssl pkcs12 -in client-cert.p12 -clcerts -nokeys -out client-cert.pem
+openssl pkcs12 -in client-cert.p12 -nocerts -nodes -out client-key.pem
+openssl pkcs12 -in client-cert.p12 -cacerts -nokeys -out ca-chain.pem
+
+# cURL example with mTLS
+curl --cert client-cert.pem --key client-key.pem --cacert ca-chain.pem \
+     -X POST https://www1.aeat.es/jebi/ws/VeriFactu.wsdl \
+     -H "Content-Type: application/soap+xml; charset=utf-8" \
+     -H "SOAPAction: urn:VeriFactu/Alta" \
+     -d @request.xml
+```
+
+**Official Source**: [AEAT Certificate Configuration](https://sede.agenciatributaria.gob.es/Sede/condiciones-uso-sede-electronica/validacion-certificado-sede/validacion-certificado-sede.html) (geopend 23-10-2025)
+
+### Java Keystore Configuration
+
+**Converting .p12 to JKS:**
+
+```bash
+# Convert .p12 to JKS keystore
+keytool -importkeystore -srckeystore client-cert.p12 -srcstoretype PKCS12 -destkeystore client-keystore.jks -deststoretype JKS
+
+# List certificates in keystore
+keytool -list -keystore client-keystore.jks
+
+# Java HTTPS configuration
+System.setProperty("javax.net.ssl.trustStore", "path/to/truststore.jks");
+System.setProperty("javax.net.ssl.trustStorePassword", "password");
+System.setProperty("javax.net.ssl.keyStore", "path/to/client-keystore.jks");
+System.setProperty("javax.net.ssl.keyStorePassword", "password");
+```
+
+**Official Source**: [AEAT Java Configuration](https://sede.agenciatributaria.gob.es/Sede/condiciones-uso-sede-electronica/validacion-certificado-sede/validacion-certificado-sede.html) (geopend 23-10-2025)
 
 ### Certificate Loading from Filesystem
 

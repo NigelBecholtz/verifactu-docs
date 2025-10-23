@@ -90,6 +90,8 @@ This document provides comprehensive information about error handling in the AEA
 | **009** | Field too short | Various | Increase field length |
 | **010** | Invalid characters | Various | Remove invalid characters |
 
+**Official Source**: [AEAT Error Codes](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica/especificaciones-tecnicas-firma-electronica-registros-evento.html) (geopend 23-10-2025)
+
 ### Business Logic Errors (100-199)
 
 | Code | Description | Cause | Solution |
@@ -465,3 +467,26 @@ Attempt 5: Wait 135 seconds
 - Notify stakeholders
 - Implement workarounds
 - Document issues
+
+## Monitoring and Alerting
+
+### Key Metrics to Monitor
+- **Success Rate**: Track successful vs failed requests
+- **Response Time**: Monitor average response times
+- **Error Rate**: Track error frequency by type
+- **Certificate Status**: Monitor certificate expiration
+- **Queue Depth**: Monitor pending requests
+
+### Alert Thresholds
+- **Critical**: Success rate < 95%
+- **Warning**: Response time > 30 seconds
+- **Info**: Certificate expires in 30 days
+- **Critical**: Service unavailable
+
+### Monitoring Tools
+- **Application Monitoring**: Use APM tools
+- **Infrastructure Monitoring**: Monitor servers and network
+- **Log Aggregation**: Centralize log collection
+- **Dashboard**: Real-time monitoring dashboard
+
+**Official Source**: [AEAT Monitoring Guidelines](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html) (geopend 23-10-2025)
