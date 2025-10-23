@@ -19,7 +19,6 @@ VERI*FACTU (Verificación de Facturas) is the Spanish tax authority's system for
 **What you need:**
 - ✅ A certificate from FNMT (you already have one)
 - ✅ Your CRM system
-- ✅ Basic programming knowledge
 
 **→ [Go to Step 1: Prerequisites](authentication.md#step-1-prerequisites)**
 
