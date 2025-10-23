@@ -11,44 +11,44 @@ VERI*FACTU (Verificación de Facturas) is the Spanish tax authority's (AEAT) sys
 - **Provide real-time validation** of invoice data
 - **Generate secure verification codes** (CSV) for invoices
 
-## 🚀 Quick Start (Voor Beginners)
+## 🚀 Quick Start (For Beginners)
 
-### Wat je nodig hebt:
-- ✅ Een certificaat van FNMT (je hebt er al een)
-- ✅ Je CRM systeem
-- ✅ 30 minuten tijd
+### What you need:
+- ✅ A certificate from FNMT (you already have one)
+- ✅ Your CRM system
+- ✅ 30 minutes of time
 
-### Stap 1: Database aanpassen
+### Step 1: Update your database
 ```sql
--- Voeg deze kolommen toe aan je facturen tabel
-ALTER TABLE facturen ADD COLUMN aeat_csv_code VARCHAR(100);
-ALTER TABLE facturen ADD COLUMN aeat_status VARCHAR(20);
+-- Add these columns to your invoices table
+ALTER TABLE invoices ADD COLUMN aeat_csv_code VARCHAR(100);
+ALTER TABLE invoices ADD COLUMN aeat_status VARCHAR(20);
 ```
 
-### Stap 2: Code toevoegen
+### Step 2: Add the code
 ```javascript
-// Wanneer je een factuur opslaat
-async function factuurOpslaan(factuur) {
-  // 1. Opslaan in je CRM
-  const factuurId = await opslaanInCRM(factuur);
+// When you save an invoice
+async function saveInvoice(invoice) {
+  // 1. Save in your CRM
+  const invoiceId = await saveToCRM(invoice);
   
-  // 2. Stuur naar AEAT
-  const aeatAntwoord = await stuurNaarAEAT(factuur);
+  // 2. Send to AEAT
+  const aeatResponse = await sendToAEAT(invoice);
   
-  // 3. Bewaar CSV code
-  await updateFactuur(factuurId, {
-    aeat_csv_code: aeatAntwoord.csv,
-    aeat_status: 'goedgekeurd'
+  // 3. Save CSV code
+  await updateInvoice(invoiceId, {
+    aeat_csv_code: aeatResponse.csv,
+    aeat_status: 'verified'
   });
 }
 ```
 
-### Stap 3: Testen
-- Start met test omgeving
-- Maak een test factuur
-- Controleer of CSV code wordt opgeslagen
+### Step 3: Test it
+- Start with test environment
+- Create a test invoice
+- Check if CSV code is saved
 
-**Klaar!** 🎉
+**Done!** 🎉
 
 ## Documentation Structure
 

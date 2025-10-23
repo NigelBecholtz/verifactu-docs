@@ -4,92 +4,92 @@
 
 This document provides detailed technical guidance for implementing the AEAT VERI*FACTU webservice in Node.js applications for CRM integration. It covers SOAP client configuration, TLS setup, error handling, and CRM-specific implementation patterns.
 
-## 🎯 Hoe het werkt in je CRM
+## 🎯 How it works in your CRM
 
-### Simpel overzicht
+### Simple overview
 ```
-Je CRM ──► AEAT ──► CSV Code
-  │         │         │
-  │         │         └─► Terug naar je CRM
-  │         └─► Controleert factuur
-  └─► Stuurt factuur
+Your CRM ──► AEAT ──► CSV Code
+    │         │         │
+    │         │         └─► Back to your CRM
+    │         └─► Validates invoice
+    └─► Sends invoice
 ```
 
-### Database aanpassingen
-**Voeg deze kolommen toe aan je facturen tabel:**
+### Database changes
+**Add these columns to your invoices table:**
 
 ```sql
--- Voeg deze kolommen toe aan je facturen tabel
-ALTER TABLE facturen ADD COLUMN aeat_csv_code VARCHAR(100);
-ALTER TABLE facturen ADD COLUMN aeat_status VARCHAR(20);
-ALTER TABLE facturen ADD COLUMN aeat_fout TEXT;
+-- Add these columns to your invoices table
+ALTER TABLE invoices ADD COLUMN aeat_csv_code VARCHAR(100);
+ALTER TABLE invoices ADD COLUMN aeat_status VARCHAR(20);
+ALTER TABLE invoices ADD COLUMN aeat_error TEXT;
 ```
 
-**Wat betekenen deze kolommen:**
-- `aeat_csv_code` = Het speciale code dat AEAT teruggeeft
-- `aeat_status` = Of de factuur goedgekeurd is of niet
-- `aeat_fout` = Als er iets mis gaat, staat hier de fout
+**What these columns mean:**
+- `aeat_csv_code` = The special code that AEAT returns
+- `aeat_status` = Whether the invoice is approved or not
+- `aeat_error` = If something goes wrong, the error is stored here
 
-## 💻 Eenvoudige Code Voorbeelden
+## 💻 Simple Code Examples
 
-### Basis functie om factuur te sturen
+### Basic function to send invoice
 ```javascript
-// Dit is de hoofd functie die je aanroept
-async function stuurFactuurNaarAEAT(factuur) {
+// This is the main function you call
+async function sendInvoiceToAEAT(invoice) {
   try {
-    console.log('📤 Stuur factuur naar AEAT...');
+    console.log('📤 Sending invoice to AEAT...');
     
-    // Stuur naar AEAT
-    const antwoord = await stuurNaarAEAT(factuur);
+    // Send to AEAT
+    const response = await sendToAEAT(invoice);
     
-    // Bewaar het resultaat
-    await bewaarAEATResultaat(factuur.id, antwoord);
+    // Save the result
+    await saveAEATResult(invoice.id, response);
     
-    console.log('✅ Klaar! CSV code:', antwoord.csv);
+    console.log('✅ Done! CSV code:', response.csv);
     
-  } catch (fout) {
-    console.log('❌ Fout:', fout.message);
-    await bewaarFout(factuur.id, fout.message);
+  } catch (error) {
+    console.log('❌ Error:', error.message);
+    await saveError(invoice.id, error.message);
   }
 }
 ```
 
-### Factuur data voorbereiden
+### Prepare invoice data
 ```javascript
-// Dit is hoe je factuur data klaar maakt voor AEAT
-function maakFactuurData(factuur) {
+// This is how you prepare invoice data for AEAT
+function prepareInvoiceData(invoice) {
   return {
-    // Factuur nummer
-    nummer: factuur.invoice_number,
+    // Invoice number
+    number: invoice.invoice_number,
     
-    // Datum
-    datum: factuur.date,
+    // Date
+    date: invoice.date,
     
-    // Van wie (jouw bedrijf)
-    van: factuur.issuer_nif,
+    // From (your company)
+    from: invoice.issuer_nif,
     
-    // Naar wie (klant)
-    naar: factuur.customer_nif,
+    // To (customer)
+    to: invoice.customer_nif,
     
-    // Bedrag
-    bedrag: factuur.total_amount
+    // Amount
+    amount: invoice.total_amount
   };
 }
 ```
 
-### Resultaat opslaan in database
+### Save result to database
 ```javascript
-// Dit bewaart het resultaat in je database
-async function bewaarAEATResultaat(factuurId, antwoord) {
+// This saves the result to your database
+async function saveAEATResult(invoiceId, response) {
   const sql = `
-    UPDATE facturen 
+    UPDATE invoices 
     SET aeat_csv_code = ?, 
-        aeat_status = 'goedgekeurd',
+        aeat_status = 'verified',
         aeat_timestamp = NOW()
     WHERE id = ?
   `;
   
-  await database.query(sql, [antwoord.csv, factuurId]);
+  await database.query(sql, [response.csv, invoiceId]);
 }
 ```
 

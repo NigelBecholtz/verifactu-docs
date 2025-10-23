@@ -110,76 +110,76 @@ The AEAT VERI*FACTU webservice uses **mutual TLS authentication** (also known as
 - **Usage**: Convenient for some applications
 - **Security**: Less secure than separate files
 
-## 🚀 Eenvoudige CRM Integratie
+## 🚀 Simple CRM Integration
 
-### Wat je nodig hebt
-**Je hebt al:**
-- ✅ Een certificaat (van FNMT)
-- ✅ Je CRM systeem
-- ✅ Een beetje programmeerkennis
+### What you need
+**You already have:**
+- ✅ A certificate (from FNMT)
+- ✅ Your CRM system
+- ✅ Basic programming knowledge
 
-### Stap 1: Certificaat opslaan
-**Zet je certificaat op een veilige plek in je CRM:**
+### Step 1: Store your certificate
+**Put your certificate in a secure place in your CRM:**
 
 ```javascript
-// Dit is waar je certificaat staat
-const certificaat = {
-  bestand: '/pad/naar/jouw/certificaat.p12',
-  wachtwoord: 'jouw_wachtwoord',
-  omgeving: 'test' // of 'production'
+// This is where your certificate is stored
+const certificate = {
+  file: '/path/to/your/certificate.p12',
+  password: 'your_password',
+  environment: 'test' // or 'production'
 };
 ```
 
-### Stap 2: Database aanpassen
-**Voeg deze kolommen toe aan je facturen tabel:**
+### Step 2: Update your database
+**Add these columns to your invoices table:**
 
 ```sql
--- Voeg deze kolommen toe aan je facturen tabel
-ALTER TABLE facturen ADD COLUMN aeat_csv_code VARCHAR(100);
-ALTER TABLE facturen ADD COLUMN aeat_status VARCHAR(20);
-ALTER TABLE facturen ADD COLUMN aeat_fout TEXT;
+-- Add these columns to your invoices table
+ALTER TABLE invoices ADD COLUMN aeat_csv_code VARCHAR(100);
+ALTER TABLE invoices ADD COLUMN aeat_status VARCHAR(20);
+ALTER TABLE invoices ADD COLUMN aeat_error TEXT;
 ```
 
-### Stap 3: Factuur naar AEAT sturen
-**Dit is wat er gebeurt als je een factuur maakt:**
+### Step 3: Send invoice to AEAT
+**This is what happens when you create an invoice:**
 
 ```javascript
-// Wanneer je een factuur opslaat in je CRM
-async function factuurOpslaan(factuur) {
+// When you save an invoice in your CRM
+async function saveInvoice(invoice) {
   try {
-    // 1. Factuur opslaan in je CRM
-    const factuurId = await opslaanInCRM(factuur);
+    // 1. Save invoice in your CRM
+    const invoiceId = await saveToCRM(invoice);
     
-    // 2. Stuur naar AEAT
-    const aeatAntwoord = await stuurNaarAEAT(factuur);
+    // 2. Send to AEAT
+    const aeatResponse = await sendToAEAT(invoice);
     
-    // 3. Bewaar het CSV code in je CRM
-    await updateFactuur(factuurId, {
-      aeat_csv_code: aeatAntwoord.csv,
-      aeat_status: 'goedgekeurd'
+    // 3. Save the CSV code in your CRM
+    await updateInvoice(invoiceId, {
+      aeat_csv_code: aeatResponse.csv,
+      aeat_status: 'verified'
     });
     
-    console.log('✅ Factuur succesvol naar AEAT gestuurd!');
+    console.log('✅ Invoice successfully sent to AEAT!');
     
-  } catch (fout) {
-    console.log('❌ Er ging iets mis:', fout.message);
-    // Bewaar de fout in je CRM
-    await updateFactuur(factuurId, {
-      aeat_status: 'fout',
-      aeat_fout: fout.message
+  } catch (error) {
+    console.log('❌ Something went wrong:', error.message);
+    // Save the error in your CRM
+    await updateInvoice(invoiceId, {
+      aeat_status: 'error',
+      aeat_error: error.message
     });
   }
 }
 ```
 
-### Wat gebeurt er precies?
-1. **Je maakt een factuur** in je CRM
-2. **Je CRM stuurt de factuur** naar AEAT
-3. **AEAT controleert** de factuur
-4. **AEAT stuurt een CSV code** terug
-5. **Je CRM bewaart** de CSV code bij de factuur
+### What happens exactly?
+1. **You create an invoice** in your CRM
+2. **Your CRM sends the invoice** to AEAT
+3. **AEAT validates** the invoice
+4. **AEAT sends back a CSV code**
+5. **Your CRM saves** the CSV code with the invoice
 
-**Dat is het!** 🎉
+**That's it!** 🎉
 
 ## Technical Implementation in Node.js
 
