@@ -4,168 +4,92 @@
 
 This document provides detailed technical guidance for implementing the AEAT VERI*FACTU webservice in Node.js applications for CRM integration. It covers SOAP client configuration, TLS setup, error handling, and CRM-specific implementation patterns.
 
-## CRM Integration Architecture
+## 🎯 Hoe het werkt in je CRM
 
-### CRM-AEAT Integration Flow
-
+### Simpel overzicht
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   CRM System    │───▶│  AEAT Service   │───▶│   CSV Response   │
-│                 │    │                 │    │                 │
-│ • Invoice Data  │    │ • Validation    │    │ • CSV Code      │
-│ • Customer Info │    │ • Processing    │    │ • Status        │
-│ • Tax Details   │    │ • Verification  │    │ • Timestamp     │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+Je CRM ──► AEAT ──► CSV Code
+  │         │         │
+  │         │         └─► Terug naar je CRM
+  │         └─► Controleert factuur
+  └─► Stuurt factuur
 ```
 
-### CRM Database Schema
+### Database aanpassingen
+**Voeg deze kolommen toe aan je facturen tabel:**
 
-**Required CRM Tables:**
 ```sql
--- Invoice table with AEAT integration
-CREATE TABLE invoices (
-  id INT PRIMARY KEY,
-  invoice_number VARCHAR(50),
-  customer_id INT,
-  total_amount DECIMAL(10,2),
-  tax_amount DECIMAL(10,2),
-  aeat_csv_code VARCHAR(100),        -- CSV from AEAT
-  aeat_status ENUM('pending', 'verified', 'error'),
-  aeat_timestamp DATETIME,
-  aeat_error_message TEXT,
-  created_at DATETIME,
-  updated_at DATETIME
-);
-
--- AEAT configuration table
-CREATE TABLE aeat_config (
-  id INT PRIMARY KEY,
-  environment ENUM('test', 'production'),
-  cert_path VARCHAR(255),
-  cert_password VARCHAR(255),
-  endpoint_url VARCHAR(255),
-  is_active BOOLEAN DEFAULT TRUE
-);
+-- Voeg deze kolommen toe aan je facturen tabel
+ALTER TABLE facturen ADD COLUMN aeat_csv_code VARCHAR(100);
+ALTER TABLE facturen ADD COLUMN aeat_status VARCHAR(20);
+ALTER TABLE facturen ADD COLUMN aeat_fout TEXT;
 ```
 
-## CRM Service Implementation
+**Wat betekenen deze kolommen:**
+- `aeat_csv_code` = Het speciale code dat AEAT teruggeeft
+- `aeat_status` = Of de factuur goedgekeurd is of niet
+- `aeat_fout` = Als er iets mis gaat, staat hier de fout
 
-### AEAT Service Class
+## 💻 Eenvoudige Code Voorbeelden
 
+### Basis functie om factuur te sturen
 ```javascript
-class AEATService {
-  constructor(config) {
-    this.config = config;
-    this.httpsAgent = this.createHttpsAgent();
-    this.soapClient = this.createSoapClient();
-  }
-
-  createHttpsAgent() {
-    const https = require('https');
-    const fs = require('fs');
+// Dit is de hoofd functie die je aanroept
+async function stuurFactuurNaarAEAT(factuur) {
+  try {
+    console.log('📤 Stuur factuur naar AEAT...');
     
-    return new https.Agent({
-      cert: fs.readFileSync(this.config.certPath),
-      key: fs.readFileSync(this.config.keyPath),
-      ca: fs.readFileSync(this.config.caPath),
-      rejectUnauthorized: true,
-      secureProtocol: 'TLSv1_2_method'
-    });
-  }
-
-  async registerInvoice(invoiceData) {
-    try {
-      const soapRequest = this.buildSoapRequest(invoiceData);
-      const response = await this.sendSoapRequest(soapRequest);
-      return this.parseResponse(response);
-    } catch (error) {
-      throw new AEATError('Invoice registration failed', error);
-    }
-  }
-
-  buildSoapRequest(invoice) {
-    return `<?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-  <soap:Body>
-    <RegFactuSistemaFacturacion>
-      <Cabecera>
-        <NIFEmisor>${invoice.issuerNIF}</NIFEmisor>
-        <FechaEnvio>${new Date().toISOString()}</FechaEnvio>
-        <TiempoEsperaEnvio>30</TiempoEsperaEnvio>
-        <TipoComunicacion>Alta</TipoComunicacion>
-      </Cabecera>
-      <RegistroFactura>
-        <RegistroAlta>
-          <IDFactura>
-            <NumSerieFacturaEmisor>${invoice.series}</NumSerieFacturaEmisor>
-            <NumFacturaEmisor>${invoice.number}</NumFacturaEmisor>
-          </IDFactura>
-          <FechaExpedicionFactura>${invoice.date}</FechaExpedicionFactura>
-          <NIFReceptor>${invoice.recipientNIF}</NIFReceptor>
-          <ImporteTotal>${invoice.totalAmount}</ImporteTotal>
-        </RegistroAlta>
-      </RegistroFactura>
-    </RegFactuSistemaFacturacion>
-  </soap:Body>
-</soap:Envelope>`;
+    // Stuur naar AEAT
+    const antwoord = await stuurNaarAEAT(factuur);
+    
+    // Bewaar het resultaat
+    await bewaarAEATResultaat(factuur.id, antwoord);
+    
+    console.log('✅ Klaar! CSV code:', antwoord.csv);
+    
+  } catch (fout) {
+    console.log('❌ Fout:', fout.message);
+    await bewaarFout(factuur.id, fout.message);
   }
 }
 ```
 
-### CRM Integration Service
-
+### Factuur data voorbereiden
 ```javascript
-class CRMIntegrationService {
-  constructor(aeatService, database) {
-    this.aeatService = aeatService;
-    this.db = database;
-  }
-
-  async processInvoice(invoiceId) {
-    const invoice = await this.db.getInvoice(invoiceId);
+// Dit is hoe je factuur data klaar maakt voor AEAT
+function maakFactuurData(factuur) {
+  return {
+    // Factuur nummer
+    nummer: factuur.invoice_number,
     
-    try {
-      // 1. Validate invoice data
-      this.validateInvoice(invoice);
-      
-      // 2. Register with AEAT
-      const aeatResponse = await this.aeatService.registerInvoice(invoice);
-      
-      // 3. Update CRM database
-      await this.updateInvoiceWithAEATData(invoiceId, aeatResponse);
-      
-      // 4. Log success
-      await this.logAEATSuccess(invoiceId, aeatResponse);
-      
-      return aeatResponse;
-    } catch (error) {
-      // Handle errors
-      await this.handleAEATError(invoiceId, error);
-      throw error;
-    }
-  }
-
-  async updateInvoiceWithAEATData(invoiceId, aeatResponse) {
-    const updateData = {
-      aeat_csv_code: aeatResponse.csv,
-      aeat_status: 'verified',
-      aeat_timestamp: new Date(),
-      aeat_error_message: null
-    };
+    // Datum
+    datum: factuur.date,
     
-    await this.db.updateInvoice(invoiceId, updateData);
-  }
-
-  async handleAEATError(invoiceId, error) {
-    const errorData = {
-      aeat_status: 'error',
-      aeat_error_message: error.message,
-      aeat_timestamp: new Date()
-    };
+    // Van wie (jouw bedrijf)
+    van: factuur.issuer_nif,
     
-    await this.db.updateInvoice(invoiceId, errorData);
-    await this.logAEATError(invoiceId, error);
-  }
+    // Naar wie (klant)
+    naar: factuur.customer_nif,
+    
+    // Bedrag
+    bedrag: factuur.total_amount
+  };
+}
+```
+
+### Resultaat opslaan in database
+```javascript
+// Dit bewaart het resultaat in je database
+async function bewaarAEATResultaat(factuurId, antwoord) {
+  const sql = `
+    UPDATE facturen 
+    SET aeat_csv_code = ?, 
+        aeat_status = 'goedgekeurd',
+        aeat_timestamp = NOW()
+    WHERE id = ?
+  `;
+  
+  await database.query(sql, [antwoord.csv, factuurId]);
 }
 ```
 

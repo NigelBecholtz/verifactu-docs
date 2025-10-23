@@ -110,64 +110,76 @@ The AEAT VERI*FACTU webservice uses **mutual TLS authentication** (also known as
 - **Usage**: Convenient for some applications
 - **Security**: Less secure than separate files
 
-## CRM Implementation Guide
+## 🚀 Eenvoudige CRM Integratie
 
-### Prerequisites
-**You already have:**
-- ✅ Client certificate (PFX/P12 or PEM format)
-- ✅ Private key
-- ✅ Certificate password (if applicable)
-- ✅ CRM system ready for integration
+### Wat je nodig hebt
+**Je hebt al:**
+- ✅ Een certificaat (van FNMT)
+- ✅ Je CRM systeem
+- ✅ Een beetje programmeerkennis
 
-### CRM Integration Steps
+### Stap 1: Certificaat opslaan
+**Zet je certificaat op een veilige plek in je CRM:**
 
-**1. Certificate Storage in CRM:**
 ```javascript
-// Store certificates securely in your CRM
-const certificateConfig = {
-  clientCert: process.env.AEAT_CLIENT_CERT, // Base64 encoded or file path
-  clientKey: process.env.AEAT_CLIENT_KEY,   // Base64 encoded or file path
-  caChain: process.env.AEAT_CA_CHAIN,      // Certificate Authority chain
-  password: process.env.AEAT_CERT_PASSWORD // Certificate password
+// Dit is waar je certificaat staat
+const certificaat = {
+  bestand: '/pad/naar/jouw/certificaat.p12',
+  wachtwoord: 'jouw_wachtwoord',
+  omgeving: 'test' // of 'production'
 };
 ```
 
-**2. CRM Database Configuration:**
+### Stap 2: Database aanpassen
+**Voeg deze kolommen toe aan je facturen tabel:**
+
 ```sql
--- Add certificate fields to your CRM settings table
-ALTER TABLE crm_settings ADD COLUMN aeat_cert_path VARCHAR(255);
-ALTER TABLE crm_settings ADD COLUMN aeat_cert_password VARCHAR(255);
-ALTER TABLE crm_settings ADD COLUMN aeat_environment ENUM('test', 'production');
+-- Voeg deze kolommen toe aan je facturen tabel
+ALTER TABLE facturen ADD COLUMN aeat_csv_code VARCHAR(100);
+ALTER TABLE facturen ADD COLUMN aeat_status VARCHAR(20);
+ALTER TABLE facturen ADD COLUMN aeat_fout TEXT;
 ```
 
-**3. CRM Invoice Processing Flow:**
+### Stap 3: Factuur naar AEAT sturen
+**Dit is wat er gebeurt als je een factuur maakt:**
+
 ```javascript
-// CRM invoice processing workflow
-async function processInvoiceForAEAT(invoice) {
+// Wanneer je een factuur opslaat in je CRM
+async function factuurOpslaan(factuur) {
   try {
-    // 1. Validate invoice data
-    const validation = validateInvoiceData(invoice);
-    if (!validation.isValid) {
-      throw new Error(`Validation failed: ${validation.errors.join(', ')}`);
-    }
+    // 1. Factuur opslaan in je CRM
+    const factuurId = await opslaanInCRM(factuur);
     
-    // 2. Register with AEAT
-    const aeatResponse = await registerInvoiceWithAEAT(invoice);
+    // 2. Stuur naar AEAT
+    const aeatAntwoord = await stuurNaarAEAT(factuur);
     
-    // 3. Update CRM with CSV code
-    await updateInvoiceWithCSV(invoice.id, aeatResponse.csv);
+    // 3. Bewaar het CSV code in je CRM
+    await updateFactuur(factuurId, {
+      aeat_csv_code: aeatAntwoord.csv,
+      aeat_status: 'goedgekeurd'
+    });
     
-    // 4. Mark invoice as verified
-    await markInvoiceAsVerified(invoice.id);
+    console.log('✅ Factuur succesvol naar AEAT gestuurd!');
     
-    return aeatResponse;
-  } catch (error) {
-    // Handle errors and update CRM
-    await logAEATError(invoice.id, error);
-    throw error;
+  } catch (fout) {
+    console.log('❌ Er ging iets mis:', fout.message);
+    // Bewaar de fout in je CRM
+    await updateFactuur(factuurId, {
+      aeat_status: 'fout',
+      aeat_fout: fout.message
+    });
   }
 }
 ```
+
+### Wat gebeurt er precies?
+1. **Je maakt een factuur** in je CRM
+2. **Je CRM stuurt de factuur** naar AEAT
+3. **AEAT controleert** de factuur
+4. **AEAT stuurt een CSV code** terug
+5. **Je CRM bewaart** de CSV code bij de factuur
+
+**Dat is het!** 🎉
 
 ## Technical Implementation in Node.js
 

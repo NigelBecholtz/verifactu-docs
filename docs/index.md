@@ -11,13 +11,44 @@ VERI*FACTU (Verificación de Facturas) is the Spanish tax authority's (AEAT) sys
 - **Provide real-time validation** of invoice data
 - **Generate secure verification codes** (CSV) for invoices
 
-## Quick Start
+## 🚀 Quick Start (Voor Beginners)
 
-1. **Obtain Certificates**: Get your FREE client certificate from FNMT
-2. **Configure TLS**: Set up mutual TLS authentication
-3. **Register Invoice**: Use the Alta operation to register invoices
-4. **Handle Responses**: Process CSV codes and status information
-5. **Store Data**: Maintain audit trail as required by law
+### Wat je nodig hebt:
+- ✅ Een certificaat van FNMT (je hebt er al een)
+- ✅ Je CRM systeem
+- ✅ 30 minuten tijd
+
+### Stap 1: Database aanpassen
+```sql
+-- Voeg deze kolommen toe aan je facturen tabel
+ALTER TABLE facturen ADD COLUMN aeat_csv_code VARCHAR(100);
+ALTER TABLE facturen ADD COLUMN aeat_status VARCHAR(20);
+```
+
+### Stap 2: Code toevoegen
+```javascript
+// Wanneer je een factuur opslaat
+async function factuurOpslaan(factuur) {
+  // 1. Opslaan in je CRM
+  const factuurId = await opslaanInCRM(factuur);
+  
+  // 2. Stuur naar AEAT
+  const aeatAntwoord = await stuurNaarAEAT(factuur);
+  
+  // 3. Bewaar CSV code
+  await updateFactuur(factuurId, {
+    aeat_csv_code: aeatAntwoord.csv,
+    aeat_status: 'goedgekeurd'
+  });
+}
+```
+
+### Stap 3: Testen
+- Start met test omgeving
+- Maak een test factuur
+- Controleer of CSV code wordt opgeslagen
+
+**Klaar!** 🎉
 
 ## Documentation Structure
 
