@@ -1,7 +1,7 @@
 export default {
   title: 'AEAT VERI*FACTU API',
   description: 'Complete technical documentation for AEAT VERI*FACTU SOAP webservice',
-  baseUrl: 'https://verifactu-docs.netlify.app',
+  baseUrl: 'https://nigelbecholtz.github.io/verifactu-docs',
   
   // Navigation - matching AML docs style
   nav: [
