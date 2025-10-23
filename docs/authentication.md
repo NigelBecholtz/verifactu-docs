@@ -16,7 +16,6 @@ The AEAT VERI*FACTU webservice uses **mutual TLS authentication** (also known as
 ### What you need before starting:
 - ✅ **FNMT Certificate** (you already have one)
 - ✅ **Your CRM system** (running and accessible)
-- ✅ **30-60 minutes** of implementation time
 
 ### Certificate Requirements:
 - **Format**: X.509 certificate with private key

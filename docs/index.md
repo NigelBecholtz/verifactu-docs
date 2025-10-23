@@ -13,8 +13,7 @@ VERI*FACTU (Verificación de Facturas) is the Spanish tax authority's system for
 
 ## 📋 Complete Implementation Steps
 
-### **STEP 1: Prerequisites** 
-*[5 minutes]*
+### **STEP 1: Prerequisites**
 
 **What you need:**
 - ✅ A certificate from FNMT (you already have one)
@@ -25,7 +24,6 @@ VERI*FACTU (Verificación de Facturas) is the Spanish tax authority's system for
 ---
 
 ### **STEP 2: Database Setup**
-*[10 minutes]*
 
 **Update your database schema:**
 ```sql
@@ -40,7 +38,6 @@ ALTER TABLE invoices ADD COLUMN aeat_error TEXT;
 ---
 
 ### **STEP 3: Certificate Configuration**
-*[15 minutes]*
 
 **Configure your certificate for AEAT:**
 - Store certificate securely
@@ -52,7 +49,6 @@ ALTER TABLE invoices ADD COLUMN aeat_error TEXT;
 ---
 
 ### **STEP 4: Code Implementation**
-*[30 minutes]*
 
 **Implement the core functions:**
 - Send invoice to AEAT
@@ -64,7 +60,6 @@ ALTER TABLE invoices ADD COLUMN aeat_error TEXT;
 ---
 
 ### **STEP 5: Testing**
-*[20 minutes]*
 
 **Test your integration:**
 - Test environment setup
@@ -76,7 +71,6 @@ ALTER TABLE invoices ADD COLUMN aeat_error TEXT;
 ---
 
 ### **STEP 6: Production Deployment**
-*[15 minutes]*
 
 **Go live:**
 - Production environment setup
@@ -87,13 +81,13 @@ ALTER TABLE invoices ADD COLUMN aeat_error TEXT;
 
 ---
 
-## 🚀 Quick Start (30 Minutes)
+## 🚀 Quick Start
 
 **If you want to get started immediately:**
 
-1. **Update Database** (5 min)
-2. **Add Basic Code** (15 min)  
-3. **Test Connection** (10 min)
+1. **Update Database**
+2. **Add Basic Code**  
+3. **Test Connection**
 
 **→ [Quick Start Guide](authentication.md#quick-start-30-minutes)**
 
