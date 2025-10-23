@@ -23,7 +23,7 @@
 1. **Visit FNMT Website**: https://www.fnmt.es/
 2. **Create Account**: Register with your business details
 3. **Verify Identity**: Submit required documentation
-4. **Pay Fees**: Certificate application fees (varies by type)
+4. **FREE**: No fees required - FNMT certificates are completely free
 
 ### Required Documentation
 
