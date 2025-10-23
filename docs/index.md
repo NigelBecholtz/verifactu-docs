@@ -1,74 +1,118 @@
-# AEAT VERI*FACTU API Documentation
+# AEAT VERI*FACTU API - Complete Implementation Guide
 
-Welcome to the comprehensive technical documentation for the AEAT VERI*FACTU SOAP webservice. This documentation is specifically designed for JavaScript/Node.js developers who need to integrate with the Spanish tax authority's invoice verification system.
+Welcome to the step-by-step guide for integrating the AEAT VERI*FACTU system with your CRM. This documentation will take you from zero to a fully working integration.
 
-## What is VERI*FACTU?
+## 🎯 What is VERI*FACTU?
 
-VERI*FACTU (Verificación de Facturas) is the Spanish tax authority's (AEAT) system for electronic invoice verification. It's designed to:
+VERI*FACTU (Verificación de Facturas) is the Spanish tax authority's system for electronic invoice verification. It:
 
-- **Prevent tax fraud** by verifying invoice authenticity
-- **Ensure compliance** with Spanish tax regulations  
-- **Provide real-time validation** of invoice data
-- **Generate secure verification codes** (CSV) for invoices
+- **Prevents tax fraud** by verifying invoice authenticity
+- **Ensures compliance** with Spanish tax regulations  
+- **Provides real-time validation** of invoice data
+- **Generates secure verification codes** (CSV) for invoices
 
-## 🚀 Quick Start (For Beginners)
+## 📋 Complete Implementation Steps
 
-### What you need:
+### **STEP 1: Prerequisites** 
+*[5 minutes]*
+
+**What you need:**
 - ✅ A certificate from FNMT (you already have one)
 - ✅ Your CRM system
-- ✅ 30 minutes of time
+- ✅ Basic programming knowledge
 
-### Step 1: Update your database
+**→ [Go to Step 1: Prerequisites](authentication.md#step-1-prerequisites)**
+
+---
+
+### **STEP 2: Database Setup**
+*[10 minutes]*
+
+**Update your database schema:**
 ```sql
 -- Add these columns to your invoices table
 ALTER TABLE invoices ADD COLUMN aeat_csv_code VARCHAR(100);
 ALTER TABLE invoices ADD COLUMN aeat_status VARCHAR(20);
+ALTER TABLE invoices ADD COLUMN aeat_error TEXT;
 ```
 
-### Step 2: Add the code
-```javascript
-// When you save an invoice
-async function saveInvoice(invoice) {
-  // 1. Save in your CRM
-  const invoiceId = await saveToCRM(invoice);
-  
-  // 2. Send to AEAT
-  const aeatResponse = await sendToAEAT(invoice);
-  
-  // 3. Save CSV code
-  await updateInvoice(invoiceId, {
-    aeat_csv_code: aeatResponse.csv,
-    aeat_status: 'verified'
-  });
-}
-```
+**→ [Go to Step 2: Database Setup](node-implementation.md#step-2-database-setup)**
 
-### Step 3: Test it
-- Start with test environment
-- Create a test invoice
-- Check if CSV code is saved
+---
 
-**Done!** 🎉
+### **STEP 3: Certificate Configuration**
+*[15 minutes]*
 
-## Documentation Structure
+**Configure your certificate for AEAT:**
+- Store certificate securely
+- Set up TLS configuration
+- Test certificate connection
 
-### 🚀 Getting Started
-- **[Overview](README.md)** - Introduction to VERI*FACTU system
-- **[Authentication](docs/authentication.md)** - Mutual TLS setup and certificates
-- **[Endpoints](docs/endpoints.md)** - SOAP endpoints and operations
+**→ [Go to Step 3: Certificate Setup](authentication.md#step-3-certificate-setup)**
+
+---
+
+### **STEP 4: Code Implementation**
+*[30 minutes]*
+
+**Implement the core functions:**
+- Send invoice to AEAT
+- Handle responses
+- Error handling
+
+**→ [Go to Step 4: Code Implementation](node-implementation.md#step-4-code-implementation)**
+
+---
+
+### **STEP 5: Testing**
+*[20 minutes]*
+
+**Test your integration:**
+- Test environment setup
+- Create test invoices
+- Verify CSV codes
+
+**→ [Go to Step 5: Testing](examples.md#step-5-testing)**
+
+---
+
+### **STEP 6: Production Deployment**
+*[15 minutes]*
+
+**Go live:**
+- Production environment setup
+- Monitoring and logging
+- Error handling
+
+**→ [Go to Step 6: Production](endpoints.md#step-6-production)**
+
+---
+
+## 🚀 Quick Start (30 Minutes)
+
+**If you want to get started immediately:**
+
+1. **Update Database** (5 min)
+2. **Add Basic Code** (15 min)  
+3. **Test Connection** (10 min)
+
+**→ [Quick Start Guide](authentication.md#quick-start-30-minutes)**
+
+## 📚 Additional Documentation
+
+### 🔧 Technical Reference
+- **[Parameters & Fields](parameters-and-fields.md)** - Detailed field explanations
+- **[Error Handling](error-handling.md)** - Error codes and troubleshooting
+- **[XSD Schema Reference](xsd-schema-reference.md)** - Complete schema documentation
 
 ### 📋 API Operations
-- **[Register Invoice](docs/alta-register-invoice.md)** - Complete guide to invoice registration
-- **[Cancel Invoice](docs/baja-cancel-invoice.md)** - How to cancel registered invoices
-- **[Query Invoice](docs/consulta-query-invoice.md)** - Retrieve invoice information
+- **[Register Invoice](alta-register-invoice.md)** - Complete guide to invoice registration
+- **[Cancel Invoice](baja-cancel-invoice.md)** - How to cancel registered invoices
+- **[Query Invoice](consulta-query-invoice.md)** - Retrieve invoice information
 
-### 🔧 Technical Details
-- **[Parameters & Fields](docs/parameters-and-fields.md)** - Detailed field explanations
-- **[Error Handling](docs/error-handling.md)** - Error codes and troubleshooting
-- **[Node.js Implementation](docs/node-implementation.md)** - Technical guidance for developers
-
-### 📚 Examples
-- **[XML Examples](docs/examples.md)** - Complete working examples for common scenarios
+### 📖 Implementation Examples
+- **[Complete Examples](examples.md)** - Working examples for common scenarios
+- **[Quick Reference](quick-reference.md)** - Quick lookup for developers
 
 ## Important Notes
 

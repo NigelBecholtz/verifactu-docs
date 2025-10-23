@@ -1,4 +1,4 @@
-# Authentication & Certificates
+# STEP 1 & 3: Authentication & Certificates
 
 ## Overview
 
@@ -10,6 +10,25 @@ The AEAT VERI*FACTU webservice uses **mutual TLS authentication** (also known as
 - **Encoding**: UTF-8
 - **SOAP Version**: SOAP 1.1 Document/Literal style
 - **Message Format**: XML messages according to XSD schemas
+
+## STEP 1: Prerequisites
+
+### What you need before starting:
+- ✅ **FNMT Certificate** (you already have one)
+- ✅ **Your CRM system** (running and accessible)
+- ✅ **Basic programming knowledge** (JavaScript/Node.js)
+- ✅ **30-60 minutes** of implementation time
+
+### Certificate Requirements:
+- **Format**: X.509 certificate with private key
+- **Storage**: Must be securely stored on your server
+- **Validity**: Check expiration date (typically 2-3 years)
+
+**→ [Next: Go to Step 2 - Database Setup](node-implementation.md#step-2-database-setup)**
+
+---
+
+## STEP 3: Certificate Setup
 
 ## Required Certificates
 

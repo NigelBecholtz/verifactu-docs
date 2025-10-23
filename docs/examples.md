@@ -1,8 +1,29 @@
-# Complete XML Examples
+# STEP 5: Testing & Examples
 
 ## Overview
 
-This document provides complete, working XML examples for common scenarios with the AEAT VERI*FACTU webservice. Each example includes context, explanation, and complete SOAP envelopes.
+This document provides step-by-step testing guidance and complete, working examples for all AEAT VERI*FACTU operations. Follow these steps to test your integration before going to production.
+
+## STEP 5: Testing
+
+### Test Environment Setup
+**Use the test environment first:**
+
+- **Test URL**: `https://www7.aeat.es/wlpl/SSII-FACT/ws/fe/SiiFactFEV1SOAP`
+- **Test Certificate**: Use your FNMT certificate
+- **Test Data**: Use test NIF numbers
+
+### Test Process
+1. **Create test invoice** in your CRM
+2. **Send to AEAT test environment**
+3. **Verify CSV code** is returned
+4. **Check database** for stored results
+
+**→ [Next: Go to Step 6 - Production](endpoints.md#step-6-production)**
+
+---
+
+## Complete XML Examples
 
 ## Simple B2B Invoice
 

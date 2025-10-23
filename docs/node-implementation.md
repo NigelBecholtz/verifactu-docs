@@ -1,12 +1,14 @@
-# Node.js Implementation Guide
+# STEP 2 & 4: Database Setup & Code Implementation
 
 ## Overview
 
-This document provides detailed technical guidance for implementing the AEAT VERI*FACTU webservice in Node.js applications for CRM integration. It covers SOAP client configuration, TLS setup, error handling, and CRM-specific implementation patterns.
+This document provides step-by-step guidance for implementing the AEAT VERI*FACTU webservice in your CRM. Follow these steps in order for a successful integration.
 
-## 🎯 How it works in your CRM
+## STEP 2: Database Setup
 
-### Simple overview
+### 🎯 How it works in your CRM
+
+**Simple overview:**
 ```
 Your CRM ──► AEAT ──► CSV Code
     │         │         │
@@ -29,6 +31,12 @@ ALTER TABLE invoices ADD COLUMN aeat_error TEXT;
 - `aeat_csv_code` = The special code that AEAT returns
 - `aeat_status` = Whether the invoice is approved or not
 - `aeat_error` = If something goes wrong, the error is stored here
+
+**→ [Next: Go to Step 3 - Certificate Setup](authentication.md#step-3-certificate-setup)**
+
+---
+
+## STEP 4: Code Implementation
 
 ## 💻 Simple Code Examples
 

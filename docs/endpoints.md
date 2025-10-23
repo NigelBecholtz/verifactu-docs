@@ -1,8 +1,32 @@
-# API Endpoints & Operations
+# STEP 6: Production Deployment
 
 ## Overview
 
-The AEAT VERI*FACTU webservice provides three main operations for invoice management. All operations use SOAP 1.1 Document/Literal protocol with mutual TLS authentication.
+This is the final step - deploying your AEAT VERI*FACTU integration to production. Make sure you've completed all previous steps before proceeding.
+
+## STEP 6: Production Deployment
+
+### Production Checklist
+**Before going live, verify:**
+
+- ✅ **All tests passed** in test environment
+- ✅ **Production certificate** is valid and configured
+- ✅ **Error handling** is implemented
+- ✅ **Logging** is set up
+- ✅ **Monitoring** is configured
+
+### Production Environment Setup
+**Use the production environment:**
+
+- **Production URL**: `https://www1.agenciatributaria.gob.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP`
+- **Production Certificate**: Use your valid FNMT certificate
+- **Real Data**: Use actual invoice data
+
+**→ [Back to Overview](index.md)**
+
+---
+
+## API Endpoints & Operations
 
 ## SOAP Endpoints
 
