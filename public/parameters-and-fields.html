@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parameters & Fields - AEAT VERI*FACTU API</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        border: "hsl(var(--border))",
+                        input: "hsl(var(--input))",
+                        ring: "hsl(var(--ring))",
+                        background: "hsl(var(--background))",
+                        foreground: "hsl(var(--foreground))",
+                        primary: {
+                            DEFAULT: "hsl(var(--primary))",
+                            foreground: "hsl(var(--primary-foreground))",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(var(--secondary))",
+                            foreground: "hsl(var(--secondary-foreground))",
+                        },
+                        destructive: {
+                            DEFAULT: "hsl(var(--destructive))",
+                            foreground: "hsl(var(--destructive-foreground))",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(var(--muted))",
+                            foreground: "hsl(var(--muted-foreground))",
+                        },
+                        accent: {
+                            DEFAULT: "hsl(var(--accent))",
+                            foreground: "hsl(var(--accent-foreground))",
+                        },
+                        popover: {
+                            DEFAULT: "hsl(var(--popover))",
+                            foreground: "hsl(var(--popover-foreground))",
+                        },
+                        card: {
+                            DEFAULT: "hsl(var(--card))",
+                            foreground: "hsl(var(--card-foreground))",
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 222.2 84% 4.9%;
+            --primary: 221.2 83.2% 53.3%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96%;
+            --secondary-foreground: 222.2 84% 4.9%;
+            --muted: 210 40% 96%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96%;
+            --accent-foreground: 222.2 84% 4.9%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 221.2 83.2% 53.3%;
+        }
+    </style>
+</head>
+<body class="h-full bg-background text-foreground">
+    <div class="flex h-full">
+        <!-- Sidebar -->
+        <div class="w-64 bg-card border-r border-border flex flex-col">
+            <div class="p-6 border-b border-border">
+                <h1 class="text-xl font-bold">AEAT VERI*FACTU API</h1>
+                <p class="text-sm text-muted-foreground mt-1">Parameters & Fields</p>
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <div class="space-y-1">
+                    <h3 class="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Documentation</h3>
+                    <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+                        </svg>
+                        <span>Welcome</span>
+                    </a>
+                    <a href="authentication.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                        </svg>
+                        <span>Authentication</span>
+                    </a>
+                </div>
+                <div class="space-y-1">
+                    <h3 class="text-sm font-semibold text-muted-foreground uppercase tracking-wider">API Operations</h3>
+                    <a href="alta-register-invoice.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <span>Register Invoice</span>
+                    </a>
+                    <a href="baja-cancel-invoice.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        <span>Cancel Invoice</span>
+                    </a>
+                    <a href="consulta-query-invoice.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <span>Query Invoice</span>
+                    </a>
+                </div>
+                <div class="space-y-1">
+                    <h3 class="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Reference</h3>
+                    <a href="parameters-and-fields.html" class="flex items-center gap-3 px-3 py-2 rounded-md bg-accent text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <span>Parameters & Fields</span>
+                    </a>
+                    <a href="error-handling.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                        <span>Error Handling</span>
+                    </a>
+                    <a href="xsd-schema-reference.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <span>XSD Schema</span>
+                    </a>
+                </div>
+                <div class="space-y-1">
+                    <h3 class="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Implementation</h3>
+                    <a href="authentication.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                        </svg>
+                        <span>Authentication Setup</span>
+                    </a>
+                    <a href="node-implementation.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                        <span>Node.js Implementation</span>
+                    </a>
+                    <a href="examples.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                        <span>Examples</span>
+                    </a>
+                    <a href="quick-reference.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Quick Reference</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 overflow-y-auto">
+            <div class="max-w-4xl mx-auto p-8">
+                <div class="mb-8">
+                    <h1 class="text-4xl font-bold mb-4">Parameters & Fields</h1>
+                    <p class="text-xl text-muted-foreground">Detailed explanations of all recurring parameters and fields used across the AEAT VERI*FACTU webservice operations.</p>
+                </div>
+                
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">Overview</h2>
+                    <p class="text-muted-foreground mb-4">This document provides detailed explanations of all recurring parameters and fields used across the AEAT VERI*FACTU webservice operations. Understanding these parameters is crucial for successful integration.</p>
+                </div>
+                
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">Core Parameters</h2>
+                    
+                    <h3 class="text-lg font-semibold mb-3">TiempoEsperaEnvio</h3>
+                    <div class="mb-4">
+                        <p class="text-muted-foreground mb-2"><strong>What it is:</strong> Expected processing time in seconds for the operation.</p>
+                        <p class="text-muted-foreground mb-2"><strong>Purpose:</strong></p>
+                        <ul class="list-disc list-inside text-sm text-muted-foreground space-y-1">
+                            <li>Allows AEAT to optimize processing resources</li>
+                            <li>Helps with timeout configuration</li>
+                            <li>Provides processing time estimates</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="grid gap-4 md:grid-cols-2 mb-4">
+                        <div class="p-4 bg-blue-50 rounded-md">
+                            <h4 class="font-semibold text-blue-800 mb-2">Values</h4>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li><strong>Minimum:</strong> 30 seconds</li>
+                                <li><strong>Maximum:</strong> 300 seconds (5 minutes)</li>
+                                <li><strong>Recommended:</strong> 30-60 seconds for most operations</li>
+                                <li><strong>Large batches:</strong> 120-300 seconds</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="p-4 bg-green-50 rounded-md">
+                            <h4 class="font-semibold text-green-800 mb-2">When to use</h4>
+                            <ul class="text-sm text-green-700 space-y-1">
+                                <li><strong>Simple operations:</strong> 30 seconds</li>
+                                <li><strong>Complex invoices:</strong> 60 seconds</li>
+                                <li><strong>Batch operations:</strong> 120+ seconds</li>
+                                <li><strong>Peak hours:</strong> Increase by 50%</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-muted p-4 rounded-md">
+                        <h4 class="font-semibold mb-2">Example:</h4>
+                        <pre class="text-sm font-mono"><code>&lt;verifactu:TiempoEsperaEnvio&gt;60&lt;/verifactu:TiempoEsperaEnvio&gt;</code></pre>
+                    </div>
+                </div>
+                
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">EstadoEnvio</h2>
+                    
+                    <div class="mb-4">
+                        <p class="text-muted-foreground mb-2"><strong>What it is:</strong> Overall status of the operation.</p>
+                        <p class="text-muted-foreground mb-2"><strong>Purpose:</strong></p>
+                        <ul class="list-disc list-inside text-sm text-muted-foreground space-y-1">
+                            <li>Indicates success or failure of the operation</li>
+                            <li>Provides high-level status information</li>
+                            <li>Determines next steps in processing</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse border border-border">
+                            <thead>
+                                <tr class="bg-muted">
+                                    <th class="border border-border p-3 text-left font-semibold">Value</th>
+                                    <th class="border border-border p-3 text-left font-semibold">Description</th>
+                                    <th class="border border-border p-3 text-left font-semibold">Meaning</th>
+                                    <th class="border border-border p-3 text-left font-semibold">Action Required</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-border p-3"><strong>Correcto</strong></td>
+                                    <td class="border border-border p-3">Successful</td>
+                                    <td class="border border-border p-3">Operation completed successfully</td>
+                                    <td class="border border-border p-3">None - process normally</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-border p-3"><strong>Rechazado</strong></td>
+                                    <td class="border border-border p-3">Rejected</td>
+                                    <td class="border border-border p-3">Operation was rejected</td>
+                                    <td class="border border-border p-3">Check errors, correct data</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-border p-3"><strong>AceptadoConErrores</strong></td>
+                                    <td class="border border-border p-3">Accepted with errors</td>
+                                    <td class="border border-border p-3">Operation accepted but with warnings</td>
+                                    <td class="border border-border p-3">Review warnings, may need correction</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">NIF Validation</h2>
+                    
+                    <div class="mb-4">
+                        <p class="text-muted-foreground mb-4">Spanish Tax Identification Numbers (NIF) must follow specific format rules:</p>
+                    </div>
+                    
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div class="p-4 bg-blue-50 rounded-md">
+                            <h4 class="font-semibold text-blue-800 mb-2">Individual NIF (Persona Física)</h4>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li><strong>Format:</strong> 8 digits + 1 letter</li>
+                                <li><strong>Example:</strong> 12345678Z</li>
+                                <li><strong>Check digit:</strong> Calculated using Spanish algorithm</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="p-4 bg-green-50 rounded-md">
+                            <h4 class="font-semibold text-green-800 mb-2">Company NIF (Persona Jurídica)</h4>
+                            <ul class="text-sm text-green-700 space-y-1">
+                                <li><strong>Format:</strong> 1 letter + 7 digits + 1 letter</li>
+                                <li><strong>Example:</strong> A12345674</li>
+                                <li><strong>Check digit:</strong> Calculated using Spanish algorithm</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">Date Formats</h2>
+                    
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div class="p-4 bg-yellow-50 rounded-md">
+                            <h4 class="font-semibold text-yellow-800 mb-2">Date Format</h4>
+                            <ul class="text-sm text-yellow-700 space-y-1">
+                                <li><strong>Format:</strong> YYYY-MM-DD</li>
+                                <li><strong>Example:</strong> 2024-01-15</li>
+                                <li><strong>Timezone:</strong> UTC recommended</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="p-4 bg-purple-50 rounded-md">
+                            <h4 class="font-semibold text-purple-800 mb-2">DateTime Format</h4>
+                            <ul class="text-sm text-purple-700 space-y-1">
+                                <li><strong>Format:</strong> YYYY-MM-DDTHH:MM:SS</li>
+                                <li><strong>Example:</strong> 2024-01-15T10:30:00</li>
+                                <li><strong>Timezone:</strong> UTC recommended</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">Amount Validation</h2>
+                    
+                    <div class="mb-4">
+                        <p class="text-muted-foreground mb-4">All monetary amounts must follow specific validation rules:</p>
+                    </div>
+                    
+                    <div class="grid gap-4 md:grid-cols-3">
+                        <div class="p-4 bg-blue-50 rounded-md">
+                            <h4 class="font-semibold text-blue-800 mb-2">Precision</h4>
+                            <p class="text-sm text-blue-700">2 decimal places maximum</p>
+                        </div>
+                        
+                        <div class="p-4 bg-green-50 rounded-md">
+                            <h4 class="font-semibold text-green-800 mb-2">Range</h4>
+                            <p class="text-sm text-green-700">Positive values only</p>
+                        </div>
+                        
+                        <div class="p-4 bg-purple-50 rounded-md">
+                            <h4 class="font-semibold text-purple-800 mb-2">Currency</h4>
+                            <p class="text-sm text-purple-700">EUR (implicit)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">Invoice Number Validation</h2>
+                    
+                    <div class="mb-4">
+                        <p class="text-muted-foreground mb-4">Invoice numbers must follow specific format rules:</p>
+                    </div>
+                    
+                    <div class="grid gap-4 md:grid-cols-3">
+                        <div class="p-4 bg-blue-50 rounded-md">
+                            <h4 class="font-semibold text-blue-800 mb-2">Length</h4>
+                            <p class="text-sm text-blue-700">1-60 characters</p>
+                        </div>
+                        
+                        <div class="p-4 bg-green-50 rounded-md">
+                            <h4 class="font-semibold text-green-800 mb-2">Characters</h4>
+                            <p class="text-sm text-green-700">Alphanumeric and common symbols</p>
+                        </div>
+                        
+                        <div class="p-4 bg-purple-50 rounded-md">
+                            <h4 class="font-semibold text-purple-800 mb-2">Uniqueness</h4>
+                            <p class="text-sm text-purple-700">Must be unique per issuer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">Enumeration Values</h2>
+                    
+                    <h3 class="text-lg font-semibold mb-3">TipoFactura (Invoice Type)</h3>
+                    <div class="grid gap-4 md:grid-cols-2 mb-6">
+                        <div class="p-4 bg-blue-50 rounded-md">
+                            <h4 class="font-semibold text-blue-800 mb-2">F1</h4>
+                            <p class="text-sm text-blue-700">Standard invoice</p>
+                        </div>
+                        
+                        <div class="p-4 bg-green-50 rounded-md">
+                            <h4 class="font-semibold text-green-800 mb-2">F2</h4>
+                            <p class="text-sm text-green-700">Simplified invoice</p>
+                        </div>
+                        
+                        <div class="p-4 bg-yellow-50 rounded-md">
+                            <h4 class="font-semibold text-yellow-800 mb-2">F3</h4>
+                            <p class="text-sm text-yellow-700">Invoice with VAT exemption</p>
+                        </div>
+                        
+                        <div class="p-4 bg-purple-50 rounded-md">
+                            <h4 class="font-semibold text-purple-800 mb-2">F4</h4>
+                            <p class="text-sm text-purple-700">Invoice with reverse charge</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold mb-3">TipoComunicacion (Communication Type)</h3>
+                    <div class="grid gap-4 md:grid-cols-3">
+                        <div class="p-4 bg-blue-50 rounded-md">
+                            <h4 class="font-semibold text-blue-800 mb-2">Alta</h4>
+                            <p class="text-sm text-blue-700">Registration</p>
+                        </div>
+                        
+                        <div class="p-4 bg-red-50 rounded-md">
+                            <h4 class="font-semibold text-red-800 mb-2">Baja</h4>
+                            <p class="text-sm text-red-700">Cancellation</p>
+                        </div>
+                        
+                        <div class="p-4 bg-yellow-50 rounded-md">
+                            <h4 class="font-semibold text-yellow-800 mb-2">Modificacion</h4>
+                            <p class="text-sm text-yellow-700">Modification</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

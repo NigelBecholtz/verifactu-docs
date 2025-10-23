@@ -243,29 +243,67 @@
                 </div>
                 
                 <div class="rounded-lg border bg-card p-6 mb-8">
-                    <h2 class="text-2xl font-semibold mb-4">Request Structure</h2>
+                    <h2 class="text-2xl font-semibold mb-4">Complete SOAP Request Example</h2>
                     
-                    <h3 class="text-lg font-semibold mb-3">SOAP Envelope</h3>
-                    <div class="bg-muted p-4 rounded-md">
-                        <pre class="text-sm font-mono"><code><?xml version="1.0" encoding="UTF-8"?>
+                    <div class="bg-muted p-4 rounded-md mb-4">
+                        <pre class="text-sm font-mono overflow-x-auto"><code><?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu"
+               xmlns:aeat="http://www.aeat.es/verifactu"
+               xmlns:factura="urn:VeriFactu:Factura"
+               xmlns:cabecera="urn:VeriFactu:Cabecera"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <soap:Header>
-    <!-- Authentication handled via mutual TLS -->
+    <aeat:Autenticacion>
+      <aeat:Certificado>BASE64_ENCODED_CERTIFICATE</aeat:Certificado>
+    </aeat:Autenticacion>
   </soap:Header>
   <soap:Body>
     <verifactu:Consulta>
       <verifactu:Cabecera>
-        <!-- Header information -->
+        <verifactu:NIFEmisor>12345678Z</verifactu:NIFEmisor>
+        <verifactu:FechaEnvio>2024-01-15T10:30:00</verifactu:FechaEnvio>
+        <verifactu:TiempoEsperaEnvio>30</verifactu:TiempoEsperaEnvio>
+        <verifactu:TipoComunicacion>Consulta</verifactu:TipoComunicacion>
+        <verifactu:NumeroRegistro>REG001</verifactu:NumeroRegistro>
+        <verifactu:Observaciones>Invoice query request</verifactu:Observaciones>
       </verifactu:Cabecera>
-      <verifactu:Factura>
-        <!-- Invoice data -->
-      </verifactu:Factura>
+      <verifactu:CriteriosBusqueda>
+        <verifactu:TipoConsulta>PorNumeroFactura</verifactu:TipoConsulta>
+        <verifactu:NumFactura>INV-2024-001</verifactu:NumFactura>
+        <verifactu:SerieFactura>A</verifactu:SerieFactura>
+        <verifactu:FechaDesde>2024-01-01</verifactu:FechaDesde>
+        <verifactu:FechaHasta>2024-01-31</verifactu:FechaHasta>
+        <verifactu:NIFReceptor>87654321A</verifactu:NIFReceptor>
+        <verifactu:ImporteDesde>0.00</verifactu:ImporteDesde>
+        <verifactu:ImporteHasta>10000.00</verifactu:ImporteHasta>
+        <verifactu:TipoFactura>F1</verifactu:TipoFactura>
+        <verifactu:EstadoFactura>Todas</verifactu:EstadoFactura>
+        <verifactu:Pagina>1</verifactu:Pagina>
+        <verifactu:RegistrosPorPagina>10</verifactu:RegistrosPorPagina>
+      </verifactu:CriteriosBusqueda>
     </verifactu:Consulta>
   </soap:Body>
 </soap:Envelope></code></pre>
+                    </div>
+                    
+                    <div class="p-4 bg-blue-50 rounded-md mb-4">
+                        <h4 class="font-semibold text-blue-800 mb-2">Required HTTP Headers:</h4>
+                        <div class="bg-muted p-3 rounded text-sm font-mono">
+                            <div>Content-Type: application/soap+xml; charset=utf-8</div>
+                            <div>SOAPAction: "urn:VeriFactu/Consulta"</div>
+                            <div>Content-Length: [calculated]</div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 bg-yellow-50 rounded-md">
+                        <h4 class="font-semibold text-yellow-800 mb-2">Authentication:</h4>
+                        <ul class="text-sm text-yellow-700 space-y-1">
+                            <li>• Mutual TLS with FNMT certificate</li>
+                            <li>• Certificate must be valid and not expired</li>
+                            <li>• Certificate must be properly installed on client system</li>
+                        </ul>
                     </div>
                 </div>
                 
@@ -295,33 +333,95 @@
                 </div>
                 
                 <div class="rounded-lg border bg-card p-6 mb-8">
-                    <h2 class="text-2xl font-semibold mb-4">Response Structure</h2>
+                    <h2 class="text-2xl font-semibold mb-4">Complete SOAP Response Examples</h2>
                     
                     <h3 class="text-lg font-semibold mb-3">Success Response</h3>
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono"><code><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+                        <pre class="text-sm font-mono overflow-x-auto"><code><?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:verifactu="urn:VeriFactu"
+               xmlns:aeat="http://www.aeat.es/verifactu"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Header>
+    <aeat:RespuestaAutenticacion>
+      <aeat:Estado>Correcto</aeat:Estado>
+      <aeat:Timestamp>2024-01-15T10:30:30</aeat:Timestamp>
+    </aeat:RespuestaAutenticacion>
+  </soap:Header>
   <soap:Body>
     <verifactu:ConsultaResponse>
-      <verifactu:Resultado>
-        <verifactu:Codigo>0</verifactu:Codigo>
-        <verifactu:Descripcion>OK</verifactu:Descripcion>
-        <verifactu:CSV>ABC123456789</verifactu:CSV>
-        <verifactu:Estado>REGISTRADA</verifactu:Estado>
-        <verifactu:FechaRegistro>2024-01-15T10:30:00</verifactu:FechaRegistro>
-      </verifactu:Resultado>
+      <verifactu:EstadoEnvio>Correcto</verifactu:EstadoEnvio>
+      <verifactu:TiempoEsperaEnvio>30</verifactu:TiempoEsperaEnvio>
+      <verifactu:Timestamp>2024-01-15T10:30:30</verifactu:Timestamp>
+      <verifactu:Resultados>
+        <verifactu:TotalRegistros>1</verifactu:TotalRegistros>
+        <verifactu:PaginaActual>1</verifactu:PaginaActual>
+        <verifactu:RegistrosPorPagina>10</verifactu:RegistrosPorPagina>
+        <verifactu:Facturas>
+          <verifactu:Factura>
+            <verifactu:NumFactura>INV-2024-001</verifactu:NumFactura>
+            <verifactu:SerieFactura>A</verifactu:SerieFactura>
+            <verifactu:FechaFactura>2024-01-15</verifactu:FechaFactura>
+            <verifactu:NIFReceptor>87654321A</verifactu:NIFReceptor>
+            <verifactu:ImporteTotal>1000.00</verifactu:ImporteTotal>
+            <verifactu:TipoFactura>F1</verifactu:TipoFactura>
+            <verifactu:Estado>REGISTRADA</verifactu:Estado>
+            <verifactu:CSV>ABC123DEF456</verifactu:CSV>
+            <verifactu:FechaRegistro>2024-01-15T10:30:30</verifactu:FechaRegistro>
+            <verifactu:Observaciones>Invoice successfully registered</verifactu:Observaciones>
+          </verifactu:Factura>
+        </verifactu:Facturas>
+      </verifactu:Resultados>
     </verifactu:ConsultaResponse>
   </soap:Body>
 </soap:Envelope></code></pre>
                     </div>
                     
-                    <div class="p-4 bg-green-50 rounded-md">
+                    <div class="p-4 bg-green-50 rounded-md mb-4">
                         <h4 class="font-semibold text-green-800 mb-2">Success Response Fields:</h4>
                         <ul class="text-sm text-green-700 space-y-1">
-                            <li><strong>Codigo</strong>: Response code (0 = success)</li>
-                            <li><strong>Descripcion</strong>: Description of the result</li>
-                            <li><strong>CSV</strong>: Secure verification code for the invoice</li>
-                            <li><strong>Estado</strong>: Current status of the invoice</li>
+                            <li><strong>EstadoEnvio</strong>: Overall operation status (Correcto, Rechazado, AceptadoConErrores)</li>
+                            <li><strong>TotalRegistros</strong>: Total number of invoices found</li>
+                            <li><strong>Facturas</strong>: Array of invoice details</li>
+                            <li><strong>Estado</strong>: Current status of each invoice (REGISTRADA, ANULADA, PENDIENTE, ERROR)</li>
+                            <li><strong>CSV</strong>: Secure verification code for each invoice</li>
                             <li><strong>FechaRegistro</strong>: Registration date and time</li>
+                        </ul>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold mb-3">Error Response</h3>
+                    <div class="bg-muted p-4 rounded-md mb-4">
+                        <pre class="text-sm font-mono overflow-x-auto"><code><?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:verifactu="urn:VeriFactu"
+               xmlns:aeat="http://www.aeat.es/verifactu"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Header />
+  <soap:Body>
+    <soap:Fault>
+      <faultcode>soap:Server</faultcode>
+      <faultstring>Error processing query request</faultstring>
+      <detail>
+        <aeat:Error>
+          <aeat:CodigoError>E401</aeat:CodigoError>
+          <aeat:DescripcionError>No invoices found matching criteria</aeat:DescripcionError>
+          <aeat:Timestamp>2024-01-15T10:30:30</aeat:Timestamp>
+        </aeat:Error>
+      </detail>
+    </soap:Fault>
+  </soap:Body>
+</soap:Envelope></code></pre>
+                    </div>
+                    
+                    <div class="p-4 bg-red-50 rounded-md">
+                        <h4 class="font-semibold text-red-800 mb-2">Error Response Fields:</h4>
+                        <ul class="text-sm text-red-700 space-y-1">
+                            <li><strong>faultcode</strong>: SOAP fault code (soap:Server, soap:Client)</li>
+                            <li><strong>faultstring</strong>: Human-readable error description</li>
+                            <li><strong>CodigoError</strong>: AEAT-specific error code</li>
+                            <li><strong>DescripcionError</strong>: Detailed error description</li>
                         </ul>
                     </div>
                 </div>

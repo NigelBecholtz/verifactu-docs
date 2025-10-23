@@ -31,29 +31,83 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 
 ## Request Structure
 
-### SOAP Envelope
+### Complete SOAP Request Example
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu"
+               xmlns:aeat="http://www.aeat.es/verifactu"
+               xmlns:factura="urn:VeriFactu:Factura"
+               xmlns:cabecera="urn:VeriFactu:Cabecera"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <soap:Header>
     <!-- Authentication handled via mutual TLS -->
+    <aeat:Autenticacion>
+      <aeat:Certificado>BASE64_ENCODED_CERTIFICATE</aeat:Certificado>
+    </aeat:Autenticacion>
   </soap:Header>
   <soap:Body>
     <verifactu:Alta>
       <verifactu:Cabecera>
-        <!-- Header information -->
+        <verifactu:NIFEmisor>12345678Z</verifactu:NIFEmisor>
+        <verifactu:FechaEnvio>2024-01-15T10:30:00</verifactu:FechaEnvio>
+        <verifactu:TiempoEsperaEnvio>30</verifactu:TiempoEsperaEnvio>
+        <verifactu:TipoComunicacion>Alta</verifactu:TipoComunicacion>
+        <verifactu:NumeroRegistro>REG001</verifactu:NumeroRegistro>
+        <verifactu:Observaciones>Test invoice registration</verifactu:Observaciones>
       </verifactu:Cabecera>
       <verifactu:Factura>
-        <!-- Invoice data -->
+        <verifactu:NumFactura>INV-2024-001</verifactu:NumFactura>
+        <verifactu:FechaFactura>2024-01-15</verifactu:FechaFactura>
+        <verifactu:NIFReceptor>87654321A</verifactu:NIFReceptor>
+        <verifactu:ImporteTotal>1000.00</verifactu:ImporteTotal>
+        <verifactu:TipoFactura>F1</verifactu:TipoFactura>
+        <verifactu:SerieFactura>A</verifactu:SerieFactura>
+        <verifactu:FechaOperacion>2024-01-15</verifactu:FechaOperacion>
+        <verifactu:ClaveRegimenEspecialOTrascendencia>01</verifactu:ClaveRegimenEspecialOTrascendencia>
+        <verifactu:DescripcionOperacion>Sale of goods</verifactu:DescripcionOperacion>
+        <verifactu:TipoDesglose>DesgloseTipoOperacion</verifactu:TipoDesglose>
+        <verifactu:DetalleFactura>
+          <verifactu:IDDetalleFactura>1</verifactu:IDDetalleFactura>
+          <verifactu:DescripcionDetalle>Product description</verifactu:DescripcionDetalle>
+          <verifactu:Cantidad>1.00</verifactu:Cantidad>
+          <verifactu:PrecioUnitario>1000.00</verifactu:PrecioUnitario>
+          <verifactu:ImporteTotal>1000.00</verifactu:ImporteTotal>
+          <verifactu:DesgloseTipoOperacion>
+            <verifactu:Sujeta>
+              <verifactu:NoExenta>
+                <verifactu:TipoNoExenta>S1</verifactu:TipoNoExenta>
+                <verifactu:TipoDesglose>DesgloseTipoOperacion</verifactu:TipoDesglose>
+                <verifactu:DesgloseIVA>
+                  <verifactu:TipoImpositivo>21.00</verifactu:TipoImpositivo>
+                  <verifactu:BaseImponible>826.45</verifactu:BaseImponible>
+                  <verifactu:CuotaImpuesto>173.55</verifactu:CuotaImpuesto>
+                </verifactu:DesgloseIVA>
+              </verifactu:NoExenta>
+            </verifactu:Sujeta>
+          </verifactu:DesgloseTipoOperacion>
+        </verifactu:DetalleFactura>
       </verifactu:Factura>
     </verifactu:Alta>
   </soap:Body>
 </soap:Envelope>
 ```
+
+### SOAP Headers Required
+
+**HTTP Headers:**
+```
+Content-Type: application/soap+xml; charset=utf-8
+SOAPAction: "urn:VeriFactu/Alta"
+Content-Length: [calculated]
+```
+
+**Authentication:**
+- Mutual TLS with FNMT certificate
+- Certificate must be valid and not expired
+- Certificate must be properly installed on client system
 
 ### Cabecera (Header) Fields
 

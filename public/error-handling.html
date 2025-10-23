@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Handling - AEAT VERI*FACTU API</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        border: "hsl(var(--border))",
+                        input: "hsl(var(--input))",
+                        ring: "hsl(var(--ring))",
+                        background: "hsl(var(--background))",
+                        foreground: "hsl(var(--foreground))",
+                        primary: {
+                            DEFAULT: "hsl(var(--primary))",
+                            foreground: "hsl(var(--primary-foreground))",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(var(--secondary))",
+                            foreground: "hsl(var(--secondary-foreground))",
+                        },
+                        destructive: {
+                            DEFAULT: "hsl(var(--destructive))",
+                            foreground: "hsl(var(--destructive-foreground))",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(var(--muted))",
+                            foreground: "hsl(var(--muted-foreground))",
+                        },
+                        accent: {
+                            DEFAULT: "hsl(var(--accent))",
+                            foreground: "hsl(var(--accent-foreground))",
+                        },
+                        popover: {
+                            DEFAULT: "hsl(var(--popover))",
+                            foreground: "hsl(var(--popover-foreground))",
+                        },
+                        card: {
+                            DEFAULT: "hsl(var(--card))",
+                            foreground: "hsl(var(--card-foreground))",
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 222.2 84% 4.9%;
+            --primary: 221.2 83.2% 53.3%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96%;
+            --secondary-foreground: 222.2 84% 4.9%;
+            --muted: 210 40% 96%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96%;
+            --accent-foreground: 222.2 84% 4.9%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 221.2 83.2% 53.3%;
+        }
+    </style>
+</head>
+<body class="h-full bg-background text-foreground">
+    <div class="flex h-full">
+        <!-- Sidebar -->
+        <div class="w-64 bg-card border-r border-border flex flex-col">
+            <div class="p-6 border-b border-border">
+                <h1 class="text-xl font-bold">AEAT VERI*FACTU API</h1>
+                <p class="text-sm text-muted-foreground mt-1">Error Handling</p>
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <div class="space-y-1">
+                    <h3 class="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Documentation</h3>
+                    <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+                        </svg>
+                        <span>Welcome</span>
+                    </a>
+                    <a href="authentication.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                        </svg>
+                        <span>Authentication</span>
+                    </a>
+                </div>
+                <div class="space-y-1">
+                    <h3 class="text-sm font-semibold text-muted-foreground uppercase tracking-wider">API Operations</h3>
+                    <a href="alta-register-invoice.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <span>Register Invoice</span>
+                    </a>
+                    <a href="baja-cancel-invoice.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        <span>Cancel Invoice</span>
+                    </a>
+                    <a href="consulta-query-invoice.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <span>Query Invoice</span>
+                    </a>
+                </div>
+                <div class="space-y-1">
+                    <h3 class="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Reference</h3>
+                    <a href="parameters-and-fields.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <span>Parameters & Fields</span>
+                    </a>
+                    <a href="error-handling.html" class="flex items-center gap-3 px-3 py-2 rounded-md bg-accent text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                        <span>Error Handling</span>
+                    </a>
+                    <a href="xsd-schema-reference.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <span>XSD Schema</span>
+                    </a>
+                </div>
+                <div class="space-y-1">
+                    <h3 class="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Implementation</h3>
+                    <a href="authentication.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                        </svg>
+                        <span>Authentication Setup</span>
+                    </a>
+                    <a href="node-implementation.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                        <span>Node.js Implementation</span>
+                    </a>
+                    <a href="examples.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                        <span>Examples</span>
+                    </a>
+                    <a href="quick-reference.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Quick Reference</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 overflow-y-auto">
+            <div class="max-w-4xl mx-auto p-8">
+                <div class="mb-8">
+                    <h1 class="text-4xl font-bold mb-4">Error Handling</h1>
+                    <p class="text-xl text-muted-foreground">Comprehensive information about error handling in the AEAT VERI*FACTU webservice, including error codes, validation rules, and troubleshooting guidance.</p>
+                </div>
+                
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">Overview</h2>
+                    <p class="text-muted-foreground mb-4">This document provides comprehensive information about error handling in the AEAT VERI*FACTU webservice, including error codes, validation rules, and troubleshooting guidance.</p>
+                </div>
+                
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">HTTP Status Codes</h2>
+                    
+                    <h3 class="text-lg font-semibold mb-3">Standard HTTP Status Codes</h3>
+                    
+                    <div class="grid gap-4 md:grid-cols-3 mb-6">
+                        <div class="p-4 bg-green-50 rounded-md">
+                            <h4 class="font-semibold text-green-800 mb-2">Success Codes</h4>
+                            <ul class="text-sm text-green-700 space-y-1">
+                                <li><strong>200 OK:</strong> Successful operation</li>
+                                <li><strong>202 Accepted:</strong> Operation accepted for processing</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="p-4 bg-red-50 rounded-md">
+                            <h4 class="font-semibold text-red-800 mb-2">Client Error Codes</h4>
+                            <ul class="text-sm text-red-700 space-y-1">
+                                <li><strong>400 Bad Request:</strong> Invalid request format or data</li>
+                                <li><strong>401 Unauthorized:</strong> Authentication failure</li>
+                                <li><strong>403 Forbidden:</strong> Access denied</li>
+                                <li><strong>404 Not Found:</strong> Endpoint not found</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="p-4 bg-orange-50 rounded-md">
+                            <h4 class="font-semibold text-orange-800 mb-2">Server Error Codes</h4>
+                            <ul class="text-sm text-orange-700 space-y-1">
+                                <li><strong>500 Internal Server Error:</strong> Server processing error</li>
+                                <li><strong>502 Bad Gateway:</strong> Gateway error</li>
+                                <li><strong>503 Service Unavailable:</strong> Service temporarily unavailable</li>
+                                <li><strong>504 Gateway Timeout:</strong> Request timeout</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold mb-3">AEAT-Specific Status Codes</h3>
+                    <div class="grid gap-4 md:grid-cols-3">
+                        <div class="p-4 bg-blue-50 rounded-md">
+                            <h4 class="font-semibold text-blue-800 mb-2">422</h4>
+                            <p class="text-sm text-blue-700">Unprocessable Entity - Business logic validation failed</p>
+                        </div>
+                        
+                        <div class="p-4 bg-yellow-50 rounded-md">
+                            <h4 class="font-semibold text-yellow-800 mb-2">429</h4>
+                            <p class="text-sm text-yellow-700">Too Many Requests - Rate limit exceeded</p>
+                        </div>
+                        
+                        <div class="p-4 bg-purple-50 rounded-md">
+                            <h4 class="font-semibold text-purple-800 mb-2">451</h4>
+                            <p class="text-sm text-purple-700">Unavailable For Legal Reasons - Legal restrictions</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">SOAP Faults</h2>
+                    
+                    <h3 class="text-lg font-semibold mb-3">SOAP Fault Structure</h3>
+                    <div class="bg-muted p-4 rounded-md mb-4">
+                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;soap:Fault xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+  &lt;soap:Code&gt;
+    &lt;soap:Value&gt;soap:Client&lt;/soap:Value&gt;
+    &lt;soap:Subcode&gt;
+      &lt;soap:Value&gt;aeat:ValidationError&lt;/soap:Value&gt;
+    &lt;/soap:Subcode&gt;
+  &lt;/soap:Code&gt;
+  &lt;soap:Reason&gt;
+    &lt;soap:Text xml:lang="en"&gt;Invalid NIF format&lt;/soap:Text&gt;
+  &lt;/soap:Reason&gt;
+  &lt;soap:Detail&gt;
+    &lt;aeat:Error&gt;
+      &lt;aeat:CodigoError&gt;E001&lt;/aeat:CodigoError&gt;
+      &lt;aeat:DescripcionError&gt;Invalid NIF format&lt;/aeat:DescripcionError&gt;
+      &lt;aeat:Timestamp&gt;2024-01-15T10:30:30&lt;/aeat:Timestamp&gt;
+    &lt;/aeat:Error&gt;
+  &lt;/soap:Detail&gt;
+&lt;/soap:Fault&gt;</code></pre>
+                    </div>
+                    
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div class="p-4 bg-blue-50 rounded-md">
+                            <h4 class="font-semibold text-blue-800 mb-2">Fault Codes</h4>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li><strong>soap:Client:</strong> Client-side error</li>
+                                <li><strong>soap:Server:</strong> Server-side error</li>
+                                <li><strong>soap:VersionMismatch:</strong> SOAP version mismatch</li>
+                                <li><strong>soap:MustUnderstand:</strong> Must understand header not processed</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="p-4 bg-green-50 rounded-md">
+                            <h4 class="font-semibold text-green-800 mb-2">AEAT Error Codes</h4>
+                            <ul class="text-sm text-green-700 space-y-1">
+                                <li><strong>E001-E099:</strong> Validation errors</li>
+                                <li><strong>E100-E199:</strong> Authentication errors</li>
+                                <li><strong>E200-E299:</strong> Business logic errors</li>
+                                <li><strong>E300-E399:</strong> System errors</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">Common Error Codes</h2>
+                    
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div class="p-4 bg-red-50 rounded-md">
+                            <h4 class="font-semibold text-red-800 mb-2">Validation Errors (E001-E099)</h4>
+                            <ul class="text-sm text-red-700 space-y-1">
+                                <li><strong>E001:</strong> Invalid NIF format</li>
+                                <li><strong>E002:</strong> Invalid invoice number</li>
+                                <li><strong>E003:</strong> Invalid amount format</li>
+                                <li><strong>E004:</strong> Invalid date format</li>
+                                <li><strong>E005:</strong> Missing required field</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="p-4 bg-orange-50 rounded-md">
+                            <h4 class="font-semibold text-orange-800 mb-2">Authentication Errors (E100-E199)</h4>
+                            <ul class="text-sm text-orange-700 space-y-1">
+                                <li><strong>E101:</strong> Certificate not found</li>
+                                <li><strong>E102:</strong> Certificate expired</li>
+                                <li><strong>E103:</strong> Certificate not valid</li>
+                                <li><strong>E104:</strong> Certificate not authorized</li>
+                                <li><strong>E105:</strong> Certificate chain invalid</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="p-4 bg-yellow-50 rounded-md">
+                            <h4 class="font-semibold text-yellow-800 mb-2">Business Logic Errors (E200-E299)</h4>
+                            <ul class="text-sm text-yellow-700 space-y-1">
+                                <li><strong>E201:</strong> Invoice already exists</li>
+                                <li><strong>E202:</strong> Invoice not found</li>
+                                <li><strong>E203:</strong> Invoice already cancelled</li>
+                                <li><strong>E204:</strong> Invalid invoice type</li>
+                                <li><strong>E205:</strong> Invalid tax calculation</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="p-4 bg-purple-50 rounded-md">
+                            <h4 class="font-semibold text-purple-800 mb-2">System Errors (E300-E399)</h4>
+                            <ul class="text-sm text-purple-700 space-y-1">
+                                <li><strong>E301:</strong> Service temporarily unavailable</li>
+                                <li><strong>E302:</strong> Database connection error</li>
+                                <li><strong>E303:</strong> Rate limit exceeded</li>
+                                <li><strong>E304:</strong> Request timeout</li>
+                                <li><strong>E305:</strong> Internal server error</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">Troubleshooting Guide</h2>
+                    
+                    <h3 class="text-lg font-semibold mb-3">Common Issues and Solutions</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="p-4 bg-blue-50 rounded-md">
+                            <h4 class="font-semibold text-blue-800 mb-2">Certificate Issues</h4>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li>• Verify certificate is properly installed</li>
+                                <li>• Check certificate expiration date</li>
+                                <li>• Ensure certificate is from FNMT</li>
+                                <li>• Verify certificate has proper permissions</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="p-4 bg-green-50 rounded-md">
+                            <h4 class="font-semibold text-green-800 mb-2">Validation Errors</h4>
+                            <ul class="text-sm text-green-700 space-y-1">
+                                <li>• Check NIF format and validity</li>
+                                <li>• Verify invoice number format</li>
+                                <li>• Ensure all required fields are present</li>
+                                <li>• Validate date formats (YYYY-MM-DD)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="p-4 bg-yellow-50 rounded-md">
+                            <h4 class="font-semibold text-yellow-800 mb-2">Network Issues</h4>
+                            <ul class="text-sm text-yellow-700 space-y-1">
+                                <li>• Check internet connectivity</li>
+                                <li>• Verify firewall settings</li>
+                                <li>• Check proxy configuration</li>
+                                <li>• Verify SSL/TLS settings</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="p-4 bg-purple-50 rounded-md">
+                            <h4 class="font-semibold text-purple-800 mb-2">Rate Limiting</h4>
+                            <ul class="text-sm text-purple-700 space-y-1">
+                                <li>• Implement exponential backoff</li>
+                                <li>• Reduce request frequency</li>
+                                <li>• Use batch operations when possible</li>
+                                <li>• Monitor rate limit headers</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">Error Response Examples</h2>
+                    
+                    <h3 class="text-lg font-semibold mb-3">Validation Error Example</h3>
+                    <div class="bg-muted p-4 rounded-md mb-4">
+                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;soap:Fault&gt;
+  &lt;faultcode&gt;soap:Client&lt;/faultcode&gt;
+  &lt;faultstring&gt;Validation error&lt;/faultstring&gt;
+  &lt;detail&gt;
+    &lt;aeat:Error&gt;
+      &lt;aeat:CodigoError&gt;E001&lt;/aeat:CodigoError&gt;
+      &lt;aeat:DescripcionError&gt;Invalid NIF format: 12345678&lt;/aeat:DescripcionError&gt;
+      &lt;aeat:Timestamp&gt;2024-01-15T10:30:30&lt;/aeat:Timestamp&gt;
+    &lt;/aeat:Error&gt;
+  &lt;/detail&gt;
+&lt;/soap:Fault&gt;</code></pre>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold mb-3">Authentication Error Example</h3>
+                    <div class="bg-muted p-4 rounded-md">
+                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;soap:Fault&gt;
+  &lt;faultcode&gt;soap:Client&lt;/faultcode&gt;
+  &lt;faultstring&gt;Authentication failed&lt;/faultstring&gt;
+  &lt;detail&gt;
+    &lt;aeat:Error&gt;
+      &lt;aeat:CodigoError&gt;E101&lt;/aeat:CodigoError&gt;
+      &lt;aeat:DescripcionError&gt;Certificate not found or invalid&lt;/aeat:DescripcionError&gt;
+      &lt;aeat:Timestamp&gt;2024-01-15T10:30:30&lt;/aeat:Timestamp&gt;
+    &lt;/aeat:Error&gt;
+  &lt;/detail&gt;
+&lt;/soap:Fault&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
