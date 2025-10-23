@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node.js Implementation - AEAT VERI*FACTU API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
+            padding: 2rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar h2 {
+            padding: 0 2rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar li {
+            margin: 0;
+        }
+        
+        .sidebar a {
+            display: block;
+            padding: 0.75rem 2rem;
+            color: #64748b;
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar a:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+            border-left-color: #3b82f6;
+        }
+        
+        .sidebar a.active {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-left-color: #3b82f6;
+            font-weight: 500;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+        }
+        
+        .header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .header h1 {
+            color: #1e293b;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .section h2 {
+            color: #1e293b;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .section h3 {
+            color: #374151;
+            font-size: 1.3rem;
+            margin: 2rem 0 1rem 0;
+            font-weight: 600;
+        }
+        
+        .section h4 {
+            color: #4b5563;
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.5rem 0;
+            font-weight: 600;
+        }
+        
+        .section p {
+            margin-bottom: 1rem;
+            color: #4b5563;
+        }
+        
+        .section ul, .section ol {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .section li {
+            margin: 0.5rem 0;
+            color: #4b5563;
+        }
+        
+        .code {
+            background: #1e293b;
+            color: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        
+        .inline-code {
+            background: #f1f5f9;
+            color: #1e293b;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .note {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .note strong {
+            color: #92400e;
+        }
+        
+        .warning {
+            background: #fef2f2;
+            border: 1px solid #f87171;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .warning strong {
+            color: #dc2626;
+        }
+        
+        .success {
+            background: #f0fdf4;
+            border: 1px solid #22c55e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .success strong {
+            color: #16a34a;
+        }
+        
+        .card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .card h4 {
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card p {
+            color: #64748b;
+            margin: 0;
+        }
+        
+        .card a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .card a:hover {
+            text-decoration: underline;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .flow-diagram {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <h2>Documentation</h2>
+            <ul>
+                <li><a href="index.html">Welcome</a></li>
+                <li><a href="authentication.html">Authentication</a></li>
+                <li><a href="index.html#api-operations">API Operations</a></li>
+                <li><a href="index.html#implementation">Implementation Guide</a></li>
+                <li><a href="index.html#resources">Resources</a></li>
+            </ul>
+            
+            <h2>API Reference</h2>
+            <ul>
+                <li><a href="alta-register-invoice.html">Register Invoice</a></li>
+                <li><a href="baja-cancel-invoice.html">Cancel Invoice</a></li>
+                <li><a href="consulta-query-invoice.html">Query Invoice</a></li>
+                <li><a href="parameters-and-fields.html">Parameters & Fields</a></li>
+                <li><a href="error-handling.html">Error Handling</a></li>
+                <li><a href="xsd-schema-reference.html">XSD Schema</a></li>
+            </ul>
+            
+            <h2>Getting Started</h2>
+            <ul>
+                <li><a href="authentication.html">Authentication Setup</a></li>
+                <li><a href="node-implementation.html" class="active">Node.js Implementation</a></li>
+                <li><a href="examples.html">Examples</a></li>
+                <li><a href="quick-reference.html">Quick Reference</a></li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <div class="header">
+                <h1>Node.js Implementation</h1>
+            </div>
+            
+            <section class="section">
+                <h2>Overview</h2>
+                <p>This document provides step-by-step guidance for implementing the AEAT VERI*FACTU webservice in your CRM. Follow these steps in order for a successful integration.</p>
+            </section>
+            
+            <section class="section">
+                <h2>Database Setup</h2>
+                
+                <h3>How it works in your CRM</h3>
+                <div class="flow-diagram">
+                    Your CRM ──► AEAT ──► CSV Code<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─► Back to your CRM<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─► Validates invoice<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;└─► Sends invoice
+                </div>
+                
+                <h3>Database Changes</h3>
+                <p>Add these columns to your invoices table:</p>
+                <div class="code">
+-- Add these columns to your invoices table
+ALTER TABLE invoices ADD COLUMN aeat_csv_code VARCHAR(100);
+ALTER TABLE invoices ADD COLUMN aeat_status VARCHAR(20);
+ALTER TABLE invoices ADD COLUMN aeat_error TEXT;
+                </div>
+                
+                <div class="card">
+                    <h4>What these columns mean:</h4>
+                    <ul>
+                        <li><strong>aeat_csv_code</strong> = The special code that AEAT returns</li>
+                        <li><strong>aeat_status</strong> = Whether the invoice is approved or not</li>
+                        <li><strong>aeat_error</strong> = If something goes wrong, the error is stored here</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>Code Implementation</h2>
+                
+                <h3>Basic function to send invoice</h3>
+                <div class="code">
+// This is the main function you call
+async function sendInvoiceToAEAT(invoice) {
+  try {
+    console.log('📤 Sending invoice to AEAT...');
+    
+    // Send to AEAT
+    const response = await sendToAEAT(invoice);
+    
+    // Save the result
+    await saveAEATResult(invoice.id, response);
+    
+    console.log('✅ Done! CSV code:', response.csv);
+    
+  } catch (error) {
+    console.log('❌ Error:', error.message);
+    await saveError(invoice.id, error.message);
+  }
+}
+                </div>
+                
+                <h3>Complete implementation example</h3>
+                <div class="code">
+const https = require('https');
+const fs = require('fs');
+
+// Certificate configuration
+const certificate = {
+  key: fs.readFileSync('/path/to/your/client-key.pem'),
+  cert: fs.readFileSync('/path/to/your/client-cert.pem'),
+  ca: fs.readFileSync('/path/to/your/ca-cert.pem')
+};
+
+// AEAT configuration
+const aeatConfig = {
+  hostname: 'prewww1.aeat.es',
+  port: 443,
+  path: '/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'text/xml; charset=utf-8',
+    'SOAPAction': 'urn:VeriFactu/Alta'
+  }
+};
+
+// Main function to send invoice
+async function sendInvoiceToAEAT(invoice) {
+  try {
+    console.log('📤 Sending invoice to AEAT...');
+    
+    // Create SOAP request
+    const soapBody = createSOAPRequest(invoice);
+    
+    // Make HTTPS request
+    const response = await makeHTTPSRequest(soapBody);
+    
+    // Parse response
+    const result = parseSOAPResponse(response);
+    
+    // Save to database
+    await saveAEATResult(invoice.id, result);
+    
+    console.log('✅ Done! CSV code:', result.csv);
+    return result;
+    
+  } catch (error) {
+    console.log('❌ Error:', error.message);
+    await saveError(invoice.id, error.message);
+    throw error;
+  }
+}
+
+// Create SOAP request XML
+function createSOAPRequest(invoice) {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <verifactu:Alta>
+      <verifactu:Cabecera>
+        <verifactu:NIF>${invoice.nif}</verifactu:NIF>
+        <verifactu:Fecha>${invoice.fecha}</verifactu:Fecha>
+        <verifactu:Hora>${invoice.hora}</verifactu:Hora>
+        <verifactu:Serie>${invoice.serie || ''}</verifactu:Serie>
+        <verifactu:NumFactura>${invoice.numero}</verifactu:NumFactura>
+      </verifactu:Cabecera>
+      <verifactu:Factura>
+        <verifactu:ImporteTotal>${invoice.importeTotal}</verifactu:ImporteTotal>
+        <verifactu:ImporteTotalConImpuestos>${invoice.importeTotalConImpuestos}</verifactu:ImporteTotalConImpuestos>
+        <verifactu:TipoFactura>${invoice.tipoFactura}</verifactu:TipoFactura>
+        <verifactu:ClaveRegimenEspecialOTrascendencia>${invoice.claveRegimen}</verifactu:ClaveRegimenEspecialOTrascendencia>
+      </verifactu:Factura>
+    </verifactu:Alta>
+  </soap:Body>
+</soap:Envelope>`;
+}
+
+// Make HTTPS request with mutual TLS
+function makeHTTPSRequest(soapBody) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      ...aeatConfig,
+      ...certificate
+    };
+    
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+      res.on('end', () => {
+        resolve(data);
+      });
+    });
+    
+    req.on('error', (error) => {
+      reject(error);
+    });
+    
+    req.write(soapBody);
+    req.end();
+  });
+}
+
+// Parse SOAP response
+function parseSOAPResponse(xmlResponse) {
+  // Simple XML parsing (in production, use a proper XML parser)
+  const csvMatch = xmlResponse.match(/<verifactu:CSV>(.*?)<\/verifactu:CSV>/);
+  const codigoMatch = xmlResponse.match(/<verifactu:Codigo>(.*?)<\/verifactu:Codigo>/);
+  const descripcionMatch = xmlResponse.match(/<verifactu:Descripcion>(.*?)<\/verifactu:Descripcion>/);
+  
+  return {
+    csv: csvMatch ? csvMatch[1] : null,
+    codigo: codigoMatch ? codigoMatch[1] : null,
+    descripcion: descripcionMatch ? descripcionMatch[1] : null,
+    success: codigoMatch && codigoMatch[1] === '0'
+  };
+}
+
+// Save AEAT result to database
+async function saveAEATResult(invoiceId, result) {
+  // Update your database here
+  const query = `
+    UPDATE invoices 
+    SET aeat_csv_code = ?, 
+        aeat_status = ?, 
+        aeat_error = NULL 
+    WHERE id = ?
+  `;
+  
+  const status = result.success ? 'verified' : 'error';
+  await db.query(query, [result.csv, status, invoiceId]);
+}
+
+// Save error to database
+async function saveError(invoiceId, errorMessage) {
+  const query = `
+    UPDATE invoices 
+    SET aeat_status = 'error', 
+        aeat_error = ? 
+    WHERE id = ?
+  `;
+  
+  await db.query(query, [errorMessage, invoiceId]);
+}
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>Error Handling</h2>
+                
+                <h3>Common Error Scenarios</h3>
+                <div class="grid">
+                    <div class="card">
+                        <h4>Network Errors</h4>
+                        <ul>
+                            <li>Connection timeout</li>
+                            <li>Certificate validation failed</li>
+                            <li>DNS resolution failed</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>SOAP Errors</h4>
+                        <ul>
+                            <li>Invalid XML format</li>
+                            <li>Missing required fields</li>
+                            <li>Authentication failed</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Business Logic Errors</h4>
+                        <ul>
+                            <li>Invalid invoice data</li>
+                            <li>Duplicate invoice number</li>
+                            <li>Tax calculation errors</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Error Handling Best Practices</h3>
+                <div class="code">
+// Robust error handling
+async function sendInvoiceToAEAT(invoice) {
+  try {
+    // Validate input
+    validateInvoiceData(invoice);
+    
+    // Send to AEAT
+    const response = await sendToAEAT(invoice);
+    
+    // Validate response
+    validateAEATResponse(response);
+    
+    // Save result
+    await saveAEATResult(invoice.id, response);
+    
+    return { success: true, csv: response.csv };
+    
+  } catch (error) {
+    // Log error
+    console.error('AEAT Error:', error);
+    
+    // Save error to database
+    await saveError(invoice.id, error.message);
+    
+    // Return error information
+    return { 
+      success: false, 
+      error: error.message,
+      code: error.code || 'UNKNOWN_ERROR'
+    };
+  }
+}
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>Testing</h2>
+                
+                <h3>Test Environment</h3>
+                <div class="note">
+                    <strong>Important:</strong> Always test with the test environment first. The test environment URL is: <span class="inline-code">https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP</span>
+                </div>
+                
+                <h3>Test Data</h3>
+                <div class="code">
+// Test invoice data
+const testInvoice = {
+  nif: '12345678A',
+  fecha: '2024-01-15',
+  hora: '10:30:00',
+  serie: 'A',
+  numero: '00001',
+  importeTotal: '100.00',
+  importeTotalConImpuestos: '121.00',
+  tipoFactura: 'F1',
+  claveRegimen: '01'
+};
+                </div>
+            </section>
+            
+            <div class="success">
+                <strong>Next Steps:</strong> After implementing the code, test thoroughly with the test environment before moving to production. Make sure to handle all error scenarios and implement proper logging.
+            </div>
+        </main>
+    </div>
+</body>
+</html>
