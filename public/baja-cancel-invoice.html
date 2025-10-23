@@ -344,44 +344,44 @@
                     
                     <h3 class="text-lg font-semibold mb-3">Success Response</h3>
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono overflow-x-auto"><code><?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu"
                xmlns:aeat="http://www.aeat.es/verifactu"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <soap:Header>
-    <aeat:RespuestaAutenticacion>
-      <aeat:Estado>Correcto</aeat:Estado>
-      <aeat:Timestamp>2024-01-15T10:30:30</aeat:Timestamp>
-    </aeat:RespuestaAutenticacion>
-  </soap:Header>
-  <soap:Body>
-    <verifactu:BajaResponse>
-      <verifactu:EstadoEnvio>Correcto</verifactu:EstadoEnvio>
-      <verifactu:TiempoEsperaEnvio>30</verifactu:TiempoEsperaEnvio>
-      <verifactu:Timestamp>2024-01-15T10:30:30</verifactu:Timestamp>
-      <verifactu:RespuestaLinea>
-        <verifactu:IDDetalleFactura>1</verifactu:IDDetalleFactura>
-        <verifactu:EstadoRegistro>Correcto</verifactu:EstadoRegistro>
-        <verifactu:CSV>ABC123DEF456</verifactu:CSV>
-        <verifactu:Timestamp>2024-01-15T10:30:30</verifactu:Timestamp>
-        <verifactu:NumeroRegistro>REG001</verifactu:NumeroRegistro>
-        <verifactu:Observaciones>Invoice successfully cancelled</verifactu:Observaciones>
-        <verifactu:MotivoBajaProcesado>
-          <verifactu:CodigoMotivoBaja>01</verifactu:CodigoMotivoBaja>
-          <verifactu:DescripcionMotivoBaja>Customer request</verifactu:DescripcionMotivoBaja>
-        </verifactu:MotivoBajaProcesado>
-      </verifactu:RespuestaLinea>
-      <verifactu:Resumen>
-        <verifactu:TotalFacturas>1</verifactu:TotalFacturas>
-        <verifactu:FacturasCorrectas>1</verifactu:FacturasCorrectas>
-        <verifactu:FacturasIncorrectas>0</verifactu:FacturasIncorrectas>
-        <verifactu:ImporteTotal>1000.00</verifactu:ImporteTotal>
-      </verifactu:Resumen>
-    </verifactu:BajaResponse>
-  </soap:Body>
-</soap:Envelope></code></pre>
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;soap:Header&gt;
+    &lt;aeat:RespuestaAutenticacion&gt;
+      &lt;aeat:Estado&gt;Correcto&lt;/aeat:Estado&gt;
+      &lt;aeat:Timestamp&gt;2024-01-15T10:30:30&lt;/aeat:Timestamp&gt;
+    &lt;/aeat:RespuestaAutenticacion&gt;
+  &lt;/soap:Header&gt;
+  &lt;soap:Body&gt;
+    &lt;verifactu:BajaResponse&gt;
+      &lt;verifactu:EstadoEnvio&gt;Correcto&lt;/verifactu:EstadoEnvio&gt;
+      &lt;verifactu:TiempoEsperaEnvio&gt;30&lt;/verifactu:TiempoEsperaEnvio&gt;
+      &lt;verifactu:Timestamp&gt;2024-01-15T10:30:30&lt;/verifactu:Timestamp&gt;
+      &lt;verifactu:RespuestaLinea&gt;
+        &lt;verifactu:IDDetalleFactura&gt;1&lt;/verifactu:IDDetalleFactura&gt;
+        &lt;verifactu:EstadoRegistro&gt;Correcto&lt;/verifactu:EstadoRegistro&gt;
+        &lt;verifactu:CSV&gt;ABC123DEF456&lt;/verifactu:CSV&gt;
+        &lt;verifactu:Timestamp&gt;2024-01-15T10:30:30&lt;/verifactu:Timestamp&gt;
+        &lt;verifactu:NumeroRegistro&gt;REG001&lt;/verifactu:NumeroRegistro&gt;
+        &lt;verifactu:Observaciones&gt;Invoice successfully cancelled&lt;/verifactu:Observaciones&gt;
+        &lt;verifactu:MotivoBajaProcesado&gt;
+          &lt;verifactu:CodigoMotivoBaja&gt;01&lt;/verifactu:CodigoMotivoBaja&gt;
+          &lt;verifactu:DescripcionMotivoBaja&gt;Customer request&lt;/verifactu:DescripcionMotivoBaja&gt;
+        &lt;/verifactu:MotivoBajaProcesado&gt;
+      &lt;/verifactu:RespuestaLinea&gt;
+      &lt;verifactu:Resumen&gt;
+        &lt;verifactu:TotalFacturas&gt;1&lt;/verifactu:TotalFacturas&gt;
+        &lt;verifactu:FacturasCorrectas&gt;1&lt;/verifactu:FacturasCorrectas&gt;
+        &lt;verifactu:FacturasIncorrectas&gt;0&lt;/verifactu:FacturasIncorrectas&gt;
+        &lt;verifactu:ImporteTotal&gt;1000.00&lt;/verifactu:ImporteTotal&gt;
+      &lt;/verifactu:Resumen&gt;
+    &lt;/verifactu:BajaResponse&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</code></pre>
                     </div>
                     
                     <div class="p-4 bg-green-50 rounded-md mb-4">
@@ -397,27 +397,27 @@
                     
                     <h3 class="text-lg font-semibold mb-3">Error Response</h3>
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono overflow-x-auto"><code><?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu"
                xmlns:aeat="http://www.aeat.es/verifactu"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <soap:Header />
-  <soap:Body>
-    <soap:Fault>
-      <faultcode>soap:Server</faultcode>
-      <faultstring>Error processing cancellation request</faultstring>
-      <detail>
-        <aeat:Error>
-          <aeat:CodigoError>E301</aeat:CodigoError>
-          <aeat:DescripcionError>Invoice not found or already cancelled</aeat:DescripcionError>
-          <aeat:Timestamp>2024-01-15T10:30:30</aeat:Timestamp>
-        </aeat:Error>
-      </detail>
-    </soap:Fault>
-  </soap:Body>
-</soap:Envelope></code></pre>
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;soap:Header /&gt;
+  &lt;soap:Body&gt;
+    &lt;soap:Fault&gt;
+      &lt;faultcode&gt;soap:Server&lt;/faultcode&gt;
+      &lt;faultstring&gt;Error processing cancellation request&lt;/faultstring&gt;
+      &lt;detail&gt;
+        &lt;aeat:Error&gt;
+          &lt;aeat:CodigoError&gt;E301&lt;/aeat:CodigoError&gt;
+          &lt;aeat:DescripcionError&gt;Invoice not found or already cancelled&lt;/aeat:DescripcionError&gt;
+          &lt;aeat:Timestamp&gt;2024-01-15T10:30:30&lt;/aeat:Timestamp&gt;
+        &lt;/aeat:Error&gt;
+      &lt;/detail&gt;
+    &lt;/soap:Fault&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</code></pre>
                     </div>
                     
                     <div class="p-4 bg-red-50 rounded-md">
