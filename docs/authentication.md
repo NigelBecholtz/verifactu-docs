@@ -110,6 +110,65 @@ The AEAT VERI*FACTU webservice uses **mutual TLS authentication** (also known as
 - **Usage**: Convenient for some applications
 - **Security**: Less secure than separate files
 
+## CRM Implementation Guide
+
+### Prerequisites
+**You already have:**
+- ✅ Client certificate (PFX/P12 or PEM format)
+- ✅ Private key
+- ✅ Certificate password (if applicable)
+- ✅ CRM system ready for integration
+
+### CRM Integration Steps
+
+**1. Certificate Storage in CRM:**
+```javascript
+// Store certificates securely in your CRM
+const certificateConfig = {
+  clientCert: process.env.AEAT_CLIENT_CERT, // Base64 encoded or file path
+  clientKey: process.env.AEAT_CLIENT_KEY,   // Base64 encoded or file path
+  caChain: process.env.AEAT_CA_CHAIN,      // Certificate Authority chain
+  password: process.env.AEAT_CERT_PASSWORD // Certificate password
+};
+```
+
+**2. CRM Database Configuration:**
+```sql
+-- Add certificate fields to your CRM settings table
+ALTER TABLE crm_settings ADD COLUMN aeat_cert_path VARCHAR(255);
+ALTER TABLE crm_settings ADD COLUMN aeat_cert_password VARCHAR(255);
+ALTER TABLE crm_settings ADD COLUMN aeat_environment ENUM('test', 'production');
+```
+
+**3. CRM Invoice Processing Flow:**
+```javascript
+// CRM invoice processing workflow
+async function processInvoiceForAEAT(invoice) {
+  try {
+    // 1. Validate invoice data
+    const validation = validateInvoiceData(invoice);
+    if (!validation.isValid) {
+      throw new Error(`Validation failed: ${validation.errors.join(', ')}`);
+    }
+    
+    // 2. Register with AEAT
+    const aeatResponse = await registerInvoiceWithAEAT(invoice);
+    
+    // 3. Update CRM with CSV code
+    await updateInvoiceWithCSV(invoice.id, aeatResponse.csv);
+    
+    // 4. Mark invoice as verified
+    await markInvoiceAsVerified(invoice.id);
+    
+    return aeatResponse;
+  } catch (error) {
+    // Handle errors and update CRM
+    await logAEATError(invoice.id, error);
+    throw error;
+  }
+}
+```
+
 ## Technical Implementation in Node.js
 
 ### TLS Handshake Process

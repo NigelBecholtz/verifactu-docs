@@ -2,7 +2,172 @@
 
 ## Overview
 
-This document provides detailed technical guidance for implementing the AEAT VERI*FACTU webservice in Node.js applications. It covers SOAP client configuration, TLS setup, error handling, and best practices.
+This document provides detailed technical guidance for implementing the AEAT VERI*FACTU webservice in Node.js applications for CRM integration. It covers SOAP client configuration, TLS setup, error handling, and CRM-specific implementation patterns.
+
+## CRM Integration Architecture
+
+### CRM-AEAT Integration Flow
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   CRM System    │───▶│  AEAT Service   │───▶│   CSV Response   │
+│                 │    │                 │    │                 │
+│ • Invoice Data  │    │ • Validation    │    │ • CSV Code      │
+│ • Customer Info │    │ • Processing    │    │ • Status        │
+│ • Tax Details   │    │ • Verification  │    │ • Timestamp     │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+### CRM Database Schema
+
+**Required CRM Tables:**
+```sql
+-- Invoice table with AEAT integration
+CREATE TABLE invoices (
+  id INT PRIMARY KEY,
+  invoice_number VARCHAR(50),
+  customer_id INT,
+  total_amount DECIMAL(10,2),
+  tax_amount DECIMAL(10,2),
+  aeat_csv_code VARCHAR(100),        -- CSV from AEAT
+  aeat_status ENUM('pending', 'verified', 'error'),
+  aeat_timestamp DATETIME,
+  aeat_error_message TEXT,
+  created_at DATETIME,
+  updated_at DATETIME
+);
+
+-- AEAT configuration table
+CREATE TABLE aeat_config (
+  id INT PRIMARY KEY,
+  environment ENUM('test', 'production'),
+  cert_path VARCHAR(255),
+  cert_password VARCHAR(255),
+  endpoint_url VARCHAR(255),
+  is_active BOOLEAN DEFAULT TRUE
+);
+```
+
+## CRM Service Implementation
+
+### AEAT Service Class
+
+```javascript
+class AEATService {
+  constructor(config) {
+    this.config = config;
+    this.httpsAgent = this.createHttpsAgent();
+    this.soapClient = this.createSoapClient();
+  }
+
+  createHttpsAgent() {
+    const https = require('https');
+    const fs = require('fs');
+    
+    return new https.Agent({
+      cert: fs.readFileSync(this.config.certPath),
+      key: fs.readFileSync(this.config.keyPath),
+      ca: fs.readFileSync(this.config.caPath),
+      rejectUnauthorized: true,
+      secureProtocol: 'TLSv1_2_method'
+    });
+  }
+
+  async registerInvoice(invoiceData) {
+    try {
+      const soapRequest = this.buildSoapRequest(invoiceData);
+      const response = await this.sendSoapRequest(soapRequest);
+      return this.parseResponse(response);
+    } catch (error) {
+      throw new AEATError('Invoice registration failed', error);
+    }
+  }
+
+  buildSoapRequest(invoice) {
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <RegFactuSistemaFacturacion>
+      <Cabecera>
+        <NIFEmisor>${invoice.issuerNIF}</NIFEmisor>
+        <FechaEnvio>${new Date().toISOString()}</FechaEnvio>
+        <TiempoEsperaEnvio>30</TiempoEsperaEnvio>
+        <TipoComunicacion>Alta</TipoComunicacion>
+      </Cabecera>
+      <RegistroFactura>
+        <RegistroAlta>
+          <IDFactura>
+            <NumSerieFacturaEmisor>${invoice.series}</NumSerieFacturaEmisor>
+            <NumFacturaEmisor>${invoice.number}</NumFacturaEmisor>
+          </IDFactura>
+          <FechaExpedicionFactura>${invoice.date}</FechaExpedicionFactura>
+          <NIFReceptor>${invoice.recipientNIF}</NIFReceptor>
+          <ImporteTotal>${invoice.totalAmount}</ImporteTotal>
+        </RegistroAlta>
+      </RegistroFactura>
+    </RegFactuSistemaFacturacion>
+  </soap:Body>
+</soap:Envelope>`;
+  }
+}
+```
+
+### CRM Integration Service
+
+```javascript
+class CRMIntegrationService {
+  constructor(aeatService, database) {
+    this.aeatService = aeatService;
+    this.db = database;
+  }
+
+  async processInvoice(invoiceId) {
+    const invoice = await this.db.getInvoice(invoiceId);
+    
+    try {
+      // 1. Validate invoice data
+      this.validateInvoice(invoice);
+      
+      // 2. Register with AEAT
+      const aeatResponse = await this.aeatService.registerInvoice(invoice);
+      
+      // 3. Update CRM database
+      await this.updateInvoiceWithAEATData(invoiceId, aeatResponse);
+      
+      // 4. Log success
+      await this.logAEATSuccess(invoiceId, aeatResponse);
+      
+      return aeatResponse;
+    } catch (error) {
+      // Handle errors
+      await this.handleAEATError(invoiceId, error);
+      throw error;
+    }
+  }
+
+  async updateInvoiceWithAEATData(invoiceId, aeatResponse) {
+    const updateData = {
+      aeat_csv_code: aeatResponse.csv,
+      aeat_status: 'verified',
+      aeat_timestamp: new Date(),
+      aeat_error_message: null
+    };
+    
+    await this.db.updateInvoice(invoiceId, updateData);
+  }
+
+  async handleAEATError(invoiceId, error) {
+    const errorData = {
+      aeat_status: 'error',
+      aeat_error_message: error.message,
+      aeat_timestamp: new Date()
+    };
+    
+    await this.db.updateInvoice(invoiceId, errorData);
+    await this.logAEATError(invoiceId, error);
+  }
+}
+```
 
 ## Technical Architecture
 
