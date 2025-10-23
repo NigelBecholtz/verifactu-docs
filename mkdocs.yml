@@ -81,17 +81,17 @@ nav:
   - Home: index.md
   - Getting Started:
     - Overview: README.md
-    - Authentication: docs/authentication.md
-    - Endpoints: docs/endpoints.md
+    - Authentication: authentication.md
+    - Endpoints: endpoints.md
   - API Operations:
-    - Register Invoice: docs/alta-register-invoice.md
-    - Cancel Invoice: docs/baja-cancel-invoice.md
-    - Query Invoice: docs/consulta-query-invoice.md
+    - Register Invoice: alta-register-invoice.md
+    - Cancel Invoice: baja-cancel-invoice.md
+    - Query Invoice: consulta-query-invoice.md
   - Technical Details:
-    - Parameters & Fields: docs/parameters-and-fields.md
-    - Error Handling: docs/error-handling.md
-    - Node.js Implementation: docs/node-implementation.md
-  - Examples: docs/examples.md
+    - Parameters & Fields: parameters-and-fields.md
+    - Error Handling: error-handling.md
+    - Node.js Implementation: node-implementation.md
+  - Examples: examples.md
 
 # Extra
 extra:
