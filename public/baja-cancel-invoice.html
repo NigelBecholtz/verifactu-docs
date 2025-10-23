@@ -246,53 +246,53 @@
                     <h2 class="text-2xl font-semibold mb-4">Complete SOAP Request Example</h2>
                     
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono overflow-x-auto"><code><?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu"
                xmlns:aeat="http://www.aeat.es/verifactu"
                xmlns:factura="urn:VeriFactu:Factura"
                xmlns:cabecera="urn:VeriFactu:Cabecera"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <soap:Header>
-    <aeat:Autenticacion>
-      <aeat:Certificado>BASE64_ENCODED_CERTIFICATE</aeat:Certificado>
-    </aeat:Autenticacion>
-  </soap:Header>
-  <soap:Body>
-    <verifactu:Baja>
-      <verifactu:Cabecera>
-        <verifactu:NIFEmisor>12345678Z</verifactu:NIFEmisor>
-        <verifactu:FechaEnvio>2024-01-15T10:30:00</verifactu:FechaEnvio>
-        <verifactu:TiempoEsperaEnvio>30</verifactu:TiempoEsperaEnvio>
-        <verifactu:TipoComunicacion>Baja</verifactu:TipoComunicacion>
-        <verifactu:NumeroRegistro>REG001</verifactu:NumeroRegistro>
-        <verifactu:Observaciones>Invoice cancellation request</verifactu:Observaciones>
-      </verifactu:Cabecera>
-      <verifactu:Factura>
-        <verifactu:NumFactura>INV-2024-001</verifactu:NumFactura>
-        <verifactu:FechaFactura>2024-01-15</verifactu:FechaFactura>
-        <verifactu:NIFReceptor>87654321A</verifactu:NIFReceptor>
-        <verifactu:ImporteTotal>1000.00</verifactu:ImporteTotal>
-        <verifactu:TipoFactura>F1</verifactu:TipoFactura>
-        <verifactu:SerieFactura>A</verifactu:SerieFactura>
-        <verifactu:FechaOperacion>2024-01-15</verifactu:FechaOperacion>
-        <verifactu:ClaveRegimenEspecialOTrascendencia>01</verifactu:ClaveRegimenEspecialOTrascendencia>
-        <verifactu:DescripcionOperacion>Sale of goods</verifactu:DescripcionOperacion>
-        <verifactu:TipoDesglose>DesgloseTipoOperacion</verifactu:TipoDesglose>
-        <verifactu:MotivoBaja>
-          <verifactu:CodigoMotivoBaja>01</verifactu:CodigoMotivoBaja>
-          <verifactu:DescripcionMotivoBaja>Customer request</verifactu:DescripcionMotivoBaja>
-        </verifactu:MotivoBaja>
-        <verifactu:ReferenciaFacturaOriginal>
-          <verifactu:NumFacturaOriginal>INV-2024-001</verifactu:NumFacturaOriginal>
-          <verifactu:FechaFacturaOriginal>2024-01-15</verifactu:FechaFacturaOriginal>
-          <verifactu:CSVOriginal>ABC123DEF456</verifactu:CSVOriginal>
-        </verifactu:ReferenciaFacturaOriginal>
-      </verifactu:Factura>
-    </verifactu:Baja>
-  </soap:Body>
-</soap:Envelope></code></pre>
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;soap:Header&gt;
+    &lt;aeat:Autenticacion&gt;
+      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
+    &lt;/aeat:Autenticacion&gt;
+  &lt;/soap:Header&gt;
+  &lt;soap:Body&gt;
+    &lt;verifactu:Baja&gt;
+      &lt;verifactu:Cabecera&gt;
+        &lt;verifactu:NIFEmisor&gt;12345678Z&lt;/verifactu:NIFEmisor&gt;
+        &lt;verifactu:FechaEnvio&gt;2024-01-15T10:30:00&lt;/verifactu:FechaEnvio&gt;
+        &lt;verifactu:TiempoEsperaEnvio&gt;30&lt;/verifactu:TiempoEsperaEnvio&gt;
+        &lt;verifactu:TipoComunicacion&gt;Baja&lt;/verifactu:TipoComunicacion&gt;
+        &lt;verifactu:NumeroRegistro&gt;REG001&lt;/verifactu:NumeroRegistro&gt;
+        &lt;verifactu:Observaciones&gt;Invoice cancellation request&lt;/verifactu:Observaciones&gt;
+      &lt;/verifactu:Cabecera&gt;
+      &lt;verifactu:Factura&gt;
+        &lt;verifactu:NumFactura&gt;INV-2024-001&lt;/verifactu:NumFactura&gt;
+        &lt;verifactu:FechaFactura&gt;2024-01-15&lt;/verifactu:FechaFactura&gt;
+        &lt;verifactu:NIFReceptor&gt;87654321A&lt;/verifactu:NIFReceptor&gt;
+        &lt;verifactu:ImporteTotal&gt;1000.00&lt;/verifactu:ImporteTotal&gt;
+        &lt;verifactu:TipoFactura&gt;F1&lt;/verifactu:TipoFactura&gt;
+        &lt;verifactu:SerieFactura&gt;A&lt;/verifactu:SerieFactura&gt;
+        &lt;verifactu:FechaOperacion&gt;2024-01-15&lt;/verifactu:FechaOperacion&gt;
+        &lt;verifactu:ClaveRegimenEspecialOTrascendencia&gt;01&lt;/verifactu:ClaveRegimenEspecialOTrascendencia&gt;
+        &lt;verifactu:DescripcionOperacion&gt;Sale of goods&lt;/verifactu:DescripcionOperacion&gt;
+        &lt;verifactu:TipoDesglose&gt;DesgloseTipoOperacion&lt;/verifactu:TipoDesglose&gt;
+        &lt;verifactu:MotivoBaja&gt;
+          &lt;verifactu:CodigoMotivoBaja&gt;01&lt;/verifactu:CodigoMotivoBaja&gt;
+          &lt;verifactu:DescripcionMotivoBaja&gt;Customer request&lt;/verifactu:DescripcionMotivoBaja&gt;
+        &lt;/verifactu:MotivoBaja&gt;
+        &lt;verifactu:ReferenciaFacturaOriginal&gt;
+          &lt;verifactu:NumFacturaOriginal&gt;INV-2024-001&lt;/verifactu:NumFacturaOriginal&gt;
+          &lt;verifactu:FechaFacturaOriginal&gt;2024-01-15&lt;/verifactu:FechaFacturaOriginal&gt;
+          &lt;verifactu:CSVOriginal&gt;ABC123DEF456&lt;/verifactu:CSVOriginal&gt;
+        &lt;/verifactu:ReferenciaFacturaOriginal&gt;
+      &lt;/verifactu:Factura&gt;
+    &lt;/verifactu:Baja&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</code></pre>
                     </div>
                     
                     <div class="p-4 bg-blue-50 rounded-md mb-4">

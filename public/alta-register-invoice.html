@@ -259,64 +259,64 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"</code></pre>
                     <h2 class="text-2xl font-semibold mb-4">Complete SOAP Request Example</h2>
                     
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono overflow-x-auto"><code><?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu"
                xmlns:aeat="http://www.aeat.es/verifactu"
                xmlns:factura="urn:VeriFactu:Factura"
                xmlns:cabecera="urn:VeriFactu:Cabecera"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <soap:Header>
-    <aeat:Autenticacion>
-      <aeat:Certificado>BASE64_ENCODED_CERTIFICATE</aeat:Certificado>
-    </aeat:Autenticacion>
-  </soap:Header>
-  <soap:Body>
-    <verifactu:Alta>
-      <verifactu:Cabecera>
-        <verifactu:NIFEmisor>12345678Z</verifactu:NIFEmisor>
-        <verifactu:FechaEnvio>2024-01-15T10:30:00</verifactu:FechaEnvio>
-        <verifactu:TiempoEsperaEnvio>30</verifactu:TiempoEsperaEnvio>
-        <verifactu:TipoComunicacion>Alta</verifactu:TipoComunicacion>
-        <verifactu:NumeroRegistro>REG001</verifactu:NumeroRegistro>
-        <verifactu:Observaciones>Test invoice registration</verifactu:Observaciones>
-      </verifactu:Cabecera>
-      <verifactu:Factura>
-        <verifactu:NumFactura>INV-2024-001</verifactu:NumFactura>
-        <verifactu:FechaFactura>2024-01-15</verifactu:FechaFactura>
-        <verifactu:NIFReceptor>87654321A</verifactu:NIFReceptor>
-        <verifactu:ImporteTotal>1000.00</verifactu:ImporteTotal>
-        <verifactu:TipoFactura>F1</verifactu:TipoFactura>
-        <verifactu:SerieFactura>A</verifactu:SerieFactura>
-        <verifactu:FechaOperacion>2024-01-15</verifactu:FechaOperacion>
-        <verifactu:ClaveRegimenEspecialOTrascendencia>01</verifactu:ClaveRegimenEspecialOTrascendencia>
-        <verifactu:DescripcionOperacion>Sale of goods</verifactu:DescripcionOperacion>
-        <verifactu:TipoDesglose>DesgloseTipoOperacion</verifactu:TipoDesglose>
-        <verifactu:DetalleFactura>
-          <verifactu:IDDetalleFactura>1</verifactu:IDDetalleFactura>
-          <verifactu:DescripcionDetalle>Product description</verifactu:DescripcionDetalle>
-          <verifactu:Cantidad>1.00</verifactu:Cantidad>
-          <verifactu:PrecioUnitario>1000.00</verifactu:PrecioUnitario>
-          <verifactu:ImporteTotal>1000.00</verifactu:ImporteTotal>
-          <verifactu:DesgloseTipoOperacion>
-            <verifactu:Sujeta>
-              <verifactu:NoExenta>
-                <verifactu:TipoNoExenta>S1</verifactu:TipoNoExenta>
-                <verifactu:TipoDesglose>DesgloseTipoOperacion</verifactu:TipoDesglose>
-                <verifactu:DesgloseIVA>
-                  <verifactu:TipoImpositivo>21.00</verifactu:TipoImpositivo>
-                  <verifactu:BaseImponible>826.45</verifactu:BaseImponible>
-                  <verifactu:CuotaImpuesto>173.55</verifactu:CuotaImpuesto>
-                </verifactu:DesgloseIVA>
-              </verifactu:NoExenta>
-            </verifactu:Sujeta>
-          </verifactu:DesgloseTipoOperacion>
-        </verifactu:DetalleFactura>
-      </verifactu:Factura>
-    </verifactu:Alta>
-  </soap:Body>
-</soap:Envelope></code></pre>
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;soap:Header&gt;
+    &lt;aeat:Autenticacion&gt;
+      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
+    &lt;/aeat:Autenticacion&gt;
+  &lt;/soap:Header&gt;
+  &lt;soap:Body&gt;
+    &lt;verifactu:Alta&gt;
+      &lt;verifactu:Cabecera&gt;
+        &lt;verifactu:NIFEmisor&gt;12345678Z&lt;/verifactu:NIFEmisor&gt;
+        &lt;verifactu:FechaEnvio&gt;2024-01-15T10:30:00&lt;/verifactu:FechaEnvio&gt;
+        &lt;verifactu:TiempoEsperaEnvio&gt;30&lt;/verifactu:TiempoEsperaEnvio&gt;
+        &lt;verifactu:TipoComunicacion&gt;Alta&lt;/verifactu:TipoComunicacion&gt;
+        &lt;verifactu:NumeroRegistro&gt;REG001&lt;/verifactu:NumeroRegistro&gt;
+        &lt;verifactu:Observaciones&gt;Test invoice registration&lt;/verifactu:Observaciones&gt;
+      &lt;/verifactu:Cabecera&gt;
+      &lt;verifactu:Factura&gt;
+        &lt;verifactu:NumFactura&gt;INV-2024-001&lt;/verifactu:NumFactura&gt;
+        &lt;verifactu:FechaFactura&gt;2024-01-15&lt;/verifactu:FechaFactura&gt;
+        &lt;verifactu:NIFReceptor&gt;87654321A&lt;/verifactu:NIFReceptor&gt;
+        &lt;verifactu:ImporteTotal&gt;1000.00&lt;/verifactu:ImporteTotal&gt;
+        &lt;verifactu:TipoFactura&gt;F1&lt;/verifactu:TipoFactura&gt;
+        &lt;verifactu:SerieFactura&gt;A&lt;/verifactu:SerieFactura&gt;
+        &lt;verifactu:FechaOperacion&gt;2024-01-15&lt;/verifactu:FechaOperacion&gt;
+        &lt;verifactu:ClaveRegimenEspecialOTrascendencia&gt;01&lt;/verifactu:ClaveRegimenEspecialOTrascendencia&gt;
+        &lt;verifactu:DescripcionOperacion&gt;Sale of goods&lt;/verifactu:DescripcionOperacion&gt;
+        &lt;verifactu:TipoDesglose&gt;DesgloseTipoOperacion&lt;/verifactu:TipoDesglose&gt;
+        &lt;verifactu:DetalleFactura&gt;
+          &lt;verifactu:IDDetalleFactura&gt;1&lt;/verifactu:IDDetalleFactura&gt;
+          &lt;verifactu:DescripcionDetalle&gt;Product description&lt;/verifactu:DescripcionDetalle&gt;
+          &lt;verifactu:Cantidad&gt;1.00&lt;/verifactu:Cantidad&gt;
+          &lt;verifactu:PrecioUnitario&gt;1000.00&lt;/verifactu:PrecioUnitario&gt;
+          &lt;verifactu:ImporteTotal&gt;1000.00&lt;/verifactu:ImporteTotal&gt;
+          &lt;verifactu:DesgloseTipoOperacion&gt;
+            &lt;verifactu:Sujeta&gt;
+              &lt;verifactu:NoExenta&gt;
+                &lt;verifactu:TipoNoExenta&gt;S1&lt;/verifactu:TipoNoExenta&gt;
+                &lt;verifactu:TipoDesglose&gt;DesgloseTipoOperacion&lt;/verifactu:TipoDesglose&gt;
+                &lt;verifactu:DesgloseIVA&gt;
+                  &lt;verifactu:TipoImpositivo&gt;21.00&lt;/verifactu:TipoImpositivo&gt;
+                  &lt;verifactu:BaseImponible&gt;826.45&lt;/verifactu:BaseImponible&gt;
+                  &lt;verifactu:CuotaImpuesto&gt;173.55&lt;/verifactu:CuotaImpuesto&gt;
+                &lt;/verifactu:DesgloseIVA&gt;
+              &lt;/verifactu:NoExenta&gt;
+            &lt;/verifactu:Sujeta&gt;
+          &lt;/verifactu:DesgloseTipoOperacion&gt;
+        &lt;/verifactu:DetalleFactura&gt;
+      &lt;/verifactu:Factura&gt;
+    &lt;/verifactu:Alta&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</code></pre>
                     </div>
                     
                     <div class="p-4 bg-blue-50 rounded-md mb-4">
@@ -368,40 +368,40 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"</code></pre>
                     
                     <h3 class="text-lg font-semibold mb-3">Success Response</h3>
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono overflow-x-auto"><code><?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu"
                xmlns:aeat="http://www.aeat.es/verifactu"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <soap:Header>
-    <aeat:RespuestaAutenticacion>
-      <aeat:Estado>Correcto</aeat:Estado>
-      <aeat:Timestamp>2024-01-15T10:30:30</aeat:Timestamp>
-    </aeat:RespuestaAutenticacion>
-  </soap:Header>
-  <soap:Body>
-    <verifactu:AltaResponse>
-      <verifactu:EstadoEnvio>Correcto</verifactu:EstadoEnvio>
-      <verifactu:TiempoEsperaEnvio>30</verifactu:TiempoEsperaEnvio>
-      <verifactu:Timestamp>2024-01-15T10:30:30</verifactu:Timestamp>
-      <verifactu:RespuestaLinea>
-        <verifactu:IDDetalleFactura>1</verifactu:IDDetalleFactura>
-        <verifactu:EstadoRegistro>Correcto</verifactu:EstadoRegistro>
-        <verifactu:CSV>ABC123DEF456</verifactu:CSV>
-        <verifactu:Timestamp>2024-01-15T10:30:30</verifactu:Timestamp>
-        <verifactu:NumeroRegistro>REG001</verifactu:NumeroRegistro>
-        <verifactu:Observaciones>Invoice successfully registered</verifactu:Observaciones>
-      </verifactu:RespuestaLinea>
-      <verifactu:Resumen>
-        <verifactu:TotalFacturas>1</verifactu:TotalFacturas>
-        <verifactu:FacturasCorrectas>1</verifactu:FacturasCorrectas>
-        <verifactu:FacturasIncorrectas>0</verifactu:FacturasIncorrectas>
-        <verifactu:ImporteTotal>1000.00</verifactu:ImporteTotal>
-      </verifactu:Resumen>
-    </verifactu:AltaResponse>
-  </soap:Body>
-</soap:Envelope></code></pre>
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;soap:Header&gt;
+    &lt;aeat:RespuestaAutenticacion&gt;
+      &lt;aeat:Estado&gt;Correcto&lt;/aeat:Estado&gt;
+      &lt;aeat:Timestamp&gt;2024-01-15T10:30:30&lt;/aeat:Timestamp&gt;
+    &lt;/aeat:RespuestaAutenticacion&gt;
+  &lt;/soap:Header&gt;
+  &lt;soap:Body&gt;
+    &lt;verifactu:AltaResponse&gt;
+      &lt;verifactu:EstadoEnvio&gt;Correcto&lt;/verifactu:EstadoEnvio&gt;
+      &lt;verifactu:TiempoEsperaEnvio&gt;30&lt;/verifactu:TiempoEsperaEnvio&gt;
+      &lt;verifactu:Timestamp&gt;2024-01-15T10:30:30&lt;/verifactu:Timestamp&gt;
+      &lt;verifactu:RespuestaLinea&gt;
+        &lt;verifactu:IDDetalleFactura&gt;1&lt;/verifactu:IDDetalleFactura&gt;
+        &lt;verifactu:EstadoRegistro&gt;Correcto&lt;/verifactu:EstadoRegistro&gt;
+        &lt;verifactu:CSV&gt;ABC123DEF456&lt;/verifactu:CSV&gt;
+        &lt;verifactu:Timestamp&gt;2024-01-15T10:30:30&lt;/verifactu:Timestamp&gt;
+        &lt;verifactu:NumeroRegistro&gt;REG001&lt;/verifactu:NumeroRegistro&gt;
+        &lt;verifactu:Observaciones&gt;Invoice successfully registered&lt;/verifactu:Observaciones&gt;
+      &lt;/verifactu:RespuestaLinea&gt;
+      &lt;verifactu:Resumen&gt;
+        &lt;verifactu:TotalFacturas&gt;1&lt;/verifactu:TotalFacturas&gt;
+        &lt;verifactu:FacturasCorrectas&gt;1&lt;/verifactu:FacturasCorrectas&gt;
+        &lt;verifactu:FacturasIncorrectas&gt;0&lt;/verifactu:FacturasIncorrectas&gt;
+        &lt;verifactu:ImporteTotal&gt;1000.00&lt;/verifactu:ImporteTotal&gt;
+      &lt;/verifactu:Resumen&gt;
+    &lt;/verifactu:AltaResponse&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</code></pre>
                     </div>
                     
                     <div class="p-4 bg-green-50 rounded-md mb-4">
@@ -416,27 +416,27 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"</code></pre>
                     
                     <h3 class="text-lg font-semibold mb-3">Error Response</h3>
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono overflow-x-auto"><code><?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu"
                xmlns:aeat="http://www.aeat.es/verifactu"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <soap:Header />
-  <soap:Body>
-    <soap:Fault>
-      <faultcode>soap:Server</faultcode>
-      <faultstring>Error processing request</faultstring>
-      <detail>
-        <aeat:Error>
-          <aeat:CodigoError>E001</aeat:CodigoError>
-          <aeat:DescripcionError>Invalid NIF format</aeat:DescripcionError>
-          <aeat:Timestamp>2024-01-15T10:30:30</aeat:Timestamp>
-        </aeat:Error>
-      </detail>
-    </soap:Fault>
-  </soap:Body>
-</soap:Envelope></code></pre>
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;soap:Header /&gt;
+  &lt;soap:Body&gt;
+    &lt;soap:Fault&gt;
+      &lt;faultcode&gt;soap:Server&lt;/faultcode&gt;
+      &lt;faultstring&gt;Error processing request&lt;/faultstring&gt;
+      &lt;detail&gt;
+        &lt;aeat:Error&gt;
+          &lt;aeat:CodigoError&gt;E001&lt;/aeat:CodigoError&gt;
+          &lt;aeat:DescripcionError&gt;Invalid NIF format&lt;/aeat:DescripcionError&gt;
+          &lt;aeat:Timestamp&gt;2024-01-15T10:30:30&lt;/aeat:Timestamp&gt;
+        &lt;/aeat:Error&gt;
+      &lt;/detail&gt;
+    &lt;/soap:Fault&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</code></pre>
                     </div>
                     
                     <div class="p-4 bg-red-50 rounded-md">

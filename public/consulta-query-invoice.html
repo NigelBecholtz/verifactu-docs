@@ -246,46 +246,46 @@
                     <h2 class="text-2xl font-semibold mb-4">Complete SOAP Request Example</h2>
                     
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono overflow-x-auto"><code><?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:verifactu="urn:VeriFactu"
                xmlns:aeat="http://www.aeat.es/verifactu"
                xmlns:factura="urn:VeriFactu:Factura"
                xmlns:cabecera="urn:VeriFactu:Cabecera"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <soap:Header>
-    <aeat:Autenticacion>
-      <aeat:Certificado>BASE64_ENCODED_CERTIFICATE</aeat:Certificado>
-    </aeat:Autenticacion>
-  </soap:Header>
-  <soap:Body>
-    <verifactu:Consulta>
-      <verifactu:Cabecera>
-        <verifactu:NIFEmisor>12345678Z</verifactu:NIFEmisor>
-        <verifactu:FechaEnvio>2024-01-15T10:30:00</verifactu:FechaEnvio>
-        <verifactu:TiempoEsperaEnvio>30</verifactu:TiempoEsperaEnvio>
-        <verifactu:TipoComunicacion>Consulta</verifactu:TipoComunicacion>
-        <verifactu:NumeroRegistro>REG001</verifactu:NumeroRegistro>
-        <verifactu:Observaciones>Invoice query request</verifactu:Observaciones>
-      </verifactu:Cabecera>
-      <verifactu:CriteriosBusqueda>
-        <verifactu:TipoConsulta>PorNumeroFactura</verifactu:TipoConsulta>
-        <verifactu:NumFactura>INV-2024-001</verifactu:NumFactura>
-        <verifactu:SerieFactura>A</verifactu:SerieFactura>
-        <verifactu:FechaDesde>2024-01-01</verifactu:FechaDesde>
-        <verifactu:FechaHasta>2024-01-31</verifactu:FechaHasta>
-        <verifactu:NIFReceptor>87654321A</verifactu:NIFReceptor>
-        <verifactu:ImporteDesde>0.00</verifactu:ImporteDesde>
-        <verifactu:ImporteHasta>10000.00</verifactu:ImporteHasta>
-        <verifactu:TipoFactura>F1</verifactu:TipoFactura>
-        <verifactu:EstadoFactura>Todas</verifactu:EstadoFactura>
-        <verifactu:Pagina>1</verifactu:Pagina>
-        <verifactu:RegistrosPorPagina>10</verifactu:RegistrosPorPagina>
-      </verifactu:CriteriosBusqueda>
-    </verifactu:Consulta>
-  </soap:Body>
-</soap:Envelope></code></pre>
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;soap:Header&gt;
+    &lt;aeat:Autenticacion&gt;
+      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
+    &lt;/aeat:Autenticacion&gt;
+  &lt;/soap:Header&gt;
+  &lt;soap:Body&gt;
+    &lt;verifactu:Consulta&gt;
+      &lt;verifactu:Cabecera&gt;
+        &lt;verifactu:NIFEmisor&gt;12345678Z&lt;/verifactu:NIFEmisor&gt;
+        &lt;verifactu:FechaEnvio&gt;2024-01-15T10:30:00&lt;/verifactu:FechaEnvio&gt;
+        &lt;verifactu:TiempoEsperaEnvio&gt;30&lt;/verifactu:TiempoEsperaEnvio&gt;
+        &lt;verifactu:TipoComunicacion&gt;Consulta&lt;/verifactu:TipoComunicacion&gt;
+        &lt;verifactu:NumeroRegistro&gt;REG001&lt;/verifactu:NumeroRegistro&gt;
+        &lt;verifactu:Observaciones&gt;Invoice query request&lt;/verifactu:Observaciones&gt;
+      &lt;/verifactu:Cabecera&gt;
+      &lt;verifactu:CriteriosBusqueda&gt;
+        &lt;verifactu:TipoConsulta&gt;PorNumeroFactura&lt;/verifactu:TipoConsulta&gt;
+        &lt;verifactu:NumFactura&gt;INV-2024-001&lt;/verifactu:NumFactura&gt;
+        &lt;verifactu:SerieFactura&gt;A&lt;/verifactu:SerieFactura&gt;
+        &lt;verifactu:FechaDesde&gt;2024-01-01&lt;/verifactu:FechaDesde&gt;
+        &lt;verifactu:FechaHasta&gt;2024-01-31&lt;/verifactu:FechaHasta&gt;
+        &lt;verifactu:NIFReceptor&gt;87654321A&lt;/verifactu:NIFReceptor&gt;
+        &lt;verifactu:ImporteDesde&gt;0.00&lt;/verifactu:ImporteDesde&gt;
+        &lt;verifactu:ImporteHasta&gt;10000.00&lt;/verifactu:ImporteHasta&gt;
+        &lt;verifactu:TipoFactura&gt;F1&lt;/verifactu:TipoFactura&gt;
+        &lt;verifactu:EstadoFactura&gt;Todas&lt;/verifactu:EstadoFactura&gt;
+        &lt;verifactu:Pagina&gt;1&lt;/verifactu:Pagina&gt;
+        &lt;verifactu:RegistrosPorPagina&gt;10&lt;/verifactu:RegistrosPorPagina&gt;
+      &lt;/verifactu:CriteriosBusqueda&gt;
+    &lt;/verifactu:Consulta&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</code></pre>
                     </div>
                     
                     <div class="p-4 bg-blue-50 rounded-md mb-4">
