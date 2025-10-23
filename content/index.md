@@ -1,26 +1,16 @@
-# AEAT VERI*FACTU API Documentation
+# Welcome to AEAT VERI*FACTU API documentation
 
-Welcome to the AEAT VERI*FACTU API documentation for Spanish tax authority invoice verification integration.
+#### Base URL
 
-## Base URL
+<https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP>
 
-**Test Environment:** `https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP`  
-**Production Environment:** `https://www1.agenciatributaria.gob.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP`
+Find out all APIs at `API Reference` tab.
 
-Find out all API operations in the `API Reference` section.
+### Authentication
 
-## Authentication
+When working with the API, you need to use **mutual TLS authentication** with a qualified electronic certificate. For example: `X-509 Certificate <CERTIFICATE>`
 
-When working with the API, you need to use **mutual TLS authentication** with a qualified electronic certificate. The certificate must be obtained from FNMT (Spanish National Mint and Stamp Factory).
-
-### Certificate Requirements
-
-- **Format**: X.509 certificate with private key
-- **Authority**: FNMT (Fábrica Nacional de Moneda y Timbre)
-- **Storage**: Must be securely stored on your server
-- **Validity**: Typically 2-3 years, must be renewed before expiration
-
-### Obtaining the Certificate
+##### Obtaining the certificate
 
 To get your certificate, visit the [FNMT website](https://www.sede.fnmt.gob.es/) and complete the registration process:
 
@@ -29,11 +19,17 @@ To get your certificate, visit the [FNMT website](https://www.sede.fnmt.gob.es/)
 
 Navigate to "Certificados de Persona Física" or "Certificados de Persona Jurídica" and follow the online registration process.
 
+**Certificate Requirements:**
+- **Format**: X.509 certificate with private key
+- **Authority**: FNMT (Fábrica Nacional de Moneda y Timbre)
+- **Storage**: Must be securely stored on your server
+- **Validity**: Typically 2-3 years, must be renewed before expiration
+
 ## API Operations
 
 ### Invoice Management
 - **[Register Invoice](alta-register-invoice.md)** - Register new invoices with AEAT
-- **[Cancel Invoice](baja-cancel-invoice.md)** - Cancel registered invoices
+- **[Cancel Invoice](baja-cancel-invoice.md)** - Cancel registered invoices  
 - **[Query Invoice](consulta-query-invoice.md)** - Retrieve invoice information
 
 ### Technical Reference
