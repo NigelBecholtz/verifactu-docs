@@ -1,0 +1,18 @@
+{
+  "name": "verifactu-docs",
+  "version": "1.0.0",
+  "description": "AEAT VERI*FACTU API Documentation",
+  "type": "module",
+  "scripts": {
+    "dev": "zudoku dev",
+    "build": "zudoku build",
+    "preview": "zudoku preview",
+    "deploy": "zudoku deploy"
+  },
+  "keywords": ["api", "documentation", "aeat", "verifactu", "spanish", "tax"],
+  "author": "Nigel Becholtz",
+  "license": "MIT",
+  "dependencies": {
+    "zudoku": "^0.62.0"
+  }
+}
