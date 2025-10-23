@@ -1,461 +1,394 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AEAT VERI*FACTU API Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        border: "hsl(var(--border))",
+                        input: "hsl(var(--input))",
+                        ring: "hsl(var(--ring))",
+                        background: "hsl(var(--background))",
+                        foreground: "hsl(var(--foreground))",
+                        primary: {
+                            DEFAULT: "hsl(var(--primary))",
+                            foreground: "hsl(var(--primary-foreground))",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(var(--secondary))",
+                            foreground: "hsl(var(--secondary-foreground))",
+                        },
+                        destructive: {
+                            DEFAULT: "hsl(var(--destructive))",
+                            foreground: "hsl(var(--destructive-foreground))",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(var(--muted))",
+                            foreground: "hsl(var(--muted-foreground))",
+                        },
+                        accent: {
+                            DEFAULT: "hsl(var(--accent))",
+                            foreground: "hsl(var(--accent-foreground))",
+                        },
+                        popover: {
+                            DEFAULT: "hsl(var(--popover))",
+                            foreground: "hsl(var(--popover-foreground))",
+                        },
+                        card: {
+                            DEFAULT: "hsl(var(--card))",
+                            foreground: "hsl(var(--card-foreground))",
+                        },
+                    },
+                }
+            }
+        }
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 222.2 84% 4.9%;
+            --primary: 221.2 83.2% 53.3%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96%;
+            --secondary-foreground: 222.2 84% 4.9%;
+            --muted: 210 40% 96%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96%;
+            --accent-foreground: 222.2 84% 4.9%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 221.2 83.2% 53.3%;
         }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #fff;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        .sidebar {
-            width: 280px;
-            background: #f8fafc;
-            border-right: 1px solid #e2e8f0;
-            padding: 2rem 0;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-        
-        .sidebar h2 {
-            padding: 0 2rem;
-            margin-bottom: 1rem;
-            color: #1e293b;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        
-        .sidebar ul {
-            list-style: none;
-        }
-        
-        .sidebar li {
-            margin: 0;
-        }
-        
-        .sidebar a {
-            display: block;
-            padding: 0.75rem 2rem;
-            color: #64748b;
-            text-decoration: none;
-            transition: all 0.2s;
-            border-left: 3px solid transparent;
-        }
-        
-        .sidebar a:hover {
-            background: #f1f5f9;
-            color: #1e293b;
-            border-left-color: #3b82f6;
-        }
-        
-        .sidebar a.active {
-            background: #eff6ff;
-            color: #1d4ed8;
-            border-left-color: #3b82f6;
-            font-weight: 500;
-        }
-        
-        .main-content {
-            flex: 1;
-            margin-left: 280px;
-            padding: 2rem;
-        }
-        
-        .header {
-            margin-bottom: 3rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .header h1 {
-            color: #1e293b;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-        
-        .header p {
-            color: #64748b;
-            font-size: 1.2rem;
-        }
-        
-        .section {
-            margin-bottom: 3rem;
-        }
-        
-        .section h2 {
-            color: #1e293b;
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-        
-        .section h3 {
-            color: #374151;
-            font-size: 1.3rem;
-            margin: 2rem 0 1rem 0;
-            font-weight: 600;
-        }
-        
-        .section h4 {
-            color: #4b5563;
-            font-size: 1.1rem;
-            margin: 1.5rem 0 0.5rem 0;
-            font-weight: 600;
-        }
-        
-        .section p {
-            margin-bottom: 1rem;
-            color: #4b5563;
-        }
-        
-        .section ul, .section ol {
-            margin: 1rem 0;
-            padding-left: 1.5rem;
-        }
-        
-        .section li {
-            margin: 0.5rem 0;
-            color: #4b5563;
-        }
-        
-        .code {
-            background: #1e293b;
-            color: #f1f5f9;
-            padding: 1rem;
-            border-radius: 8px;
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 0.9rem;
-            margin: 1rem 0;
-            overflow-x: auto;
-        }
-        
-        .inline-code {
-            background: #f1f5f9;
-            color: #1e293b;
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 0.9rem;
-        }
-        
-        .note {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        
-        .note strong {
-            color: #92400e;
-        }
-        
-        .warning {
-            background: #fef2f2;
-            border: 1px solid #f87171;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        
-        .warning strong {
-            color: #dc2626;
-        }
-        
-        .success {
-            background: #f0fdf4;
-            border: 1px solid #22c55e;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        
-        .success strong {
-            color: #16a34a;
-        }
-        
-        .base-url {
-            background: #1e293b;
-            color: #f1f5f9;
-            padding: 1.5rem;
-            border-radius: 8px;
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 1.1rem;
-            margin: 1rem 0;
-            text-align: center;
-        }
-        
-        .base-url a {
-            color: #60a5fa;
-            text-decoration: none;
-        }
-        
-        .base-url a:hover {
-            text-decoration: underline;
-        }
-        
-        .card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1rem 0;
-        }
-        
-        .card h4 {
-            color: #1e293b;
-            margin-bottom: 0.5rem;
-        }
-        
-        .card p {
-            color: #64748b;
-            margin: 0;
-        }
-        
-        .card a {
-            color: #3b82f6;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .card a:hover {
-            text-decoration: underline;
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-            
-            .main-content {
-                margin-left: 0;
-                padding: 1rem;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
+        .dark {
+            --background: 222.2 84% 4.9%;
+            --foreground: 210 40% 98%;
+            --card: 222.2 84% 4.9%;
+            --card-foreground: 210 40% 98%;
+            --popover: 222.2 84% 4.9%;
+            --popover-foreground: 210 40% 98%;
+            --primary: 217.2 91.2% 59.8%;
+            --primary-foreground: 222.2 84% 4.9%;
+            --secondary: 217.2 32.6% 17.5%;
+            --secondary-foreground: 210 40% 98%;
+            --muted: 217.2 32.6% 17.5%;
+            --muted-foreground: 215 20.2% 65.1%;
+            --accent: 217.2 32.6% 17.5%;
+            --accent-foreground: 210 40% 98%;
+            --destructive: 0 62.8% 30.6%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 217.2 32.6% 17.5%;
+            --input: 217.2 32.6% 17.5%;
+            --ring: 224.3 76.3% 94.1%;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <nav class="sidebar">
-            <h2>Documentation</h2>
-            <ul>
-                <li><a href="#welcome" class="active">Welcome</a></li>
-                <li><a href="#authentication">Authentication</a></li>
-                <li><a href="#api-operations">API Operations</a></li>
-                <li><a href="#implementation">Implementation Guide</a></li>
-                <li><a href="#resources">Resources</a></li>
-            </ul>
-            
-            <h2>API Reference</h2>
-            <ul>
-                <li><a href="alta-register-invoice.html">Register Invoice</a></li>
-                <li><a href="baja-cancel-invoice.html">Cancel Invoice</a></li>
-                <li><a href="consulta-query-invoice.html">Query Invoice</a></li>
-                <li><a href="parameters-and-fields.html">Parameters & Fields</a></li>
-                <li><a href="error-handling.html">Error Handling</a></li>
-                <li><a href="xsd-schema-reference.html">XSD Schema</a></li>
-            </ul>
-            
-            <h2>Getting Started</h2>
-            <ul>
-                <li><a href="authentication.html">Authentication Setup</a></li>
-                <li><a href="node-implementation.html">Node.js Implementation</a></li>
-                <li><a href="examples.html">Examples</a></li>
-                <li><a href="quick-reference.html">Quick Reference</a></li>
-            </ul>
-        </nav>
-        
-        <main class="main-content">
-            <div class="header">
-                <h1>Welcome to AEAT VERI*FACTU API documentation</h1>
-                <p>Complete technical documentation for AEAT VERI*FACTU SOAP webservice</p>
-            </div>
-            
-            <section id="welcome" class="section">
-                <h2>Base URL</h2>
-                <div class="base-url">
-                    <a href="https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP" target="_blank">
-                        https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP
+<body class="h-full bg-background text-foreground">
+    <div class="grid max-w-screen-2xl w-full mx-auto grid-rows-[min-content_1fr] grid-cols-1 lg:grid-cols-[280px_1fr]">
+        <!-- Sidebar -->
+        <aside class="hidden lg:block border-r bg-card">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <span class="text-primary-foreground font-bold text-sm">AEAT</span>
+                    </div>
+                    <div>
+                        <h1 class="font-semibold text-lg">VERI*FACTU API</h1>
+                        <p class="text-sm text-muted-foreground">Documentation</p>
+                    </div>
+                </div>
+                
+                <nav class="space-y-1">
+                    <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Documentation</div>
+                    <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-md bg-accent text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                        </svg>
+                        Welcome
                     </a>
-                </div>
-                <p>Find out all APIs at <strong>API Reference</strong> section.</p>
-            </section>
-            
-            <section id="authentication" class="section">
-                <h2>Authentication</h2>
-                <p>When working with the API, you need to use <strong>mutual TLS authentication</strong> with a qualified electronic certificate. For example: <span class="inline-code">X-509 Certificate &lt;CERTIFICATE&gt;</span></p>
+                    <a href="authentication.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                        </svg>
+                        Authentication
+                    </a>
+                    
+                    <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 mt-6">API Reference</div>
+                    <a href="alta-register-invoice.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Register Invoice
+                    </a>
+                    <a href="baja-cancel-invoice.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        Cancel Invoice
+                    </a>
+                    <a href="consulta-query-invoice.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        Query Invoice
+                    </a>
+                    <a href="parameters-and-fields.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Parameters & Fields
+                    </a>
+                    <a href="error-handling.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                        Error Handling
+                    </a>
+                    <a href="xsd-schema-reference.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                        XSD Schema
+                    </a>
+                    
+                    <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 mt-6">Getting Started</div>
+                    <a href="authentication.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                        </svg>
+                        Authentication Setup
+                    </a>
+                    <a href="node-implementation.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                        Node.js Implementation
+                    </a>
+                    <a href="examples.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                        Examples
+                    </a>
+                    <a href="quick-reference.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        Quick Reference
+                    </a>
+                </nav>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="px-4 lg:px-8 py-8">
+            <div class="prose dark:prose-invert prose-neutral max-w-none">
+                <div class="text-sm font-semibold text-primary mb-2">AEAT VERI*FACTU API</div>
+                <h1 class="group relative text-4xl font-extrabold flex gap-3.5 items-center mb-6">
+                    Welcome to AEAT VERI*FACTU API documentation
+                </h1>
+                <p class="text-lg text-muted-foreground mb-8">This documentation provides a comprehensive guide for integrating with the Spanish tax authority's VERI*FACTU system for electronic invoice verification.</p>
                 
-                <h3>Obtaining the certificate</h3>
-                <p>To get your certificate, visit the <a href="https://www.sede.fnmt.gob.es/" target="_blank">FNMT website</a> and complete the registration process:</p>
-                <ul>
-                    <li><strong>For Individuals (Persona Física)</strong>: FREE</li>
-                    <li><strong>For Companies (Persona Jurídica)</strong>: €14-20</li>
-                </ul>
-                <p>Navigate to "Certificados de Persona Física" or "Certificados de Persona Jurídica" and follow the online registration process.</p>
-                
-                <div class="card">
-                    <h4>Certificate Requirements</h4>
-                    <ul>
-                        <li><strong>Format</strong>: X.509 certificate with private key</li>
-                        <li><strong>Authority</strong>: FNMT (Fábrica Nacional de Moneda y Timbre)</li>
-                        <li><strong>Storage</strong>: Must be securely stored on your server</li>
-                        <li><strong>Validity</strong>: Typically 2-3 years, must be renewed before expiration</li>
-                    </ul>
-                </div>
-            </section>
-            
-            <section id="api-operations" class="section">
-                <h2>API Operations</h2>
-                
-                <h3>Invoice Management</h3>
-                <div class="grid">
-                    <div class="card">
-                        <h4><a href="alta-register-invoice.html">Register Invoice</a></h4>
-                        <p>Register new invoices with AEAT</p>
+                <div class="grid gap-6 md:grid-cols-2 mb-8">
+                    <div class="rounded-lg border bg-card p-6">
+                        <h3 class="text-lg font-semibold mb-3">Base URL</h3>
+                        <div class="space-y-2">
+                            <div>
+                                <strong class="text-sm text-muted-foreground">Test Environment:</strong>
+                                <code class="block mt-1 p-2 bg-muted rounded text-sm font-mono">https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP</code>
+                            </div>
+                            <div>
+                                <strong class="text-sm text-muted-foreground">Production Environment:</strong>
+                                <code class="block mt-1 p-2 bg-muted rounded text-sm font-mono">https://www1.agenciatributaria.gob.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP</code>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card">
-                        <h4><a href="baja-cancel-invoice.html">Cancel Invoice</a></h4>
-                        <p>Cancel registered invoices</p>
-                    </div>
-                    <div class="card">
-                        <h4><a href="consulta-query-invoice.html">Query Invoice</a></h4>
-                        <p>Retrieve invoice information</p>
+                    
+                    <div class="rounded-lg border bg-card p-6">
+                        <h3 class="text-lg font-semibold mb-3">Authentication</h3>
+                        <p class="text-sm text-muted-foreground mb-3">Mutual TLS authentication with qualified electronic certificate required.</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                <span>Individual (Persona Física): FREE</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                <span>Company (Persona Jurídica): €14-20</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <h3>Technical Reference</h3>
-                <div class="grid">
-                    <div class="card">
-                        <h4><a href="parameters-and-fields.html">Parameters & Fields</a></h4>
-                        <p>Detailed field explanations</p>
+                <div class="grid gap-6 md:grid-cols-2 mb-8">
+                    <div class="rounded-lg border bg-card p-6">
+                        <h3 class="text-lg font-semibold mb-3">API Operations</h3>
+                        <div class="space-y-3">
+                            <a href="alta-register-invoice.html" class="flex items-center gap-3 p-3 rounded-md hover:bg-accent">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <div>
+                                    <div class="font-medium">Register Invoice</div>
+                                    <div class="text-sm text-muted-foreground">Register new invoices with AEAT</div>
+                                </div>
+                            </a>
+                            <a href="baja-cancel-invoice.html" class="flex items-center gap-3 p-3 rounded-md hover:bg-accent">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                                <div>
+                                    <div class="font-medium">Cancel Invoice</div>
+                                    <div class="text-sm text-muted-foreground">Cancel registered invoices</div>
+                                </div>
+                            </a>
+                            <a href="consulta-query-invoice.html" class="flex items-center gap-3 p-3 rounded-md hover:bg-accent">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                <div>
+                                    <div class="font-medium">Query Invoice</div>
+                                    <div class="text-sm text-muted-foreground">Retrieve invoice information</div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
-                    <div class="card">
-                        <h4><a href="error-handling.html">Error Handling</a></h4>
-                        <p>Error codes and troubleshooting</p>
-                    </div>
-                    <div class="card">
-                        <h4><a href="xsd-schema-reference.html">XSD Schema Reference</a></h4>
-                        <p>Complete schema documentation</p>
+                    
+                    <div class="rounded-lg border bg-card p-6">
+                        <h3 class="text-lg font-semibold mb-3">Implementation Guide</h3>
+                        <div class="space-y-3">
+                            <a href="authentication.html" class="flex items-center gap-3 p-3 rounded-md hover:bg-accent">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                                </svg>
+                                <div>
+                                    <div class="font-medium">Authentication Setup</div>
+                                    <div class="text-sm text-muted-foreground">Certificate configuration and TLS setup</div>
+                                </div>
+                            </a>
+                            <a href="node-implementation.html" class="flex items-center gap-3 p-3 rounded-md hover:bg-accent">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                                </svg>
+                                <div>
+                                    <div class="font-medium">Node.js Implementation</div>
+                                    <div class="text-sm text-muted-foreground">Code examples and database setup</div>
+                                </div>
+                            </a>
+                            <a href="examples.html" class="flex items-center gap-3 p-3 rounded-md hover:bg-accent">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                </svg>
+                                <div>
+                                    <div class="font-medium">Complete Examples</div>
+                                    <div class="text-sm text-muted-foreground">Working examples for common scenarios</div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </section>
-            
-            <section id="implementation" class="section">
-                <h2>Implementation Guide</h2>
                 
-                <h3>Getting Started</h3>
-                <div class="grid">
-                    <div class="card">
-                        <h4><a href="authentication.html">Authentication Setup</a></h4>
-                        <p>Certificate configuration and TLS setup</p>
-                    </div>
-                    <div class="card">
-                        <h4><a href="node-implementation.html">Database Setup</a></h4>
-                        <p>Database schema modifications</p>
-                    </div>
-                    <div class="card">
-                        <h4><a href="node-implementation.html">Code Implementation</a></h4>
-                        <p>Node.js implementation examples</p>
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h3 class="text-lg font-semibold mb-3">Important Notes</h3>
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                </svg>
+                                <span class="text-sm font-medium">Production vs Test</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">Always use test environment first</p>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-sm font-medium">Certificate Security</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">Store certificates securely</p>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span class="text-sm font-medium">Data Retention</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">Keep audit trail for legal compliance</p>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                </svg>
+                                <span class="text-sm font-medium">Error Handling</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground">Implement robust error handling for production use</p>
+                        </div>
                     </div>
                 </div>
                 
-                <h3>Examples & Testing</h3>
-                <div class="grid">
-                    <div class="card">
-                        <h4><a href="examples.html">Complete Examples</a></h4>
-                        <p>Working examples for common scenarios</p>
+                <div class="rounded-lg border bg-card p-6">
+                    <h3 class="text-lg font-semibold mb-3">Official Resources</h3>
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <a href="https://www.agenciatributaria.es/" target="_blank" class="flex items-center gap-3 p-3 rounded-md hover:bg-accent">
+                            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
+                            <div>
+                                <div class="font-medium">AEAT Official Website</div>
+                                <div class="text-sm text-muted-foreground">Spanish tax authority</div>
+                            </div>
+                        </a>
+                        <a href="https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html" target="_blank" class="flex items-center gap-3 p-3 rounded-md hover:bg-accent">
+                            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <div>
+                                <div class="font-medium">VERI*FACTU Technical Documentation</div>
+                                <div class="text-sm text-muted-foreground">Official technical docs</div>
+                            </div>
+                        </a>
+                        <a href="https://www.fnmt.es/" target="_blank" class="flex items-center gap-3 p-3 rounded-md hover:bg-accent">
+                            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                            </svg>
+                            <div>
+                                <div class="font-medium">FNMT Certificate Services</div>
+                                <div class="text-sm text-muted-foreground">Certificate authority</div>
+                            </div>
+                        </a>
+                        <a href="https://sede.agenciatributaria.gob.es/Sede/condiciones-uso-sede-electronica/validacion-certificado-sede/validacion-certificado-sede.html" target="_blank" class="flex items-center gap-3 p-3 rounded-md hover:bg-accent">
+                            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                            <div>
+                                <div class="font-medium">AEAT Security Guidelines</div>
+                                <div class="text-sm text-muted-foreground">Security best practices</div>
+                            </div>
+                        </a>
                     </div>
-                    <div class="card">
-                        <h4><a href="quick-reference.html">Quick Reference</a></h4>
-                        <p>Quick lookup for developers</p>
-                    </div>
-                </div>
-            </section>
-            
-            <section id="resources" class="section">
-                <h2>Important Notes</h2>
-                <div class="note">
-                    <ul>
-                        <li><strong>Production vs Test</strong>: Always use test environment first</li>
-                        <li><strong>Certificate Security</strong>: Store certificates securely</li>
-                        <li><strong>Data Retention</strong>: Keep audit trail for legal compliance</li>
-                        <li><strong>Error Handling</strong>: Implement robust error handling for production use</li>
-                    </ul>
                 </div>
                 
-                <h2>Official Resources</h2>
-                <div class="grid">
-                    <div class="card">
-                        <h4><a href="https://www.agenciatributaria.es/" target="_blank">AEAT Official Website</a></h4>
-                        <p>Official Spanish tax authority website</p>
-                    </div>
-                    <div class="card">
-                        <h4><a href="https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html" target="_blank">VERI*FACTU Technical Documentation</a></h4>
-                        <p>Official technical documentation</p>
-                    </div>
-                    <div class="card">
-                        <h4><a href="https://www.fnmt.es/" target="_blank">FNMT Certificate Services</a></h4>
-                        <p>Certificate authority services</p>
-                    </div>
-                    <div class="card">
-                        <h4><a href="https://sede.agenciatributaria.gob.es/Sede/condiciones-uso-sede-electronica/validacion-certificado-sede/validacion-certificado-sede.html" target="_blank">AEAT Security Guidelines</a></h4>
-                        <p>Security and compliance guidelines</p>
-                    </div>
+                <div class="mt-8 p-4 bg-muted rounded-lg">
+                    <p class="text-sm text-muted-foreground italic">
+                        This documentation is designed to complement, not replace, the official AEAT documentation. Always refer to the latest official sources for regulatory compliance.
+                    </p>
                 </div>
-            </section>
-            
-            <div class="note">
-                <strong>Note:</strong> This documentation is designed to complement, not replace, the official AEAT documentation. Always refer to the latest official sources for regulatory compliance.
             </div>
         </main>
     </div>
-    
-    <script>
-        // Simple navigation highlighting
-        document.querySelectorAll('.sidebar a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (this.getAttribute('href').startsWith('#')) {
-                    e.preventDefault();
-                    document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }
-            });
-        });
-    </script>
 </body>
 </html>
