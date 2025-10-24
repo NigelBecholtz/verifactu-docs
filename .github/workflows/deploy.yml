@@ -21,25 +21,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build static site
+      - name: Copy static files
         run: |
           # Copy all HTML files from public/ to root for GitHub Pages
           cp -r public/* .
           
-          # Create index.html if it doesn't exist
+          # Ensure index.html exists
           if [ ! -f index.html ]; then
             echo "Creating index.html from public/index.html"
             cp public/index.html index.html
           fi
+          
+          # List files to verify
+          ls -la
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
