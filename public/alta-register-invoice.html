@@ -236,9 +236,47 @@
                 </div>
                 
                 <div class="rounded-lg border bg-card p-6 mb-8">
-                    <h2 class="text-2xl font-semibold mb-4">SOAP Action</h2>
-                    <div class="bg-muted p-4 rounded-md text-center">
-                        <code class="text-sm font-mono">SOAPAction: "urn:VeriFactu/Alta"</code>
+                    <h2 class="text-2xl font-semibold mb-4">HTTP Request Details</h2>
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div class="space-y-3">
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Method & Endpoint</h3>
+                                <div class="bg-muted p-3 rounded-md">
+                                    <code class="text-sm font-mono">POST https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Required Headers</h3>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="font-medium">Content-Type:</span>
+                                        <code class="bg-muted px-2 py-1 rounded">application/soap+xml; charset=utf-8</code>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="font-medium">SOAPAction:</span>
+                                        <code class="bg-muted px-2 py-1 rounded">"urn:VeriFactu/Alta"</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Authentication</h3>
+                                <div class="p-3 bg-yellow-50 rounded-md">
+                                    <div class="text-sm text-yellow-800">
+                                        <strong>Mutual TLS</strong> with FNMT certificate required
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Request Format</h3>
+                                <div class="p-3 bg-blue-50 rounded-md">
+                                    <div class="text-sm text-blue-800">
+                                        <strong>SOAP 1.1</strong> XML envelope with invoice data
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
