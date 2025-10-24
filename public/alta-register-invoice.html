@@ -543,14 +543,14 @@ const options = {
 };
 
 // SOAP request body
-const soapBody = `<?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-  <soap:Body>
-    <verifactu:Alta>
-      <!-- Your invoice data here -->
-    </verifactu:Alta>
-  </soap:Body>
-</soap:Envelope>`;
+const soapBody = `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+  &lt;soap:Body&gt;
+    &lt;verifactu:Alta&gt;
+      &lt;!-- Your invoice data here --&gt;
+    &lt;/verifactu:Alta&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;`;
 
 // Make the request
 const req = https.request(options, (res) => {
