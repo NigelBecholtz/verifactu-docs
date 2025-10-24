@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing - AEAT VERI*FACTU API</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        border: "hsl(var(--border))",
+                        input: "hsl(var(--input))",
+                        ring: "hsl(var(--ring))",
+                        background: "hsl(var(--background))",
+                        foreground: "hsl(var(--foreground))",
+                        primary: {
+                            DEFAULT: "hsl(var(--primary))",
+                            foreground: "hsl(var(--primary-foreground))",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(var(--secondary))",
+                            foreground: "hsl(var(--secondary-foreground))",
+                        },
+                        destructive: {
+                            DEFAULT: "hsl(var(--destructive))",
+                            foreground: "hsl(var(--destructive-foreground))",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(var(--muted))",
+                            foreground: "hsl(var(--muted-foreground))",
+                        },
+                        accent: {
+                            DEFAULT: "hsl(var(--accent))",
+                            foreground: "hsl(var(--accent-foreground))",
+                        },
+                        popover: {
+                            DEFAULT: "hsl(var(--popover))",
+                            foreground: "hsl(var(--popover-foreground))",
+                        },
+                        card: {
+                            DEFAULT: "hsl(var(--card))",
+                            foreground: "hsl(var(--card-foreground))",
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 222.2 84% 4.9%;
+            --primary: 221.2 83.2% 53.3%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96%;
+            --secondary-foreground: 222.2 84% 4.9%;
+            --muted: 210 40% 96%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96%;
+            --accent-foreground: 222.2 84% 4.9%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 221.2 83.2% 53.3%;
+        }
+    </style>
+</head>
+<body class="h-full bg-background text-foreground">
+    <div class="grid max-w-screen-2xl w-full mx-auto grid-rows-[min-content_1fr] grid-cols-1 lg:grid-cols-[280px_1fr]">
+        <!-- Sidebar -->
+        <aside class="hidden lg:block border-r bg-card">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <span class="text-primary-foreground font-bold text-sm">AEAT</span>
+                    </div>
+                    <div>
+                        <h1 class="font-semibold text-lg">VERI*FACTU API</h1>
+                        <p class="text-sm text-muted-foreground">Documentation</p>
+                    </div>
+                </div>
+                
+                <nav class="space-y-1">
+                    <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Documentation</div>
+                    <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                        </svg>
+                        <span>Welcome</span>
+                    </a>
+                    <a href="authentication.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                        </svg>
+                        <span>Authentication</span>
+                    </a>
+                    
+                    <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 mt-6">API Reference</div>
+                    <a href="alta-register-invoice.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <span>Register Invoice</span>
+                    </a>
+                    <a href="baja-cancel-invoice.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        <span>Cancel Invoice</span>
+                    </a>
+                    <a href="consulta-query-invoice.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <span>Query Invoice</span>
+                    </a>
+                    <a href="parameters-and-fields.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <span>Parameters & Fields</span>
+                    </a>
+                    <a href="error-handling.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                        <span>Error Handling</span>
+                    </a>
+                    <a href="xsd-schema-reference.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                        <span>XSD Schema</span>
+                    </a>
+                    
+                    <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 mt-6">Getting Started</div>
+                    <a href="authentication.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                        </svg>
+                        <span>Authentication Setup</span>
+                    </a>
+                    <a href="node-implementation.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                        <span>Node.js Implementation</span>
+                    </a>
+                    <a href="examples.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                        <span>Examples</span>
+                    </a>
+                    <a href="testing.html" class="flex items-center gap-3 px-3 py-2 rounded-md bg-accent text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Testing</span>
+                    </a>
+                    <a href="quick-reference.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                        <span>Quick Reference</span>
+                    </a>
+                </nav>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="flex-1 overflow-auto">
+            <div class="container mx-auto px-6 py-8">
+                <div class="max-w-4xl">
+                    <div class="mb-8">
+                        <h1 class="text-4xl font-bold mb-4">Testing Guide</h1>
+                        <p class="text-lg text-muted-foreground mb-8">Comprehensive guide for testing AEAT VERI*FACTU API integration with test environment, debugging strategies, and production deployment.</p>
+                        
+                        <div class="grid gap-6 md:grid-cols-2 mb-8">
+                            <div class="rounded-lg border bg-card p-6">
+                                <h3 class="text-lg font-semibold mb-3">Test Environment</h3>
+                                <div class="space-y-2">
+                                    <div>
+                                        <strong class="text-sm text-muted-foreground">Test URL:</strong>
+                                        <code class="block mt-1 p-2 bg-muted rounded text-sm font-mono">https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP</code>
+                                    </div>
+                                    <div>
+                                        <strong class="text-sm text-muted-foreground">WSDL:</strong>
+                                        <code class="block mt-1 p-2 bg-muted rounded text-sm font-mono">https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/SistemaFacturacion.wsdl</code>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="rounded-lg border bg-card p-6">
+                                <h3 class="text-lg font-semibold mb-3">Test Data Guidelines</h3>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                        <span>Use test NIFs (e.g., 12345678Z)</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                        <span>Test invoice numbers (TEST-2024-001)</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                        <span>Realistic test amounts only</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="rounded-lg border bg-card p-6 mb-8">
+                        <h2 class="text-2xl font-semibold mb-4">Test Environment Setup</h2>
+                        <p class="text-muted-foreground mb-4">Before testing, you need to set up the test environment with proper certificates and configuration.</p>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">1. Test Certificate Acquisition</h3>
+                                <div class="bg-muted p-4 rounded-md mb-4">
+                                    <h4 class="font-semibold mb-2">FNMT Test Certificate (FREE)</h4>
+                                    <ol class="list-decimal list-inside space-y-2 text-sm">
+                                        <li>Visit <a href="https://www.sede.fnmt.gob.es/" class="text-primary hover:underline" target="_blank">FNMT Website</a></li>
+                                        <li>Select "Certificados de Persona Física" (FREE)</li>
+                                        <li>Complete registration with your details</li>
+                                        <li>Download certificate (.p12 format)</li>
+                                        <li>Convert to PEM format for development</li>
+                                    </ol>
+                                </div>
+                                
+                                <div class="bg-blue-50 p-4 rounded-md">
+                                    <h4 class="font-semibold text-blue-800 mb-2">Certificate Conversion</h4>
+                                    <pre class="text-sm text-blue-700"><code># Convert P12 to PEM format
+openssl pkcs12 -in certificado.p12 -out certificado.pem -nodes
+
+# Extract private key
+openssl pkcs12 -in certificado.p12 -nocerts -out private-key.pem -nodes</code></pre>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">2. Environment Configuration</h3>
+                                <div class="grid gap-4 md:grid-cols-2">
+                                    <div class="space-y-3">
+                                        <div>
+                                            <h4 class="font-semibold mb-2">Test Environment</h4>
+                                            <div class="bg-muted p-3 rounded-md">
+                                                <div class="text-sm space-y-1">
+                                                    <div><strong>URL:</strong> prewww1.aeat.es</div>
+                                                    <div><strong>Port:</strong> 443 (HTTPS)</div>
+                                                    <div><strong>Path:</strong> /wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <h4 class="font-semibold mb-2">Production Environment</h4>
+                                            <div class="bg-muted p-3 rounded-md">
+                                                <div class="text-sm space-y-1">
+                                                    <div><strong>URL:</strong> www1.agenciatributaria.gob.es</div>
+                                                    <div><strong>Port:</strong> 443 (HTTPS)</div>
+                                                    <div><strong>Path:</strong> /wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="rounded-lg border bg-card p-6 mb-8">
+                        <h2 class="text-2xl font-semibold mb-4">Testing Strategy</h2>
+                        <p class="text-muted-foreground mb-4">Comprehensive testing approach for AEAT VERI*FACTU API integration.</p>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Phase 1: Basic Connectivity Testing</h3>
+                                <div class="space-y-4">
+                                    <div class="bg-green-50 p-4 rounded-md">
+                                        <h4 class="font-semibold text-green-800 mb-2">Certificate Validation</h4>
+                                        <ul class="text-sm text-green-700 space-y-1">
+                                            <li>• Test certificate loading and parsing</li>
+                                            <li>• Verify certificate validity and expiration</li>
+                                            <li>• Test mutual TLS handshake</li>
+                                            <li>• Validate certificate chain</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="bg-blue-50 p-4 rounded-md">
+                                        <h4 class="font-semibold text-blue-800 mb-2">Network Connectivity</h4>
+                                        <ul class="text-sm text-blue-700 space-y-1">
+                                            <li>• Test HTTPS connection to test endpoint</li>
+                                            <li>• Verify DNS resolution</li>
+                                            <li>• Test firewall and proxy settings</li>
+                                            <li>• Measure connection latency</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Phase 2: API Operation Testing</h3>
+                                <div class="grid gap-4 md:grid-cols-3">
+                                    <div class="p-4 bg-muted rounded-md">
+                                        <h4 class="font-semibold mb-2">Register Invoice</h4>
+                                        <ul class="text-sm space-y-1">
+                                            <li>• Simple invoice registration</li>
+                                            <li>• Complex invoice with multiple lines</li>
+                                            <li>• Batch processing (multiple invoices)</li>
+                                            <li>• Error scenarios</li>
+                                        </ul>
+                                    </div>
+                                    <div class="p-4 bg-muted rounded-md">
+                                        <h4 class="font-semibold mb-2">Cancel Invoice</h4>
+                                        <ul class="text-sm space-y-1">
+                                            <li>• Cancel existing invoice</li>
+                                            <li>• Cancel non-existent invoice</li>
+                                            <li>• Cancel already cancelled invoice</li>
+                                            <li>• Invalid cancellation reasons</li>
+                                        </ul>
+                                    </div>
+                                    <div class="p-4 bg-muted rounded-md">
+                                        <h4 class="font-semibold mb-2">Query Invoice</h4>
+                                        <ul class="text-sm space-y-1">
+                                            <li>• Query by invoice number</li>
+                                            <li>• Query by date range</li>
+                                            <li>• Query by NIF</li>
+                                            <li>• Pagination testing</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Phase 3: Error Handling Testing</h3>
+                                <div class="space-y-4">
+                                    <div class="grid gap-4 md:grid-cols-2">
+                                        <div class="p-4 bg-red-50 rounded-md">
+                                            <h4 class="font-semibold text-red-800 mb-2">Authentication Errors</h4>
+                                            <ul class="text-sm text-red-700 space-y-1">
+                                                <li>• Invalid certificate</li>
+                                                <li>• Expired certificate</li>
+                                                <li>• Wrong certificate type</li>
+                                                <li>• Missing certificate</li>
+                                            </ul>
+                                        </div>
+                                        <div class="p-4 bg-orange-50 rounded-md">
+                                            <h4 class="font-semibold text-orange-800 mb-2">Data Validation Errors</h4>
+                                            <ul class="text-sm text-orange-700 space-y-1">
+                                                <li>• Invalid NIF format</li>
+                                                <li>• Missing required fields</li>
+                                                <li>• Invalid date formats</li>
+                                                <li>• Amount validation errors</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Phase 4: Performance Testing</h3>
+                                <div class="space-y-4">
+                                    <div class="grid gap-4 md:grid-cols-2">
+                                        <div class="p-4 bg-purple-50 rounded-md">
+                                            <h4 class="font-semibold text-purple-800 mb-2">Load Testing</h4>
+                                            <ul class="text-sm text-purple-700 space-y-1">
+                                                <li>• Single request performance</li>
+                                                <li>• Batch request processing</li>
+                                                <li>• Concurrent connection limits</li>
+                                                <li>• Rate limiting behavior</li>
+                                            </ul>
+                                        </div>
+                                        <div class="p-4 bg-indigo-50 rounded-md">
+                                            <h4 class="font-semibold text-indigo-800 mb-2">Stress Testing</h4>
+                                            <ul class="text-sm text-indigo-700 space-y-1">
+                                                <li>• High volume processing</li>
+                                                <li>• Memory usage monitoring</li>
+                                                <li>• Connection pool management</li>
+                                                <li>• Timeout handling</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="rounded-lg border bg-card p-6 mb-8">
+                        <h2 class="text-2xl font-semibold mb-4">Test Implementation Examples</h2>
+                        <p class="text-muted-foreground mb-4">Practical code examples for implementing comprehensive tests.</p>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Node.js Test Suite</h3>
+                                <div class="bg-muted p-4 rounded-md mb-4">
+                                    <pre class="text-sm font-mono overflow-x-auto"><code>const https = require('https');
+const fs = require('fs');
+const assert = require('assert');
+
+class AEATTestSuite {
+  constructor() {
+    this.testCertificate = fs.readFileSync('test-certificate.pem');
+    this.testPrivateKey = fs.readFileSync('test-private-key.pem');
+    this.testEndpoint = 'prewww1.aeat.es';
+    this.testPath = '/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP';
+  }
+
+  async testCertificateValidation() {
+    console.log('Testing certificate validation...');
+    
+    try {
+      const options = {
+        hostname: this.testEndpoint,
+        port: 443,
+        path: this.testPath,
+        method: 'POST',
+        cert: this.testCertificate,
+        key: this.testPrivateKey,
+        headers: {
+          'Content-Type': 'application/soap+xml; charset=utf-8',
+          'SOAPAction': 'urn:VeriFactu/Alta'
+        }
+      };
+
+      const soapBody = this.createTestSOAPRequest();
+      
+      const response = await this.makeRequest(options, soapBody);
+      
+      // Validate response
+      assert(response.statusCode === 200, 'Expected 200 OK response');
+      assert(response.body.includes('soap:Envelope'), 'Expected SOAP response');
+      
+      console.log('✅ Certificate validation passed');
+      return true;
+    } catch (error) {
+      console.error('❌ Certificate validation failed:', error.message);
+      return false;
+    }
+  }
+
+  async testInvoiceRegistration() {
+    console.log('Testing invoice registration...');
+    
+    const testInvoice = {
+      nif: '12345678Z',
+      numero: 'TEST-2024-001',
+      fecha: '2024-01-15',
+      importe: 100.00,
+      iva: 21.00
+    };
+
+    try {
+      const soapBody = this.createRegisterSOAPRequest(testInvoice);
+      const options = this.createRequestOptions('urn:VeriFactu/Alta');
+      
+      const response = await this.makeRequest(options, soapBody);
+      
+      // Parse response
+      const csvMatch = response.body.match(/&lt;verifactu:CSV&gt;(.*?)&lt;\/verifactu:CSV&gt;/);
+      const estadoMatch = response.body.match(/&lt;verifactu:EstadoEnvio&gt;(.*?)&lt;\/verifactu:EstadoEnvio&gt;/);
+      
+      assert(csvMatch, 'Expected CSV in response');
+      assert(estadoMatch[1] === 'Correcto', 'Expected successful registration');
+      
+      console.log('✅ Invoice registration passed');
+      console.log('📄 CSV Code:', csvMatch[1]);
+      return csvMatch[1];
+    } catch (error) {
+      console.error('❌ Invoice registration failed:', error.message);
+      return null;
+    }
+  }
+
+  async testErrorScenarios() {
+    console.log('Testing error scenarios...');
+    
+    const errorTests = [
+      {
+        name: 'Invalid NIF',
+        data: { nif: 'INVALID', numero: 'TEST-001', fecha: '2024-01-15' },
+        expectedError: 'Invalid NIF format'
+      },
+      {
+        name: 'Missing Required Field',
+        data: { nif: '12345678Z', fecha: '2024-01-15' }, // Missing numero
+        expectedError: 'Missing required field'
+      },
+      {
+        name: 'Invalid Date Format',
+        data: { nif: '12345678Z', numero: 'TEST-001', fecha: 'invalid-date' },
+        expectedError: 'Invalid date format'
+      }
+    ];
+
+    for (const test of errorTests) {
+      try {
+        const soapBody = this.createRegisterSOAPRequest(test.data);
+        const options = this.createRequestOptions('urn:VeriFactu/Alta');
+        
+        const response = await this.makeRequest(options, soapBody);
+        
+        // Should contain error information
+        assert(response.body.includes('soap:Fault') || response.body.includes('Error'), 
+               `Expected error for ${test.name}`);
+        
+        console.log(`✅ ${test.name} error handling passed`);
+      } catch (error) {
+        console.error(`❌ ${test.name} error handling failed:`, error.message);
+      }
+    }
+  }
+
+  async testPerformance() {
+    console.log('Testing performance...');
+    
+    const startTime = Date.now();
+    const requests = [];
+    const concurrentRequests = 5;
+    
+    // Create multiple concurrent requests
+    for (let i = 0; i < concurrentRequests; i++) {
+      const testInvoice = {
+        nif: '12345678Z',
+        numero: `TEST-2024-${String(i).padStart(3, '0')}`,
+        fecha: '2024-01-15',
+        importe: 100.00 + i
+      };
+      
+      const soapBody = this.createRegisterSOAPRequest(testInvoice);
+      const options = this.createRequestOptions('urn:VeriFactu/Alta');
+      
+      requests.push(this.makeRequest(options, soapBody));
+    }
+    
+    try {
+      const responses = await Promise.all(requests);
+      const endTime = Date.now();
+      const duration = endTime - startTime;
+      
+      console.log(`✅ Performance test completed in ${duration}ms`);
+      console.log(`📊 Average response time: ${duration / concurrentRequests}ms per request`);
+      
+      // Validate all responses
+      responses.forEach((response, index) => {
+        assert(response.statusCode === 200, `Request ${index} failed`);
+      });
+      
+      return duration;
+    } catch (error) {
+      console.error('❌ Performance test failed:', error.message);
+      return null;
+    }
+  }
+
+  createTestSOAPRequest() {
+    return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+  &lt;soap:Body&gt;
+    &lt;verifactu:Alta&gt;
+      &lt;verifactu:Cabecera&gt;
+        &lt;verifactu:NIF&gt;12345678Z&lt;/verifactu:NIF&gt;
+        &lt;verifactu:NumFactura&gt;TEST-2024-001&lt;/verifactu:NumFactura&gt;
+        &lt;verifactu:Fecha&gt;2024-01-15&lt;/verifactu:Fecha&gt;
+      &lt;/verifactu:Cabecera&gt;
+    &lt;/verifactu:Alta&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;`;
+  }
+
+  createRegisterSOAPRequest(invoice) {
+    return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+  &lt;soap:Body&gt;
+    &lt;verifactu:Alta&gt;
+      &lt;verifactu:Cabecera&gt;
+        &lt;verifactu:NIF&gt;${invoice.nif}&lt;/verifactu:NIF&gt;
+        &lt;verifactu:NumFactura&gt;${invoice.numero}&lt;/verifactu:NumFactura&gt;
+        &lt;verifactu:Fecha&gt;${invoice.fecha}&lt;/verifactu:Fecha&gt;
+        &lt;verifactu:ImporteTotal&gt;${invoice.importe}&lt;/verifactu:ImporteTotal&gt;
+      &lt;/verifactu:Cabecera&gt;
+    &lt;/verifactu:Alta&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;`;
+  }
+
+  createRequestOptions(soapAction) {
+    return {
+      hostname: this.testEndpoint,
+      port: 443,
+      path: this.testPath,
+      method: 'POST',
+      cert: this.testCertificate,
+      key: this.testPrivateKey,
+      headers: {
+        'Content-Type': 'application/soap+xml; charset=utf-8',
+        'SOAPAction': soapAction
+      }
+    };
+  }
+
+  makeRequest(options, soapBody) {
+    return new Promise((resolve, reject) => {
+      const req = https.request(options, (res) => {
+        let data = '';
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+        res.on('end', () => {
+          resolve({
+            statusCode: res.statusCode,
+            headers: res.headers,
+            body: data
+          });
+        });
+      });
+
+      req.on('error', (error) => {
+        reject(error);
+      });
+
+      req.write(soapBody);
+      req.end();
+    });
+  }
+
+  async runAllTests() {
+    console.log('🚀 Starting AEAT VERI*FACTU Test Suite...\n');
+    
+    const results = {
+      certificate: await this.testCertificateValidation(),
+      registration: await this.testInvoiceRegistration(),
+      errors: await this.testErrorScenarios(),
+      performance: await this.testPerformance()
+    };
+    
+    console.log('\n📊 Test Results Summary:');
+    console.log('Certificate Validation:', results.certificate ? '✅ PASS' : '❌ FAIL');
+    console.log('Invoice Registration:', results.registration ? '✅ PASS' : '❌ FAIL');
+    console.log('Error Handling:', results.errors ? '✅ PASS' : '❌ FAIL');
+    console.log('Performance:', results.performance ? '✅ PASS' : '❌ FAIL');
+    
+    return results;
+  }
+}
+
+// Run tests
+const testSuite = new AEATTestSuite();
+testSuite.runAllTests().catch(console.error);</code></pre>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Python Test Suite</h3>
+                                <div class="bg-muted p-4 rounded-md mb-4">
+                                    <pre class="text-sm font-mono overflow-x-auto"><code>import requests
+import xml.etree.ElementTree as ET
+from datetime import datetime
+import pytest
+import ssl
+import certifi
+
+class AEATTestSuite:
+    def __init__(self):
+        self.test_endpoint = 'https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP'
+        self.test_cert_path = 'test-certificate.pem'
+        self.test_key_path = 'test-private-key.pem'
+        
+    def test_certificate_validation(self):
+        """Test certificate loading and validation"""
+        print('Testing certificate validation...')
+        
+        try:
+            # Test certificate loading
+            with open(self.test_cert_path, 'r') as f:
+                cert_data = f.read()
+            
+            with open(self.test_key_path, 'r') as f:
+                key_data = f.read()
+            
+            # Create SSL context
+            ssl_context = ssl.create_default_context()
+            ssl_context.load_cert_chain(self.test_cert_path, self.test_key_path)
+            
+            print('✅ Certificate validation passed')
+            return True
+            
+        except Exception as e:
+            print(f'❌ Certificate validation failed: {e}')
+            return False
+    
+    def test_basic_connectivity(self):
+        """Test basic connectivity to AEAT test endpoint"""
+        print('Testing basic connectivity...')
+        
+        try:
+            # Simple connectivity test
+            response = requests.get('https://prewww1.aeat.es', timeout=30)
+            assert response.status_code == 200
+            
+            print('✅ Basic connectivity passed')
+            return True
+            
+        except Exception as e:
+            print(f'❌ Basic connectivity failed: {e}')
+            return False
+    
+    def test_invoice_registration(self):
+        """Test invoice registration with test data"""
+        print('Testing invoice registration...')
+        
+        test_invoice = {
+            'nif': '12345678Z',
+            'numero': 'TEST-2024-001',
+            'fecha': '2024-01-15',
+            'importe': 100.00,
+            'iva': 21.00
+        }
+        
+        soap_body = self.create_register_soap_request(test_invoice)
+        
+        try:
+            response = requests.post(
+                self.test_endpoint,
+                data=soap_body,
+                headers={
+                    'Content-Type': 'application/soap+xml; charset=utf-8',
+                    'SOAPAction': 'urn:VeriFactu/Alta'
+                },
+                cert=(self.test_cert_path, self.test_key_path),
+                timeout=30
+            )
+            
+            assert response.status_code == 200
+            assert 'soap:Envelope' in response.text
+            
+            # Parse response for CSV
+            root = ET.fromstring(response.text)
+            csv_elements = root.findall('.//{urn:VeriFactu}CSV')
+            
+            if csv_elements:
+                csv_code = csv_elements[0].text
+                print(f'✅ Invoice registration passed - CSV: {csv_code}')
+                return csv_code
+            else:
+                print('⚠️ Invoice registration completed but no CSV found')
+                return None
+                
+        except Exception as e:
+            print(f'❌ Invoice registration failed: {e}')
+            return None
+    
+    def test_error_scenarios(self):
+        """Test various error scenarios"""
+        print('Testing error scenarios...')
+        
+        error_tests = [
+            {
+                'name': 'Invalid NIF',
+                'data': {'nif': 'INVALID', 'numero': 'TEST-001', 'fecha': '2024-01-15'},
+                'expected_error': 'Invalid NIF'
+            },
+            {
+                'name': 'Missing Required Field',
+                'data': {'nif': '12345678Z', 'fecha': '2024-01-15'},  # Missing numero
+                'expected_error': 'Missing required field'
+            }
+        ]
+        
+        results = []
+        
+        for test in error_tests:
+            try:
+                soap_body = self.create_register_soap_request(test['data'])
+                
+                response = requests.post(
+                    self.test_endpoint,
+                    data=soap_body,
+                    headers={
+                        'Content-Type': 'application/soap+xml; charset=utf-8',
+                        'SOAPAction': 'urn:VeriFactu/Alta'
+                    },
+                    cert=(self.test_cert_path, self.test_key_path),
+                    timeout=30
+                )
+                
+                # Check for error indicators
+                if 'soap:Fault' in response.text or 'Error' in response.text:
+                    print(f'✅ {test["name"]} error handling passed')
+                    results.append(True)
+                else:
+                    print(f'⚠️ {test["name"]} - Expected error but got success')
+                    results.append(False)
+                    
+            except Exception as e:
+                print(f'❌ {test["name"]} error handling failed: {e}')
+                results.append(False)
+        
+        return all(results)
+    
+    def test_performance(self):
+        """Test performance with multiple concurrent requests"""
+        print('Testing performance...')
+        
+        import concurrent.futures
+        import time
+        
+        def make_test_request(request_id):
+            test_invoice = {
+                'nif': '12345678Z',
+                'numero': f'TEST-2024-{request_id:03d}',
+                'fecha': '2024-01-15',
+                'importe': 100.00 + request_id
+            }
+            
+            soap_body = self.create_register_soap_request(test_invoice)
+            
+            start_time = time.time()
+            
+            try:
+                response = requests.post(
+                    self.test_endpoint,
+                    data=soap_body,
+                    headers={
+                        'Content-Type': 'application/soap+xml; charset=utf-8',
+                        'SOAPAction': 'urn:VeriFactu/Alta'
+                    },
+                    cert=(self.test_cert_path, self.test_key_path),
+                    timeout=30
+                )
+                
+                end_time = time.time()
+                duration = end_time - start_time
+                
+                return {
+                    'success': response.status_code == 200,
+                    'duration': duration,
+                    'request_id': request_id
+                }
+                
+            except Exception as e:
+                return {
+                    'success': False,
+                    'duration': 0,
+                    'request_id': request_id,
+                    'error': str(e)
+                }
+        
+        # Run concurrent requests
+        num_requests = 5
+        start_time = time.time()
+        
+        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+            futures = [executor.submit(make_test_request, i) for i in range(num_requests)]
+            results = [future.result() for future in concurrent.futures.as_completed(futures)]
+        
+        end_time = time.time()
+        total_duration = end_time - start_time
+        
+        successful_requests = [r for r in results if r['success']]
+        avg_duration = sum(r['duration'] for r in successful_requests) / len(successful_requests) if successful_requests else 0
+        
+        print(f'✅ Performance test completed in {total_duration:.2f}s')
+        print(f'📊 Successful requests: {len(successful_requests)}/{num_requests}')
+        print(f'📊 Average response time: {avg_duration:.2f}s')
+        
+        return len(successful_requests) == num_requests
+    
+    def create_register_soap_request(self, invoice_data):
+        """Create SOAP request for invoice registration"""
+        return f'''&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+  &lt;soap:Body&gt;
+    &lt;verifactu:Alta&gt;
+      &lt;verifactu:Cabecera&gt;
+        &lt;verifactu:NIF&gt;{invoice_data.get('nif', '')}&lt;/verifactu:NIF&gt;
+        &lt;verifactu:NumFactura&gt;{invoice_data.get('numero', '')}&lt;/verifactu:NumFactura&gt;
+        &lt;verifactu:Fecha&gt;{invoice_data.get('fecha', '')}&lt;/verifactu:Fecha&gt;
+        &lt;verifactu:ImporteTotal&gt;{invoice_data.get('importe', 0)}&lt;/verifactu:ImporteTotal&gt;
+      &lt;/verifactu:Cabecera&gt;
+    &lt;/verifactu:Alta&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;'''
+    
+    def run_all_tests(self):
+        """Run all tests and return results"""
+        print('🚀 Starting AEAT VERI*FACTU Test Suite...\n')
+        
+        results = {
+            'certificate': self.test_certificate_validation(),
+            'connectivity': self.test_basic_connectivity(),
+            'registration': self.test_invoice_registration(),
+            'errors': self.test_error_scenarios(),
+            'performance': self.test_performance()
+        }
+        
+        print('\n📊 Test Results Summary:')
+        for test_name, result in results.items():
+            status = '✅ PASS' if result else '❌ FAIL'
+            print(f'{test_name.title()}: {status}')
+        
+        return results
+
+# Run tests
+if __name__ == '__main__':
+    test_suite = AEATTestSuite()
+    test_suite.run_all_tests()</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="rounded-lg border bg-card p-6 mb-8">
+                        <h2 class="text-2xl font-semibold mb-4">Debugging and Troubleshooting</h2>
+                        <p class="text-muted-foreground mb-4">Common issues and debugging strategies for AEAT VERI*FACTU integration.</p>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Common Issues and Solutions</h3>
+                                <div class="space-y-4">
+                                    <div class="p-4 bg-red-50 rounded-md">
+                                        <h4 class="font-semibold text-red-800 mb-2">Certificate Issues</h4>
+                                        <div class="text-sm text-red-700 space-y-2">
+                                            <div><strong>Problem:</strong> "Certificate validation failed"</div>
+                                            <div><strong>Solution:</strong> Verify certificate format, expiration date, and proper installation</div>
+                                            <div><strong>Debug:</strong> Check certificate with OpenSSL: <code>openssl x509 -in certificate.pem -text -noout</code></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="p-4 bg-orange-50 rounded-md">
+                                        <h4 class="font-semibold text-orange-800 mb-2">Network Connectivity</h4>
+                                        <div class="text-sm text-orange-700 space-y-2">
+                                            <div><strong>Problem:</strong> "Connection timeout" or "Network error"</div>
+                                            <div><strong>Solution:</strong> Check firewall settings, proxy configuration, and DNS resolution</div>
+                                            <div><strong>Debug:</strong> Test connectivity: <code>curl -v https://prewww1.aeat.es</code></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="p-4 bg-yellow-50 rounded-md">
+                                        <h4 class="font-semibold text-yellow-800 mb-2">SOAP Format Errors</h4>
+                                        <div class="text-sm text-yellow-700 space-y-2">
+                                            <div><strong>Problem:</strong> "Invalid SOAP format" or "XML parsing error"</div>
+                                            <div><strong>Solution:</strong> Validate XML structure, check namespaces, and ensure proper encoding</div>
+                                            <div><strong>Debug:</strong> Use XML validator and check SOAP envelope structure</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="p-4 bg-blue-50 rounded-md">
+                                        <h4 class="font-semibold text-blue-800 mb-2">Authentication Errors</h4>
+                                        <div class="text-sm text-blue-700 space-y-2">
+                                            <div><strong>Problem:</strong> "401 Unauthorized" or "Authentication failed"</div>
+                                            <div><strong>Solution:</strong> Verify certificate installation, check mutual TLS configuration</div>
+                                            <div><strong>Debug:</strong> Test certificate with: <code>openssl s_client -connect prewww1.aeat.es:443 -cert certificate.pem -key private-key.pem</code></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Debugging Tools and Techniques</h3>
+                                <div class="grid gap-4 md:grid-cols-2">
+                                    <div class="p-4 bg-muted rounded-md">
+                                        <h4 class="font-semibold mb-2">Request/Response Logging</h4>
+                                        <div class="text-sm space-y-2">
+                                            <div>• Log all HTTP requests and responses</div>
+                                            <div>• Capture SOAP envelope content</div>
+                                            <div>• Monitor response times and status codes</div>
+                                            <div>• Track certificate validation steps</div>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 bg-muted rounded-md">
+                                        <h4 class="font-semibold mb-2">Network Analysis</h4>
+                                        <div class="text-sm space-y-2">
+                                            <div>• Use Wireshark for packet analysis</div>
+                                            <div>• Monitor SSL/TLS handshake</div>
+                                            <div>• Check certificate chain validation</div>
+                                            <div>• Analyze network latency</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="rounded-lg border bg-card p-6 mb-8">
+                        <h2 class="text-2xl font-semibold mb-4">Production Deployment Checklist</h2>
+                        <p class="text-muted-foreground mb-4">Essential checklist before deploying to production environment.</p>
+                        
+                        <div class="space-y-4">
+                            <div class="grid gap-4 md:grid-cols-2">
+                                <div class="p-4 bg-green-50 rounded-md">
+                                    <h4 class="font-semibold text-green-800 mb-2">Pre-Production Testing</h4>
+                                    <ul class="text-sm text-green-700 space-y-1">
+                                        <li>✅ All test scenarios passed</li>
+                                        <li>✅ Error handling verified</li>
+                                        <li>✅ Performance requirements met</li>
+                                        <li>✅ Certificate validation working</li>
+                                        <li>✅ Network connectivity confirmed</li>
+                                    </ul>
+                                </div>
+                                <div class="p-4 bg-blue-50 rounded-md">
+                                    <h4 class="font-semibold text-blue-800 mb-2">Production Configuration</h4>
+                                    <ul class="text-sm text-blue-700 space-y-1">
+                                        <li>✅ Production certificate installed</li>
+                                        <li>✅ Production endpoint configured</li>
+                                        <li>✅ Monitoring and logging setup</li>
+                                        <li>✅ Backup and recovery procedures</li>
+                                        <li>✅ Security measures implemented</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 bg-yellow-50 rounded-md">
+                                <h4 class="font-semibold text-yellow-800 mb-2">Final Validation Steps</h4>
+                                <div class="text-sm text-yellow-700 space-y-2">
+                                    <div><strong>1. Certificate Validation:</strong> Test production certificate with AEAT</div>
+                                    <div><strong>2. End-to-End Testing:</strong> Complete invoice workflow testing</div>
+                                    <div><strong>3. Load Testing:</strong> Verify performance under expected load</div>
+                                    <div><strong>4. Rollback Plan:</strong> Ensure rollback procedures are ready</div>
+                                    <div><strong>5. Monitoring:</strong> Set up alerts and monitoring systems</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
