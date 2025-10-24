@@ -257,75 +257,75 @@ class AEATClient {
   }
   
   createRegisterRequest(invoice) {
-    return `<?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu">
-  <soap:Body>
-    <verifactu:Alta>
-      <verifactu:Cabecera>
-        <verifactu:NIF>${invoice.nif}</verifactu:NIF>
-        <verifactu:Fecha>${invoice.fecha}</verifactu:Fecha>
-        <verifactu:Hora>${invoice.hora}</verifactu:Hora>
-        <verifactu:Serie>${invoice.serie || ''}</verifactu:Serie>
-        <verifactu:NumFactura>${invoice.numero}</verifactu:NumFactura>
-      </verifactu:Cabecera>
-      <verifactu:Factura>
-        <verifactu:ImporteTotal>${invoice.importeTotal}</verifactu:ImporteTotal>
-        <verifactu:ImporteTotalConImpuestos>${invoice.importeTotalConImpuestos}</verifactu:ImporteTotalConImpuestos>
-        <verifactu:TipoFactura>${invoice.tipoFactura}</verifactu:TipoFactura>
-        <verifactu:ClaveRegimenEspecialOTrascendencia>${invoice.claveRegimen}</verifactu:ClaveRegimenEspecialOTrascendencia>
-      </verifactu:Factura>
-    </verifactu:Alta>
-  </soap:Body>
-</soap:Envelope>`;
+    return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:verifactu="urn:VeriFactu"&gt;
+  &lt;soap:Body&gt;
+    &lt;verifactu:Alta&gt;
+      &lt;verifactu:Cabecera&gt;
+        &lt;verifactu:NIF&gt;${invoice.nif}&lt;/verifactu:NIF&gt;
+        &lt;verifactu:Fecha&gt;${invoice.fecha}&lt;/verifactu:Fecha&gt;
+        &lt;verifactu:Hora&gt;${invoice.hora}&lt;/verifactu:Hora&gt;
+        &lt;verifactu:Serie&gt;${invoice.serie || ''}&lt;/verifactu:Serie&gt;
+        &lt;verifactu:NumFactura&gt;${invoice.numero}&lt;/verifactu:NumFactura&gt;
+      &lt;/verifactu:Cabecera&gt;
+      &lt;verifactu:Factura&gt;
+        &lt;verifactu:ImporteTotal&gt;${invoice.importeTotal}&lt;/verifactu:ImporteTotal&gt;
+        &lt;verifactu:ImporteTotalConImpuestos&gt;${invoice.importeTotalConImpuestos}&lt;/verifactu:ImporteTotalConImpuestos&gt;
+        &lt;verifactu:TipoFactura&gt;${invoice.tipoFactura}&lt;/verifactu:TipoFactura&gt;
+        &lt;verifactu:ClaveRegimenEspecialOTrascendencia&gt;${invoice.claveRegimen}&lt;/verifactu:ClaveRegimenEspecialOTrascendencia&gt;
+      &lt;/verifactu:Factura&gt;
+    &lt;/verifactu:Alta&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;`;
   }
   
   createCancelRequest(invoice) {
-    return `<?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu">
-  <soap:Body>
-    <verifactu:Baja>
-      <verifactu:Cabecera>
-        <verifactu:NIF>${invoice.nif}</verifactu:NIF>
-        <verifactu:Fecha>${invoice.fecha}</verifactu:Fecha>
-        <verifactu:Hora>${invoice.hora}</verifactu:Hora>
-        <verifactu:Serie>${invoice.serie || ''}</verifactu:Serie>
-        <verifactu:NumFactura>${invoice.numero}</verifactu:NumFactura>
-      </verifactu:Cabecera>
-      <verifactu:Factura>
-        <verifactu:ImporteTotal>${invoice.importeTotal}</verifactu:ImporteTotal>
-        <verifactu:ImporteTotalConImpuestos>${invoice.importeTotalConImpuestos}</verifactu:ImporteTotalConImpuestos>
-        <verifactu:TipoFactura>${invoice.tipoFactura}</verifactu:TipoFactura>
-        <verifactu:ClaveRegimenEspecialOTrascendencia>${invoice.claveRegimen}</verifactu:ClaveRegimenEspecialOTrascendencia>
-      </verifactu:Factura>
-    </verifactu:Baja>
-  </soap:Body>
-</soap:Envelope>`;
+    return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:verifactu="urn:VeriFactu"&gt;
+  &lt;soap:Body&gt;
+    &lt;verifactu:Baja&gt;
+      &lt;verifactu:Cabecera&gt;
+        &lt;verifactu:NIF&gt;${invoice.nif}&lt;/verifactu:NIF&gt;
+        &lt;verifactu:Fecha&gt;${invoice.fecha}&lt;/verifactu:Fecha&gt;
+        &lt;verifactu:Hora&gt;${invoice.hora}&lt;/verifactu:Hora&gt;
+        &lt;verifactu:Serie&gt;${invoice.serie || ''}&lt;/verifactu:Serie&gt;
+        &lt;verifactu:NumFactura&gt;${invoice.numero}&lt;/verifactu:NumFactura&gt;
+      &lt;/verifactu:Cabecera&gt;
+      &lt;verifactu:Factura&gt;
+        &lt;verifactu:ImporteTotal&gt;${invoice.importeTotal}&lt;/verifactu:ImporteTotal&gt;
+        &lt;verifactu:ImporteTotalConImpuestos&gt;${invoice.importeTotalConImpuestos}&lt;/verifactu:ImporteTotalConImpuestos&gt;
+        &lt;verifactu:TipoFactura&gt;${invoice.tipoFactura}&lt;/verifactu:TipoFactura&gt;
+        &lt;verifactu:ClaveRegimenEspecialOTrascendencia&gt;${invoice.claveRegimen}&lt;/verifactu:ClaveRegimenEspecialOTrascendencia&gt;
+      &lt;/verifactu:Factura&gt;
+    &lt;/verifactu:Baja&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;`;
   }
   
   createQueryRequest(invoice) {
-    return `<?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu">
-  <soap:Body>
-    <verifactu:Consulta>
-      <verifactu:Cabecera>
-        <verifactu:NIF>${invoice.nif}</verifactu:NIF>
-        <verifactu:Fecha>${invoice.fecha}</verifactu:Fecha>
-        <verifactu:Hora>${invoice.hora}</verifactu:Hora>
-        <verifactu:Serie>${invoice.serie || ''}</verifactu:Serie>
-        <verifactu:NumFactura>${invoice.numero}</verifactu:NumFactura>
-      </verifactu:Cabecera>
-      <verifactu:Factura>
-        <verifactu:ImporteTotal>${invoice.importeTotal}</verifactu:ImporteTotal>
-        <verifactu:ImporteTotalConImpuestos>${invoice.importeTotalConImpuestos}</verifactu:ImporteTotalConImpuestos>
-        <verifactu:TipoFactura>${invoice.tipoFactura}</verifactu:TipoFactura>
-        <verifactu:ClaveRegimenEspecialOTrascendencia>${invoice.claveRegimen}</verifactu:ClaveRegimenEspecialOTrascendencia>
-      </verifactu:Factura>
-    </verifactu:Consulta>
-  </soap:Body>
-</soap:Envelope>`;
+    return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:verifactu="urn:VeriFactu"&gt;
+  &lt;soap:Body&gt;
+    &lt;verifactu:Consulta&gt;
+      &lt;verifactu:Cabecera&gt;
+        &lt;verifactu:NIF&gt;${invoice.nif}&lt;/verifactu:NIF&gt;
+        &lt;verifactu:Fecha&gt;${invoice.fecha}&lt;/verifactu:Fecha&gt;
+        &lt;verifactu:Hora&gt;${invoice.hora}&lt;/verifactu:Hora&gt;
+        &lt;verifactu:Serie&gt;${invoice.serie || ''}&lt;/verifactu:Serie&gt;
+        &lt;verifactu:NumFactura&gt;${invoice.numero}&lt;/verifactu:NumFactura&gt;
+      &lt;/verifactu:Cabecera&gt;
+      &lt;verifactu:Factura&gt;
+        &lt;verifactu:ImporteTotal&gt;${invoice.importeTotal}&lt;/verifactu:ImporteTotal&gt;
+        &lt;verifactu:ImporteTotalConImpuestos&gt;${invoice.importeTotalConImpuestos}&lt;/verifactu:ImporteTotalConImpuestos&gt;
+        &lt;verifactu:TipoFactura&gt;${invoice.tipoFactura}&lt;/verifactu:TipoFactura&gt;
+        &lt;verifactu:ClaveRegimenEspecialOTrascendencia&gt;${invoice.claveRegimen}&lt;/verifactu:ClaveRegimenEspecialOTrascendencia&gt;
+      &lt;/verifactu:Factura&gt;
+    &lt;/verifactu:Consulta&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;`;
   }
   
   makeRequest(soapBody, soapAction) {
