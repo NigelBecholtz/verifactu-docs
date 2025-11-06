@@ -385,8 +385,8 @@ async function sendSoapRequest(xmlPayload) {
       xmlPayload,
       {
         headers: {
-          'Content-Type': 'text/xml;charset=UTF-8',
-          'SOAPAction': '""' // Required for SOAP 1.1 Document/Literal
+          'Content-Type': 'text/xml; charset=utf-8',
+          'SOAPAction': '"urn:VeriFactu/Alta"' // Use specific operation SOAPAction
         }
       }
     );

@@ -430,8 +430,8 @@ class AEATTestSuite {
         cert: this.testCertificate,
         key: this.testPrivateKey,
         headers: {
-          'Content-Type': 'application/soap+xml; charset=utf-8',
-          'SOAPAction': 'urn:VeriFactu/Alta'
+          'Content-Type': 'text/xml; charset=utf-8',
+          'SOAPAction': '"urn:VeriFactu/Alta"'
         }
       };
 
@@ -567,7 +567,14 @@ class AEATTestSuite {
 
   createTestSOAPRequest() {
     return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:verifactu="urn:VeriFactu"
+               xmlns:aeat="http://www.aeat.es/verifactu"&gt;
+  &lt;soap:Header&gt;
+    &lt;aeat:Autenticacion&gt;
+      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
+    &lt;/aeat:Autenticacion&gt;
+  &lt;/soap:Header&gt;
   &lt;soap:Body&gt;
     &lt;verifactu:Alta&gt;
       &lt;verifactu:Cabecera&gt;
@@ -582,7 +589,14 @@ class AEATTestSuite {
 
   createRegisterSOAPRequest(invoice) {
     return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:verifactu="urn:VeriFactu"
+               xmlns:aeat="http://www.aeat.es/verifactu"&gt;
+  &lt;soap:Header&gt;
+    &lt;aeat:Autenticacion&gt;
+      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
+    &lt;/aeat:Autenticacion&gt;
+  &lt;/soap:Header&gt;
   &lt;soap:Body&gt;
     &lt;verifactu:Alta&gt;
       &lt;verifactu:Cabecera&gt;
@@ -605,8 +619,8 @@ class AEATTestSuite {
       cert: this.testCertificate,
       key: this.testPrivateKey,
       headers: {
-        'Content-Type': 'application/soap+xml; charset=utf-8',
-        'SOAPAction': soapAction
+        'Content-Type': 'text/xml; charset=utf-8',
+        'SOAPAction': soapAction ? `"${soapAction}"` : '"urn:VeriFactu/Alta"'
       }
     };
   }
@@ -739,8 +753,8 @@ class AEATTestSuite:
                 self.test_endpoint,
                 data=soap_body,
                 headers={
-                    'Content-Type': 'application/soap+xml; charset=utf-8',
-                    'SOAPAction': 'urn:VeriFactu/Alta'
+                    'Content-Type': 'text/xml; charset=utf-8',
+                    'SOAPAction': '"urn:VeriFactu/Alta"'
                 },
                 cert=(self.test_cert_path, self.test_key_path),
                 timeout=30
@@ -884,7 +898,14 @@ class AEATTestSuite:
     def create_register_soap_request(self, invoice_data):
         """Create SOAP request for invoice registration"""
         return f'''&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:verifactu="urn:VeriFactu"
+               xmlns:aeat="http://www.aeat.es/verifactu"&gt;
+  &lt;soap:Header&gt;
+    &lt;aeat:Autenticacion&gt;
+      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
+    &lt;/aeat:Autenticacion&gt;
+  &lt;/soap:Header&gt;
   &lt;soap:Body&gt;
     &lt;verifactu:Alta&gt;
       &lt;verifactu:Cabecera&gt;

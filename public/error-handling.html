@@ -338,6 +338,29 @@
                             </ul>
                         </div>
                     </div>
+                    
+                    <div class="mt-4">
+                        <div class="p-4 bg-red-50 rounded-md border-2 border-red-200">
+                            <h4 class="font-semibold text-red-800 mb-2">Parser Errors (4000-4999)</h4>
+                            <ul class="text-sm text-red-700 space-y-2">
+                                <li>
+                                    <strong>4118:</strong> Error técnico: la dirección no se corresponde con el fichero de entrada
+                                    <div class="mt-2 p-2 bg-red-100 rounded text-xs">
+                                        <strong>Meaning:</strong> The endpoint/URL does not correspond to the input file/request structure.
+                                        <br><strong>Common Causes:</strong>
+                                        <ul class="list-disc list-inside mt-1 space-y-1">
+                                            <li>SOAPAction header missing or incorrect (must include quotes: <code>"urn:VeriFactu/Alta"</code>)</li>
+                                            <li>Content-Type header incorrect (should be: <code>text/xml; charset=utf-8</code>)</li>
+                                            <li>Wrong endpoint URL or path</li>
+                                            <li>XML namespace mismatch</li>
+                                            <li>Incorrect SOAP envelope structure</li>
+                                        </ul>
+                                        <br><strong>Solution:</strong> Verify SOAPAction header has quotes, check Content-Type, validate endpoint URL, and ensure XML structure matches expected format.
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="rounded-lg border bg-card p-6 mb-8">

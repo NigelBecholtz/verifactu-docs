@@ -233,7 +233,7 @@ class AEATClient {
   async registerInvoice(invoice) {
     try {
       const soapBody = this.createRegisterRequest(invoice);
-      const response = await this.makeRequest(soapBody, 'urn:VeriFactu/Alta');
+      const response = await this.makeRequest(soapBody, '"urn:VeriFactu/Alta"');
       return this.parseResponse(response);
     } catch (error) {
       throw new Error(`AEAT Registration failed: ${error.message}`);
@@ -243,7 +243,7 @@ class AEATClient {
   async cancelInvoice(invoice) {
     try {
       const soapBody = this.createCancelRequest(invoice);
-      const response = await this.makeRequest(soapBody, 'urn:VeriFactu/Baja');
+      const response = await this.makeRequest(soapBody, '"urn:VeriFactu/Baja"');
       return this.parseResponse(response);
     } catch (error) {
       throw new Error(`AEAT Cancellation failed: ${error.message}`);
@@ -253,7 +253,7 @@ class AEATClient {
   async queryInvoice(invoice) {
     try {
       const soapBody = this.createQueryRequest(invoice);
-      const response = await this.makeRequest(soapBody, 'urn:VeriFactu/Consulta');
+      const response = await this.makeRequest(soapBody, '"urn:VeriFactu/Consulta"');
       return this.parseResponse(response);
     } catch (error) {
       throw new Error(`AEAT Query failed: ${error.message}`);
@@ -263,7 +263,13 @@ class AEATClient {
   createRegisterRequest(invoice) {
     return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu"&gt;
+               xmlns:verifactu="urn:VeriFactu"
+               xmlns:aeat="http://www.aeat.es/verifactu"&gt;
+  &lt;soap:Header&gt;
+    &lt;aeat:Autenticacion&gt;
+      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
+    &lt;/aeat:Autenticacion&gt;
+  &lt;/soap:Header&gt;
   &lt;soap:Body&gt;
     &lt;verifactu:Alta&gt;
       &lt;verifactu:Cabecera&gt;
@@ -287,7 +293,13 @@ class AEATClient {
   createCancelRequest(invoice) {
     return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu"&gt;
+               xmlns:verifactu="urn:VeriFactu"
+               xmlns:aeat="http://www.aeat.es/verifactu"&gt;
+  &lt;soap:Header&gt;
+    &lt;aeat:Autenticacion&gt;
+      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
+    &lt;/aeat:Autenticacion&gt;
+  &lt;/soap:Header&gt;
   &lt;soap:Body&gt;
     &lt;verifactu:Baja&gt;
       &lt;verifactu:Cabecera&gt;
@@ -311,7 +323,13 @@ class AEATClient {
   createQueryRequest(invoice) {
     return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu"&gt;
+               xmlns:verifactu="urn:VeriFactu"
+               xmlns:aeat="http://www.aeat.es/verifactu"&gt;
+  &lt;soap:Header&gt;
+    &lt;aeat:Autenticacion&gt;
+      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
+    &lt;/aeat:Autenticacion&gt;
+  &lt;/soap:Header&gt;
   &lt;soap:Body&gt;
     &lt;verifactu:Consulta&gt;
       &lt;verifactu:Cabecera&gt;

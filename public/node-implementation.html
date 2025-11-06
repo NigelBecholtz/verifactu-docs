@@ -289,7 +289,7 @@ const aeatConfig = {
   method: 'POST',
   headers: {
     'Content-Type': 'text/xml; charset=utf-8',
-    'SOAPAction': 'urn:VeriFactu/Alta'
+    'SOAPAction': '"urn:VeriFactu/Alta"'
   }
 };
 
@@ -323,7 +323,14 @@ async function sendInvoiceToAEAT(invoice) {
 // Create SOAP request XML
 function createSOAPRequest(invoice) {
   return `<?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:verifactu="urn:VeriFactu"
+               xmlns:aeat="http://www.aeat.es/verifactu">
+  <soap:Header>
+    <aeat:Autenticacion>
+      <aeat:Certificado>BASE64_ENCODED_CERTIFICATE</aeat:Certificado>
+    </aeat:Autenticacion>
+  </soap:Header>
   <soap:Body>
     <verifactu:Alta>
       <verifactu:Cabecera>

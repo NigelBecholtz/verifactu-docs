@@ -256,7 +256,7 @@
                                 <div class="space-y-2 text-sm">
                                     <div class="flex justify-between">
                                         <span class="font-medium">Content-Type:</span>
-                                        <code class="bg-muted px-2 py-1 rounded">application/soap+xml; charset=utf-8</code>
+                                        <code class="bg-muted px-2 py-1 rounded">text/xml; charset=utf-8</code>
                                     </div>
                                     <div class="flex justify-between">
                                         <span class="font-medium">SOAPAction:</span>
@@ -366,7 +366,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"</code></pre>
                     <div class="p-4 bg-blue-50 rounded-md mb-4">
                         <h4 class="font-semibold text-blue-800 mb-2">Required HTTP Headers:</h4>
                         <div class="bg-muted p-3 rounded text-sm font-mono">
-                            <div>Content-Type: application/soap+xml; charset=utf-8</div>
+                            <div>Content-Type: text/xml; charset=utf-8</div>
                             <div>SOAPAction: "urn:VeriFactu/Alta"</div>
                             <div>Content-Length: [calculated]</div>
                         </div>
@@ -538,13 +538,20 @@ const options = {
   method: 'POST',
   headers: {
     'Content-Type': 'text/xml; charset=utf-8',
-    'SOAPAction': 'urn:VeriFactu/Alta'
+    'SOAPAction': '"urn:VeriFactu/Alta"'
   }
 };
 
 // SOAP request body
 const soapBody = `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:verifactu="urn:VeriFactu"
+               xmlns:aeat="http://www.aeat.es/verifactu"&gt;
+  &lt;soap:Header&gt;
+    &lt;aeat:Autenticacion&gt;
+      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
+    &lt;/aeat:Autenticacion&gt;
+  &lt;/soap:Header&gt;
   &lt;soap:Body&gt;
     &lt;verifactu:Alta&gt;
       &lt;!-- Your invoice data here --&gt;
