@@ -260,7 +260,12 @@
                                     </div>
                                     <div class="flex justify-between">
                                         <span class="font-medium">SOAPAction:</span>
-                                        <code class="bg-muted px-2 py-1 rounded">"urn:VeriFactu/Alta"</code>
+                                        <code class="bg-muted px-2 py-1 rounded">""</code>
+                                    </div>
+                                    <div class="p-3 bg-yellow-50 rounded-md mt-2">
+                                        <div class="text-xs text-yellow-800">
+                                            <strong>Important:</strong> SOAPAction must be an empty string (as per WSDL), not "urn:VeriFactu/Alta"
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -367,7 +372,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"</code></pre>
                         <h4 class="font-semibold text-blue-800 mb-2">Required HTTP Headers:</h4>
                         <div class="bg-muted p-3 rounded text-sm font-mono">
                             <div>Content-Type: text/xml; charset=utf-8</div>
-                            <div>SOAPAction: "urn:VeriFactu/Alta"</div>
+                            <div>SOAPAction: ""</div>
                             <div>Content-Length: [calculated]</div>
                         </div>
                     </div>
@@ -538,7 +543,7 @@ const options = {
   method: 'POST',
   headers: {
     'Content-Type': 'text/xml; charset=utf-8',
-    'SOAPAction': '"urn:VeriFactu/Alta"'
+    'SOAPAction': ''
   }
 };
 
@@ -579,13 +584,25 @@ req.end();</code></pre>
                     </div>
                 </div>
                 
+                <div class="p-4 bg-yellow-50 rounded-md mb-4">
+                    <div class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-yellow-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                        <div>
+                            <h4 class="font-semibold text-yellow-800 mb-1">Important: SOAPAction Header</h4>
+                            <p class="text-sm text-yellow-700 mb-2">The SOAPAction header must be an <strong>empty string</strong> (<code class="bg-yellow-100 px-1 rounded">""</code>), not <code class="bg-yellow-100 px-1 rounded">"urn:VeriFactu/Alta"</code>. According to the WSDL, the operation uses <code class="bg-yellow-100 px-1 rounded">soapAction=""</code>. Using an incorrect SOAPAction will result in error code 4118: "la dirección no se corresponde con el fichero de entrada."</p>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="p-4 bg-yellow-50 rounded-md">
                     <div class="flex items-start gap-3">
                         <svg class="w-5 h-5 text-yellow-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
                         </svg>
                         <div>
-                            <h4 class="font-semibold text-yellow-800 mb-1">Important</h4>
+                            <h4 class="font-semibold text-yellow-800 mb-1">Testing Environment</h4>
                             <p class="text-sm text-yellow-700">Always test with the test environment first before using production. The test environment URL is: <code class="bg-yellow-100 px-1 rounded">https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP</code></p>
                         </div>
                     </div>

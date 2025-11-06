@@ -233,7 +233,7 @@ class AEATClient {
   async registerInvoice(invoice) {
     try {
       const soapBody = this.createRegisterRequest(invoice);
-      const response = await this.makeRequest(soapBody, '"urn:VeriFactu/Alta"');
+      const response = await this.makeRequest(soapBody, '');
       return this.parseResponse(response);
     } catch (error) {
       throw new Error(`AEAT Registration failed: ${error.message}`);
@@ -243,7 +243,7 @@ class AEATClient {
   async cancelInvoice(invoice) {
     try {
       const soapBody = this.createCancelRequest(invoice);
-      const response = await this.makeRequest(soapBody, '"urn:VeriFactu/Baja"');
+      const response = await this.makeRequest(soapBody, '');
       return this.parseResponse(response);
     } catch (error) {
       throw new Error(`AEAT Cancellation failed: ${error.message}`);
@@ -253,7 +253,7 @@ class AEATClient {
   async queryInvoice(invoice) {
     try {
       const soapBody = this.createQueryRequest(invoice);
-      const response = await this.makeRequest(soapBody, '"urn:VeriFactu/Consulta"');
+      const response = await this.makeRequest(soapBody, '');
       return this.parseResponse(response);
     } catch (error) {
       throw new Error(`AEAT Query failed: ${error.message}`);

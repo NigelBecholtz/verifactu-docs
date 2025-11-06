@@ -431,7 +431,7 @@ class AEATTestSuite {
         key: this.testPrivateKey,
         headers: {
           'Content-Type': 'text/xml; charset=utf-8',
-          'SOAPAction': '"urn:VeriFactu/Alta"'
+          'SOAPAction': ''
         }
       };
 
@@ -620,7 +620,7 @@ class AEATTestSuite {
       key: this.testPrivateKey,
       headers: {
         'Content-Type': 'text/xml; charset=utf-8',
-        'SOAPAction': soapAction ? `"${soapAction}"` : '"urn:VeriFactu/Alta"'
+        'SOAPAction': ''
       }
     };
   }
@@ -754,7 +754,7 @@ class AEATTestSuite:
                 data=soap_body,
                 headers={
                     'Content-Type': 'text/xml; charset=utf-8',
-                    'SOAPAction': '"urn:VeriFactu/Alta"'
+                    'SOAPAction': ''
                 },
                 cert=(self.test_cert_path, self.test_key_path),
                 timeout=30
@@ -807,7 +807,7 @@ class AEATTestSuite:
                     data=soap_body,
                     headers={
                         'Content-Type': 'application/soap+xml; charset=utf-8',
-                        'SOAPAction': 'urn:VeriFactu/Alta'
+                        'SOAPAction': ''
                     },
                     cert=(self.test_cert_path, self.test_key_path),
                     timeout=30
@@ -852,7 +852,7 @@ class AEATTestSuite:
                     data=soap_body,
                     headers={
                         'Content-Type': 'application/soap+xml; charset=utf-8',
-                        'SOAPAction': 'urn:VeriFactu/Alta'
+                        'SOAPAction': ''
                     },
                     cert=(self.test_cert_path, self.test_key_path),
                     timeout=30

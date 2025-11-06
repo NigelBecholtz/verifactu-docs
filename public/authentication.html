@@ -386,7 +386,7 @@ async function sendSoapRequest(xmlPayload) {
       {
         headers: {
           'Content-Type': 'text/xml; charset=utf-8',
-          'SOAPAction': '"urn:VeriFactu/Alta"' // Use specific operation SOAPAction
+          'SOAPAction': '' // Must be empty string as per WSDL (soapAction="")
         }
       }
     );

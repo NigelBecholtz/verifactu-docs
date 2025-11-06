@@ -349,7 +349,7 @@
                                         <strong>Meaning:</strong> The endpoint/URL does not correspond to the input file/request structure.
                                         <br><strong>Common Causes:</strong>
                                         <ul class="list-disc list-inside mt-1 space-y-1">
-                                            <li>SOAPAction header missing or incorrect (must include quotes: <code>"urn:VeriFactu/Alta"</code>)</li>
+                                            <li>SOAPAction header incorrect (must be empty string <code>""</code> as per WSDL, not <code>"urn:VeriFactu/Alta"</code>)</li>
                                             <li>Content-Type header incorrect (should be: <code>text/xml; charset=utf-8</code>)</li>
                                             <li>Wrong endpoint URL or path</li>
                                             <li>XML namespace mismatch</li>
