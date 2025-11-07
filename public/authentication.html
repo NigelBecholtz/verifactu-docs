@@ -91,6 +91,14 @@
             --input: 217.2 32.6% 17.5%;
             --ring: 224.3 76.3% 94.1%;
         }
+
+        pre {
+            overflow: auto;
+        }
+
+        pre code {
+            white-space: pre;
+        }
     </style>
 </head>
 <body class="h-full bg-background text-foreground">
@@ -246,6 +254,33 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">Endpoints</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse border border-border text-sm">
+                            <thead class="bg-muted">
+                                <tr>
+                                    <th class="border border-border p-3 text-left font-semibold">Environment</th>
+                                    <th class="border border-border p-3 text-left font-semibold">Host / URL</th>
+                                    <th class="border border-border p-3 text-left font-semibold">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-border p-3">Preproducción</td>
+                                    <td class="border border-border p-3 font-mono text-xs">&lt;PREPROD_URL&gt;</td>
+                                    <td class="border border-border p-3">Mutual TLS with qualified certificate. Use for testing only.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-border p-3">Producción</td>
+                                    <td class="border border-border p-3 font-mono text-xs">&lt;PROD_URL&gt;</td>
+                                    <td class="border border-border p-3">Same certificate requirements. Obtain AEAT approval before sending live data.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 
                 <div class="grid gap-6 md:grid-cols-2 mb-8">
                     <div class="rounded-lg border bg-card p-6">
@@ -349,7 +384,7 @@
                             <p class="text-muted-foreground mb-4">Your X.509 certificate (including the private key) must be securely stored on your server. Common formats include `.p12` or `.pem`.</p>
                             <p class="text-muted-foreground mb-4">Example (Node.js):</p>
                             <div class="bg-muted p-4 rounded-md">
-                                <pre class="text-sm font-mono"><code>// This is where your certificate is stored
+                                <pre class="text-sm font-mono"><code class="language-javascript">// This is where your certificate is stored
 const certificate = {
   file: '/path/to/your/certificate.p12',
   password: 'your_password',
@@ -363,7 +398,7 @@ const certificate = {
                             <p class="text-muted-foreground mb-4">When making requests to the AEAT webservice, you must configure your HTTP client to use mutual TLS. This involves providing your client certificate and key, and optionally the CA certificate chain for server verification.</p>
                             <p class="text-muted-foreground mb-4">Example (Node.js with `https.Agent`):</p>
                             <div class="bg-muted p-4 rounded-md">
-                                <pre class="text-sm font-mono"><code>const https = require('https');
+                                <pre class="text-sm font-mono"><code class="language-javascript">const https = require('https');
 const fs = require('fs');
 
 const agent = new https.Agent({
@@ -409,7 +444,7 @@ async function sendSoapRequest(xmlPayload) {
                             <h3 class="text-lg font-semibold mb-3">Database Adjustments:</h3>
                             <p class="text-muted-foreground mb-4">You'll need to add fields to your invoice table to store the AEAT's CSV code, status, and any error messages.</p>
                             <div class="bg-muted p-4 rounded-md">
-                                <pre class="text-sm font-mono"><code>-- Add these columns to your invoices table
+                                <pre class="text-sm font-mono"><code class="language-none">-- Add these columns to your invoices table
 ALTER TABLE invoices ADD COLUMN aeat_csv_code VARCHAR(100);
 ALTER TABLE invoices ADD COLUMN aeat_status VARCHAR(20);
 ALTER TABLE invoices ADD COLUMN aeat_error TEXT;</code></pre>
@@ -420,7 +455,7 @@ ALTER TABLE invoices ADD COLUMN aeat_error TEXT;</code></pre>
                             <h3 class="text-lg font-semibold mb-3">Basic Workflow:</h3>
                             <p class="text-muted-foreground mb-4">When an invoice is saved in your CRM, you'll send it to AEAT, then update your database with the response.</p>
                             <div class="bg-muted p-4 rounded-md">
-                                <pre class="text-sm font-mono"><code>// When you save an invoice
+                                <pre class="text-sm font-mono"><code class="language-javascript">// When you save an invoice
 async function saveInvoice(invoice) {
   // 1. Save in your CRM
   const invoiceId = await saveToCRM(invoice);
@@ -438,6 +473,15 @@ async function saveInvoice(invoice) {
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="rounded-lg border bg-card p-6 mt-8">
+                    <h2 class="text-2xl font-semibold mb-4">Changelog</h2>
+                    <ul class="space-y-2 text-sm text-muted-foreground">
+                        <li><strong>2025-07-28</strong> – Errata and minor fixes.</li>
+                        <li><strong>2025-07-16</strong> – SIF consult updates.</li>
+                        <li><strong>2025-04-23</strong> – Production URLs published.</li>
+                    </ul>
                 </div>
             </div>
         </main>

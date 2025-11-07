@@ -191,90 +191,71 @@
                 <div class="rounded-lg border bg-card p-6 mb-8">
                     <h2 class="text-2xl font-semibold mb-4">Core Parameters</h2>
                     
-                    <h3 class="text-lg font-semibold mb-3">TiempoEsperaEnvio</h3>
-                    <div class="mb-4">
-                        <p class="text-muted-foreground mb-2"><strong>What it is:</strong> Expected processing time in seconds for the operation.</p>
-                        <p class="text-muted-foreground mb-2"><strong>Purpose:</strong></p>
-                        <ul class="list-disc list-inside text-sm text-muted-foreground space-y-1">
-                            <li>Allows AEAT to optimize processing resources</li>
-                            <li>Helps with timeout configuration</li>
-                            <li>Provides processing time estimates</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="grid gap-4 md:grid-cols-2 mb-4">
-                        <div class="p-4 bg-blue-50 rounded-md">
-                            <h4 class="font-semibold text-blue-800 mb-2">Values</h4>
-                            <ul class="text-sm text-blue-700 space-y-1">
-                                <li><strong>Minimum:</strong> 30 seconds</li>
-                                <li><strong>Maximum:</strong> 300 seconds (5 minutes)</li>
-                                <li><strong>Recommended:</strong> 30-60 seconds for most operations</li>
-                                <li><strong>Large batches:</strong> 120-300 seconds</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="p-4 bg-green-50 rounded-md">
-                            <h4 class="font-semibold text-green-800 mb-2">When to use</h4>
-                            <ul class="text-sm text-green-700 space-y-1">
-                                <li><strong>Simple operations:</strong> 30 seconds</li>
-                                <li><strong>Complex invoices:</strong> 60 seconds</li>
-                                <li><strong>Batch operations:</strong> 120+ seconds</li>
-                                <li><strong>Peak hours:</strong> Increase by 50%</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-muted p-4 rounded-md">
-                        <h4 class="font-semibold mb-2">Example:</h4>
-                        <pre class="text-sm font-mono"><code>&lt;verifactu:TiempoEsperaEnvio&gt;60&lt;/verifactu:TiempoEsperaEnvio&gt;</code></pre>
-                    </div>
+                    <h3>Flow control (TiempoEsperaEnvio)</h3>
+                    <p>
+                      The client must always use the <code>TiempoEsperaEnvio</code> value returned by AEAT in the previous response.
+                      Wait exactly <em>t</em> seconds or until your batch limit is reached, whichever happens first.
+                      Treat any hardcoded wait values as examples only &mdash; never as normative guidance.
+                    </p>
                 </div>
                 
                 <div class="rounded-lg border bg-card p-6 mb-8">
-                    <h2 class="text-2xl font-semibold mb-4">EstadoEnvio</h2>
-                    
-                    <div class="mb-4">
-                        <p class="text-muted-foreground mb-2"><strong>What it is:</strong> Overall status of the operation.</p>
-                        <p class="text-muted-foreground mb-2"><strong>Purpose:</strong></p>
-                        <ul class="list-disc list-inside text-sm text-muted-foreground space-y-1">
-                            <li>Indicates success or failure of the operation</li>
-                            <li>Provides high-level status information</li>
-                            <li>Determines next steps in processing</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="overflow-x-auto">
-                        <table class="w-full border-collapse border border-border">
-                            <thead>
-                                <tr class="bg-muted">
-                                    <th class="border border-border p-3 text-left font-semibold">Value</th>
-                                    <th class="border border-border p-3 text-left font-semibold">Description</th>
-                                    <th class="border border-border p-3 text-left font-semibold">Meaning</th>
-                                    <th class="border border-border p-3 text-left font-semibold">Action Required</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="border border-border p-3"><strong>Correcto</strong></td>
-                                    <td class="border border-border p-3">Successful</td>
-                                    <td class="border border-border p-3">Operation completed successfully</td>
-                                    <td class="border border-border p-3">None - process normally</td>
-                                </tr>
-                                <tr>
-                                    <td class="border border-border p-3"><strong>Rechazado</strong></td>
-                                    <td class="border border-border p-3">Rejected</td>
-                                    <td class="border border-border p-3">Operation was rejected</td>
-                                    <td class="border border-border p-3">Check errors, correct data</td>
-                                </tr>
-                                <tr>
-                                    <td class="border border-border p-3"><strong>AceptadoConErrores</strong></td>
-                                    <td class="border border-border p-3">Accepted with errors</td>
-                                    <td class="border border-border p-3">Operation accepted but with warnings</td>
-                                    <td class="border border-border p-3">Review warnings, may need correction</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <h2 class="text-2xl font-semibold mb-4">Estado literals</h2>
+                    <h3>Global envío status (literal)</h3>
+                    <table class="w-full border-collapse border border-border mb-6">
+                      <thead class="bg-muted">
+                        <tr>
+                          <th class="border border-border p-3 text-left">Value (literal)</th>
+                          <th class="border border-border p-3 text-left">Description</th>
+                          <th class="border border-border p-3 text-left">UI label (if any)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="border border-border p-3"><code>Correcto</code></td>
+                          <td class="border border-border p-3">All records accepted.</td>
+                          <td class="border border-border p-3">Accepted</td>
+                        </tr>
+                        <tr>
+                          <td class="border border-border p-3"><code>ParcialmenteCorrecto</code></td>
+                          <td class="border border-border p-3">Some records accepted, some not.</td>
+                          <td class="border border-border p-3">Partial</td>
+                        </tr>
+                        <tr>
+                          <td class="border border-border p-3"><code>Incorrecto</code></td>
+                          <td class="border border-border p-3">All records rejected.</td>
+                          <td class="border border-border p-3">Rejected</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <h3>Per-record status (literal)</h3>
+                    <table class="w-full border-collapse border border-border">
+                      <thead class="bg-muted">
+                        <tr>
+                          <th class="border border-border p-3 text-left">Value (literal)</th>
+                          <th class="border border-border p-3 text-left">Description</th>
+                          <th class="border border-border p-3 text-left">UI label (if any)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="border border-border p-3"><code>Correcto</code></td>
+                          <td class="border border-border p-3">Record accepted.</td>
+                          <td class="border border-border p-3">Accepted</td>
+                        </tr>
+                        <tr>
+                          <td class="border border-border p-3"><code>AceptadoConErrores</code></td>
+                          <td class="border border-border p-3">Accepted with warnings/errors.</td>
+                          <td class="border border-border p-3">Accepted w/ issues</td>
+                        </tr>
+                        <tr>
+                          <td class="border border-border p-3"><code>Incorrecto</code></td>
+                          <td class="border border-border p-3">Record rejected.</td>
+                          <td class="border border-border p-3">Rejected</td>
+                        </tr>
+                      </tbody>
+                    </table>
                 </div>
                 
                 <div class="rounded-lg border bg-card p-6 mb-8">

@@ -91,6 +91,34 @@
             --input: 217.2 32.6% 17.5%;
             --ring: 224.3 76.3% 94.1%;
         }
+        .callout {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border-left: 4px solid #2563eb;
+            background-color: #eff6ff;
+        }
+        .callout.warning {
+            border-left-color: #d97706;
+            background-color: #fff7ed;
+            color: #92400e;
+        }
+        .note {
+            display: block;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            background-color: #fff7ed;
+            border-left: 4px solid #d97706;
+            color: #92400e;
+            margin-bottom: 2rem;
+        }
+
+        pre {
+            overflow: auto;
+        }
+
+        pre code {
+            white-space: pre;
+        }
     </style>
 </head>
 <body class="h-full bg-background text-foreground">
@@ -203,6 +231,9 @@
                 <h1 class="group relative text-4xl font-extrabold flex gap-3.5 items-center mb-6">
                     Query Invoice (Consulta)
                 </h1>
+                <div class="callout warning mb-8">
+  <strong>Important:</strong> Consulta services are only available for <strong>remisión voluntaria (VERI*FACTU)</strong>. They do not apply to <em>remisión bajo requerimiento</em>.
+</div>
                 
                 <div class="rounded-lg border bg-card p-6 mb-8">
                     <h2 class="text-2xl font-semibold mb-4">Overview</h2>
@@ -260,7 +291,12 @@
                                     </div>
                                     <div class="flex justify-between">
                                         <span class="font-medium">SOAPAction:</span>
-                                        <code class="bg-muted px-2 py-1 rounded">"urn:VeriFactu/Consulta"</code>
+                                        <code class="bg-muted px-2 py-1 rounded">""</code>
+                                    </div>
+                                    <div class="p-3 bg-yellow-50 rounded-md mt-2">
+                                        <div class="text-xs text-yellow-800">
+                                            <strong>Important:</strong> SOAPAction must be empty (soapAction=""). Using legacy values such as "urn:VeriFactu/Consulta" results in error 4118.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -290,46 +326,46 @@
                     <h2 class="text-2xl font-semibold mb-4">Complete SOAP Request Example</h2>
                     
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu"
-               xmlns:aeat="http://www.aeat.es/verifactu"
-               xmlns:factura="urn:VeriFactu:Factura"
-               xmlns:cabecera="urn:VeriFactu:Cabecera"
-               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;soap:Header&gt;
-    &lt;aeat:Autenticacion&gt;
-      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
-    &lt;/aeat:Autenticacion&gt;
-  &lt;/soap:Header&gt;
-  &lt;soap:Body&gt;
-    &lt;verifactu:Consulta&gt;
-      &lt;verifactu:Cabecera&gt;
-        &lt;verifactu:NIFEmisor&gt;12345678Z&lt;/verifactu:NIFEmisor&gt;
-        &lt;verifactu:FechaEnvio&gt;2024-01-15T10:30:00&lt;/verifactu:FechaEnvio&gt;
-        &lt;verifactu:TiempoEsperaEnvio&gt;30&lt;/verifactu:TiempoEsperaEnvio&gt;
-        &lt;verifactu:TipoComunicacion&gt;Consulta&lt;/verifactu:TipoComunicacion&gt;
-        &lt;verifactu:NumeroRegistro&gt;REG001&lt;/verifactu:NumeroRegistro&gt;
-        &lt;verifactu:Observaciones&gt;Invoice query request&lt;/verifactu:Observaciones&gt;
-      &lt;/verifactu:Cabecera&gt;
-      &lt;verifactu:CriteriosBusqueda&gt;
-        &lt;verifactu:TipoConsulta&gt;PorNumeroFactura&lt;/verifactu:TipoConsulta&gt;
-        &lt;verifactu:NumFactura&gt;INV-2024-001&lt;/verifactu:NumFactura&gt;
-        &lt;verifactu:SerieFactura&gt;A&lt;/verifactu:SerieFactura&gt;
-        &lt;verifactu:FechaDesde&gt;2024-01-01&lt;/verifactu:FechaDesde&gt;
-        &lt;verifactu:FechaHasta&gt;2024-01-31&lt;/verifactu:FechaHasta&gt;
-        &lt;verifactu:NIFReceptor&gt;87654321A&lt;/verifactu:NIFReceptor&gt;
-        &lt;verifactu:ImporteDesde&gt;0.00&lt;/verifactu:ImporteDesde&gt;
-        &lt;verifactu:ImporteHasta&gt;10000.00&lt;/verifactu:ImporteHasta&gt;
-        &lt;verifactu:TipoFactura&gt;F1&lt;/verifactu:TipoFactura&gt;
-        &lt;verifactu:EstadoFactura&gt;Todas&lt;/verifactu:EstadoFactura&gt;
-        &lt;verifactu:Pagina&gt;1&lt;/verifactu:Pagina&gt;
-        &lt;verifactu:RegistrosPorPagina&gt;10&lt;/verifactu:RegistrosPorPagina&gt;
-      &lt;/verifactu:CriteriosBusqueda&gt;
-    &lt;/verifactu:Consulta&gt;
-  &lt;/soap:Body&gt;
-&lt;/soap:Envelope&gt;</code></pre>
+                        <p class="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Example • Consulta Request (first page)</p>
+                        <pre class="text-sm font-mono overflow-x-auto"><code class="language-xml">&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ver="urn:aeat:verifactu:schema"&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+    &lt;ver:MensajeConsulta&gt;
+      &lt;ver:Cabecera&gt;
+        &lt;ver:NIFEmisor&gt;B12345678&lt;/ver:NIFEmisor&gt;
+        &lt;ver:FechaEnvio&gt;2025-11-07T10:10:00&lt;/ver:FechaEnvio&gt;
+        &lt;ver:TiempoEsperaEnvio&gt;60&lt;/ver:TiempoEsperaEnvio&gt;
+        &lt;ver:TipoComunicacion&gt;Consulta&lt;/ver:TipoComunicacion&gt;
+      &lt;/ver:Cabecera&gt;
+      &lt;ver:Filtros&gt;
+        &lt;ver:RangoFechaDesde&gt;2025-11-01&lt;/ver:RangoFechaDesde&gt;
+        &lt;ver:RangoFechaHasta&gt;2025-11-07&lt;/ver:RangoFechaHasta&gt;
+        &lt;!-- additional filters per AEAT specification --&gt;
+      &lt;/ver:Filtros&gt;
+    &lt;/ver:MensajeConsulta&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;</code></pre>
+                    </div>
+                    <div class="bg-muted p-4 rounded-md mb-4">
+                        <p class="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Example • Consulta Request (next page with ClavePaginacion)</p>
+                        <pre class="text-sm font-mono overflow-x-auto"><code class="language-xml">&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ver="urn:aeat:verifactu:schema"&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+    &lt;ver:MensajeConsulta&gt;
+      &lt;ver:Cabecera&gt;
+        &lt;ver:NIFEmisor&gt;B12345678&lt;/ver:NIFEmisor&gt;
+        &lt;ver:FechaEnvio&gt;2025-11-07T10:10:30&lt;/ver:FechaEnvio&gt;
+        &lt;ver:TiempoEsperaEnvio&gt;60&lt;/ver:TiempoEsperaEnvio&gt;
+        &lt;ver:TipoComunicacion&gt;Consulta&lt;/ver:TipoComunicacion&gt;
+      &lt;/ver:Cabecera&gt;
+      &lt;ver:Paginacion&gt;
+        &lt;ver:ClavePaginacion&gt;eyJwYWdlIjoyfQ==&lt;/ver:ClavePaginacion&gt;
+      &lt;/ver:Paginacion&gt;
+    &lt;/ver:MensajeConsulta&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;</code></pre>
                     </div>
                     
                     <div class="p-4 bg-blue-50 rounded-md mb-4">
@@ -357,21 +393,21 @@
                         
                         <h3 class="text-lg font-semibold mb-3">Header Information (Cabecera)</h3>
                         <ul class="space-y-2 text-sm">
-                            <li><strong>NIF</strong>: Tax identification number of the issuer</li>
-                            <li><strong>Fecha</strong>: Date of the invoice</li>
-                            <li><strong>Hora</strong>: Time of the invoice</li>
-                            <li><strong>Serie</strong>: Invoice series (optional)</li>
-                            <li><strong>NumFactura</strong>: Invoice number to query</li>
+                            <li><strong>NIFEmisor</strong>: Issuer tax identification number</li>
+                            <li><strong>FechaEnvio</strong>: Submission timestamp (ISO 8601)</li>
+                            <li><strong>TiempoEsperaEnvio</strong>: Wait time instructed by AEAT (positiveInteger)</li>
+                            <li><strong>TipoComunicacion</strong>: Communication type (Consulta)</li>
+                            <li><strong>NumeroRegistro / Observaciones</strong>: Optional metadata echoed from previous responses</li>
                         </ul>
                     </div>
                     
                     <div class="rounded-lg border bg-card p-6">
-                        <h3 class="text-lg font-semibold mb-3">Invoice Data (Factura)</h3>
+                        <h3 class="text-lg font-semibold mb-3">Query Criteria (Filtros / Paginacion)</h3>
                         <ul class="space-y-2 text-sm">
-                            <li><strong>ImporteTotal</strong>: Total amount of the invoice</li>
-                            <li><strong>ImporteTotalConImpuestos</strong>: Total amount including taxes</li>
-                            <li><strong>TipoFactura</strong>: Type of invoice (F1, F2, etc.)</li>
-                            <li><strong>ClaveRegimenEspecialOTrascendencia</strong>: Special regime key</li>
+                            <li><strong>Filtros</strong>: Date ranges, identification data or other allowable filters defined by AEAT</li>
+                            <li><strong>Paginacion</strong>: Use <code>ClavePaginacion</code> from the previous response when <code>IndicadorPaginacion</code> = "S"</li>
+                            <li><strong>SistemaInformatico</strong>: Include software metadata when required by your certification</li>
+                            <li><strong>CSV</strong>: Returned per invoice; store securely because it cannot be retrieved later via consulta</li>
                         </ul>
                     </div>
                 </div>
@@ -381,82 +417,59 @@
                     
                     <h3 class="text-lg font-semibold mb-3">Success Response</h3>
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu"
-               xmlns:aeat="http://www.aeat.es/verifactu"
-               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;soap:Header&gt;
-    &lt;aeat:RespuestaAutenticacion&gt;
-      &lt;aeat:Estado&gt;Correcto&lt;/aeat:Estado&gt;
-      &lt;aeat:Timestamp&gt;2024-01-15T10:30:30&lt;/aeat:Timestamp&gt;
-    &lt;/aeat:RespuestaAutenticacion&gt;
-  &lt;/soap:Header&gt;
-  &lt;soap:Body&gt;
-    &lt;verifactu:ConsultaResponse&gt;
-      &lt;verifactu:EstadoEnvio&gt;Correcto&lt;/verifactu:EstadoEnvio&gt;
-      &lt;verifactu:TiempoEsperaEnvio&gt;30&lt;/verifactu:TiempoEsperaEnvio&gt;
-      &lt;verifactu:Timestamp&gt;2024-01-15T10:30:30&lt;/verifactu:Timestamp&gt;
-      &lt;verifactu:Resultados&gt;
-        &lt;verifactu:TotalRegistros&gt;1&lt;/verifactu:TotalRegistros&gt;
-        &lt;verifactu:PaginaActual&gt;1&lt;/verifactu:PaginaActual&gt;
-        &lt;verifactu:RegistrosPorPagina&gt;10&lt;/verifactu:RegistrosPorPagina&gt;
-        &lt;verifactu:Facturas&gt;
-          &lt;verifactu:Factura&gt;
-            &lt;verifactu:NumFactura&gt;INV-2024-001&lt;/verifactu:NumFactura&gt;
-            &lt;verifactu:SerieFactura&gt;A&lt;/verifactu:SerieFactura&gt;
-            &lt;verifactu:FechaFactura&gt;2024-01-15&lt;/verifactu:FechaFactura&gt;
-            &lt;verifactu:NIFReceptor&gt;87654321A&lt;/verifactu:NIFReceptor&gt;
-            &lt;verifactu:ImporteTotal&gt;1000.00&lt;/verifactu:ImporteTotal&gt;
-            &lt;verifactu:TipoFactura&gt;F1&lt;/verifactu:TipoFactura&gt;
-            &lt;verifactu:Estado&gt;REGISTRADA&lt;/verifactu:Estado&gt;
-            &lt;verifactu:CSV&gt;ABC123DEF456&lt;/verifactu:CSV&gt;
-            &lt;verifactu:FechaRegistro&gt;2024-01-15T10:30:30&lt;/verifactu:FechaRegistro&gt;
-            &lt;verifactu:Observaciones&gt;Invoice successfully registered&lt;/verifactu:Observaciones&gt;
-          &lt;/verifactu:Factura&gt;
-        &lt;/verifactu:Facturas&gt;
-      &lt;/verifactu:Resultados&gt;
-    &lt;/verifactu:ConsultaResponse&gt;
-  &lt;/soap:Body&gt;
-&lt;/soap:Envelope&gt;</code></pre>
+                        <pre class="text-sm font-mono overflow-x-auto"><code class="language-xml">&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ver="urn:aeat:verifactu:schema"&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+    &lt;ver:RespuestaConsulta&gt;
+      &lt;ver:CabeceraRespuesta&gt;
+        &lt;ver:EstadoEnvio&gt;ParcialmenteCorrecto&lt;/ver:EstadoEnvio&gt;
+        &lt;ver:TiempoEsperaEnvio&gt;90&lt;/ver:TiempoEsperaEnvio&gt;
+      &lt;/ver:CabeceraRespuesta&gt;
+      &lt;ver:IndicadorPaginacion&gt;S&lt;/ver:IndicadorPaginacion&gt;
+      &lt;ver:ClavePaginacion&gt;eyJwYWdlIjoyfQ==&lt;/ver:ClavePaginacion&gt;
+      &lt;ver:Resultados&gt;
+        &lt;ver:Factura&gt;
+          &lt;ver:Serie&gt;F2025&lt;/ver:Serie&gt;
+          &lt;ver:NumFactura&gt;000123&lt;/ver:NumFactura&gt;
+          &lt;ver:FechaExpedicion&gt;2025-11-07&lt;/ver:FechaExpedicion&gt;
+          &lt;ver:Estado&gt;Correcto&lt;/ver:Estado&gt;
+          &lt;ver:CSV&gt;AB12CD34EF56GH78&lt;/ver:CSV&gt;
+        &lt;/ver:Factura&gt;
+        &lt;!-- further Factura nodes when present --&gt;
+      &lt;/ver:Resultados&gt;
+    &lt;/ver:RespuestaConsulta&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;</code></pre>
                     </div>
                     
                     <div class="p-4 bg-green-50 rounded-md mb-4">
                         <h4 class="font-semibold text-green-800 mb-2">Success Response Fields:</h4>
                         <ul class="text-sm text-green-700 space-y-1">
-                            <li><strong>EstadoEnvio</strong>: Overall operation status (Correcto, Rechazado, AceptadoConErrores)</li>
-                            <li><strong>TotalRegistros</strong>: Total number of invoices found</li>
-                            <li><strong>Facturas</strong>: Array of invoice details</li>
-                            <li><strong>Estado</strong>: Current status of each invoice (REGISTRADA, ANULADA, PENDIENTE, ERROR)</li>
-                            <li><strong>CSV</strong>: Secure verification code for each invoice</li>
-                            <li><strong>FechaRegistro</strong>: Registration date and time</li>
+                            <li><strong>EstadoEnvio</strong>: Overall status (Correcto, ParcialmenteCorrecto, Incorrecto)</li>
+                            <li><strong>IndicadorPaginacion</strong>: "S" when additional pages are available</li>
+                            <li><strong>ClavePaginacion</strong>: Opaque token to request the next page</li>
+                            <li><strong>Resultados/Factura</strong>: Per-invoice data including Serie, NumFactura and Estado</li>
+                            <li><strong>CSV</strong>: Mandatory proof code—store it immediately; it is not retrievable later via consulta</li>
                         </ul>
                     </div>
                     
                     <h3 class="text-lg font-semibold mb-3">Error Response</h3>
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu"
-               xmlns:aeat="http://www.aeat.es/verifactu"
-               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;soap:Header /&gt;
-  &lt;soap:Body&gt;
-    &lt;soap:Fault&gt;
-      &lt;faultcode&gt;soap:Server&lt;/faultcode&gt;
-      &lt;faultstring&gt;Error processing query request&lt;/faultstring&gt;
+                        <pre class="text-sm font-mono overflow-x-auto"><code class="language-xml">&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ver="urn:aeat:verifactu:schema"&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+    &lt;soapenv:Fault&gt;
+      &lt;faultcode&gt;soapenv:Client&lt;/faultcode&gt;
+      &lt;faultstring&gt;Cabecera inválida: FechaEnvio ausente&lt;/faultstring&gt;
       &lt;detail&gt;
-        &lt;aeat:Error&gt;
-          &lt;aeat:CodigoError&gt;E401&lt;/aeat:CodigoError&gt;
-          &lt;aeat:DescripcionError&gt;No invoices found matching criteria&lt;/aeat:DescripcionError&gt;
-          &lt;aeat:Timestamp&gt;2024-01-15T10:30:30&lt;/aeat:Timestamp&gt;
-        &lt;/aeat:Error&gt;
+        &lt;ver:Codigo&gt;Error-001&lt;/ver:Codigo&gt;
+        &lt;ver:Descripcion&gt;FechaEnvio es obligatoria&lt;/ver:Descripcion&gt;
       &lt;/detail&gt;
-    &lt;/soap:Fault&gt;
-  &lt;/soap:Body&gt;
-&lt;/soap:Envelope&gt;</code></pre>
+    &lt;/soapenv:Fault&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;</code></pre>
                     </div>
                     
                     <div class="p-4 bg-red-50 rounded-md">
@@ -470,6 +483,19 @@
                     </div>
                 </div>
                 
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">Pagination Flow</h2>
+                    <p class="text-sm text-muted-foreground mb-4">Use the following loop whenever <code>IndicadorPaginacion</code> returns "S".</p>
+                    <ol class="list-decimal pl-6 space-y-3 text-sm">
+                        <li><strong>First request</strong>: send <code>MensajeConsulta</code> without <code>ClavePaginacion</code>.</li>
+                        <li><strong>Inspect response</strong>: read <code>IndicadorPaginacion</code> and store <code>ClavePaginacion</code> if it is present.</li>
+                        <li><strong>Continue</strong>: when <code>IndicadorPaginacion</code> = "S", invoke a new request including the returned <code>ClavePaginacion</code>.</li>
+                        <li><strong>End</strong>: stop once <code>IndicadorPaginacion</code> = "N" (no further pages).</li>
+                    </ol>
+                </div>
+
+                <p class="note"><strong>CSV retention:</strong> The <code>CSV</code> returned by AEAT must be stored on the issuer side. It is not retrievable later via consulta.</p>
+
                 <div class="rounded-lg border bg-card p-6 mb-8">
                     <h2 class="text-2xl font-semibold mb-4">Invoice Status Values</h2>
                     
@@ -526,14 +552,13 @@
                     
                     <h3 class="text-lg font-semibold mb-3">Node.js Implementation</h3>
                     <div class="bg-muted p-4 rounded-md">
-                        <pre class="text-sm font-mono"><code>const https = require('https');
+                        <pre class="text-sm font-mono"><code class="language-javascript">const https = require('https');
 const fs = require('fs');
 
-// Certificate configuration
 const options = {
   key: fs.readFileSync('client-key.pem'),
   cert: fs.readFileSync('client-cert.pem'),
-  ca: fs.readFileSync('ca-cert.pem'),
+  ca: fs.existsSync('ca-cert.pem') ? fs.readFileSync('ca-cert.pem') : undefined,
   hostname: 'prewww1.aeat.es',
   port: 443,
   path: '/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP',
@@ -544,27 +569,31 @@ const options = {
   }
 };
 
-// SOAP request body
-const soapBody = `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu"
-               xmlns:aeat="http://www.aeat.es/verifactu"&gt;
-  &lt;soap:Header&gt;
-    &lt;aeat:Autenticacion&gt;
-      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
-    &lt;/aeat:Autenticacion&gt;
-  &lt;/soap:Header&gt;
-  &lt;soap:Body&gt;
-    &lt;verifactu:Consulta&gt;
-      &lt;!-- Your query data here --&gt;
-    &lt;/verifactu:Consulta&gt;
-  &lt;/soap:Body&gt;
-&lt;/soap:Envelope&gt;`;
+const waitTimeFromPreviousResponse = 60;
 
-// Make the request
+const soapBody = `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ver="urn:aeat:verifactu:schema"&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+    &lt;ver:MensajeConsulta&gt;
+      &lt;ver:Cabecera&gt;
+        &lt;ver:NIFEmisor&gt;B12345678&lt;/ver:NIFEmisor&gt;
+        &lt;ver:FechaEnvio&gt;2025-11-07T10:10:00&lt;/ver:FechaEnvio&gt;
+        &lt;ver:TiempoEsperaEnvio&gt;${waitTimeFromPreviousResponse}&lt;/ver:TiempoEsperaEnvio&gt;
+        &lt;ver:TipoComunicacion&gt;Consulta&lt;/ver:TipoComunicacion&gt;
+      &lt;/ver:Cabecera&gt;
+      &lt;ver:Filtros&gt;
+        &lt;ver:RangoFechaDesde&gt;2025-11-01&lt;/ver:RangoFechaDesde&gt;
+        &lt;ver:RangoFechaHasta&gt;2025-11-07&lt;/ver:RangoFechaHasta&gt;
+      &lt;/ver:Filtros&gt;
+    &lt;/ver:MensajeConsulta&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;`;
+
 const req = https.request(options, (res) => {
   let data = '';
-  res.on('data', (chunk) => {
+  res.on('data', chunk => {
     data += chunk;
   });
   res.on('end', () => {

@@ -91,6 +91,14 @@
             --input: 217.2 32.6% 17.5%;
             --ring: 224.3 76.3% 94.1%;
         }
+
+        pre {
+            overflow: auto;
+        }
+
+        pre code {
+            white-space: pre;
+        }
     </style>
 </head>
 <body class="h-full bg-background text-foreground">
@@ -211,186 +219,175 @@
                     
                     <h3 class="text-lg font-semibold mb-3">Complete Node.js Example</h3>
                     <div class="bg-muted p-4 rounded-md">
-                        <pre class="text-sm font-mono"><code>const https = require('https');
+                        <pre class="text-sm font-mono"><code class="language-javascript">const https = require('https');
 const fs = require('fs');
 
 class AEATClient {
   constructor(config) {
-    this.config = {
-      hostname: 'prewww1.aeat.es',
+    this.httpConfig = {
+      hostname: config.hostname ?? 'prewww1.aeat.es',
       port: 443,
       path: '/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP',
       ...config
     };
-    
+
     this.certificate = {
       key: fs.readFileSync(config.keyPath),
       cert: fs.readFileSync(config.certPath),
-      ca: fs.readFileSync(config.caPath)
+      ca: fs.existsSync(config.caPath) ? fs.readFileSync(config.caPath) : undefined
     };
   }
-  
+
   async registerInvoice(invoice) {
-    try {
-      const soapBody = this.createRegisterRequest(invoice);
-      const response = await this.makeRequest(soapBody, '');
-      return this.parseResponse(response);
-    } catch (error) {
-      throw new Error(`AEAT Registration failed: ${error.message}`);
-    }
+    const soapBody = this.createRegisterRequest(invoice);
+    const xml = await this.makeRequest(soapBody);
+    return this.parseAltaResponse(xml);
   }
-  
+
   async cancelInvoice(invoice) {
-    try {
-      const soapBody = this.createCancelRequest(invoice);
-      const response = await this.makeRequest(soapBody, '');
-      return this.parseResponse(response);
-    } catch (error) {
-      throw new Error(`AEAT Cancellation failed: ${error.message}`);
-    }
+    const soapBody = this.createCancelRequest(invoice);
+    const xml = await this.makeRequest(soapBody);
+    return this.parseBajaResponse(xml);
   }
-  
-  async queryInvoice(invoice) {
-    try {
-      const soapBody = this.createQueryRequest(invoice);
-      const response = await this.makeRequest(soapBody, '');
-      return this.parseResponse(response);
-    } catch (error) {
-      throw new Error(`AEAT Query failed: ${error.message}`);
-    }
+
+  async queryInvoice(filters) {
+    const soapBody = this.createQueryRequest(filters);
+    const xml = await this.makeRequest(soapBody);
+    return this.parseConsultaResponse(xml);
   }
-  
+
   createRegisterRequest(invoice) {
+    const waitTime = invoice.tiempoEsperaEnvio ?? 60;
     return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu"
-               xmlns:aeat="http://www.aeat.es/verifactu"&gt;
-  &lt;soap:Header&gt;
-    &lt;aeat:Autenticacion&gt;
-      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
-    &lt;/aeat:Autenticacion&gt;
-  &lt;/soap:Header&gt;
-  &lt;soap:Body&gt;
-    &lt;verifactu:Alta&gt;
-      &lt;verifactu:Cabecera&gt;
-        &lt;verifactu:NIF&gt;${invoice.nif}&lt;/verifactu:NIF&gt;
-        &lt;verifactu:Fecha&gt;${invoice.fecha}&lt;/verifactu:Fecha&gt;
-        &lt;verifactu:Hora&gt;${invoice.hora}&lt;/verifactu:Hora&gt;
-        &lt;verifactu:Serie&gt;${invoice.serie || ''}&lt;/verifactu:Serie&gt;
-        &lt;verifactu:NumFactura&gt;${invoice.numero}&lt;/verifactu:NumFactura&gt;
-      &lt;/verifactu:Cabecera&gt;
-      &lt;verifactu:Factura&gt;
-        &lt;verifactu:ImporteTotal&gt;${invoice.importeTotal}&lt;/verifactu:ImporteTotal&gt;
-        &lt;verifactu:ImporteTotalConImpuestos&gt;${invoice.importeTotalConImpuestos}&lt;/verifactu:ImporteTotalConImpuestos&gt;
-        &lt;verifactu:TipoFactura&gt;${invoice.tipoFactura}&lt;/verifactu:TipoFactura&gt;
-        &lt;verifactu:ClaveRegimenEspecialOTrascendencia&gt;${invoice.claveRegimen}&lt;/verifactu:ClaveRegimenEspecialOTrascendencia&gt;
-      &lt;/verifactu:Factura&gt;
-    &lt;/verifactu:Alta&gt;
-  &lt;/soap:Body&gt;
-&lt;/soap:Envelope&gt;`;
+&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ver="urn:aeat:verifactu:schema"&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+    &lt;ver:MensajeAlta&gt;
+      &lt;ver:Cabecera&gt;
+        &lt;ver:NIFEmisor&gt;${invoice.nifEmisor}&lt;/ver:NIFEmisor&gt;
+        &lt;ver:FechaEnvio&gt;${invoice.fechaEnvio}&lt;/ver:FechaEnvio&gt;
+        &lt;ver:TiempoEsperaEnvio&gt;${waitTime}&lt;/ver:TiempoEsperaEnvio&gt;
+        &lt;ver:TipoComunicacion&gt;Alta&lt;/ver:TipoComunicacion&gt;
+      &lt;/ver:Cabecera&gt;
+      &lt;ver:Registros&gt;
+        &lt;ver:Registro&gt;
+          &lt;ver:Serie&gt;${invoice.serie}&lt;/ver:Serie&gt;
+          &lt;ver:NumFactura&gt;${invoice.numero}&lt;/ver:NumFactura&gt;
+          &lt;ver:FechaExpedicion&gt;${invoice.fechaExpedicion}&lt;/ver:FechaExpedicion&gt;
+          &lt;ver:ImporteTotal&gt;${invoice.importeTotal}&lt;/ver:ImporteTotal&gt;
+          &lt;!-- add DetalleDesglose, Encadenamiento, SistemaInformatico, Firma, etc. --&gt;
+        &lt;/ver:Registro&gt;
+      &lt;/ver:Registros&gt;
+    &lt;/ver:MensajeAlta&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;`;
   }
-  
+
   createCancelRequest(invoice) {
+    const waitTime = invoice.tiempoEsperaEnvio ?? 60;
     return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu"
-               xmlns:aeat="http://www.aeat.es/verifactu"&gt;
-  &lt;soap:Header&gt;
-    &lt;aeat:Autenticacion&gt;
-      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
-    &lt;/aeat:Autenticacion&gt;
-  &lt;/soap:Header&gt;
-  &lt;soap:Body&gt;
-    &lt;verifactu:Baja&gt;
-      &lt;verifactu:Cabecera&gt;
-        &lt;verifactu:NIF&gt;${invoice.nif}&lt;/verifactu:NIF&gt;
-        &lt;verifactu:Fecha&gt;${invoice.fecha}&lt;/verifactu:Fecha&gt;
-        &lt;verifactu:Hora&gt;${invoice.hora}&lt;/verifactu:Hora&gt;
-        &lt;verifactu:Serie&gt;${invoice.serie || ''}&lt;/verifactu:Serie&gt;
-        &lt;verifactu:NumFactura&gt;${invoice.numero}&lt;/verifactu:NumFactura&gt;
-      &lt;/verifactu:Cabecera&gt;
-      &lt;verifactu:Factura&gt;
-        &lt;verifactu:ImporteTotal&gt;${invoice.importeTotal}&lt;/verifactu:ImporteTotal&gt;
-        &lt;verifactu:ImporteTotalConImpuestos&gt;${invoice.importeTotalConImpuestos}&lt;/verifactu:ImporteTotalConImpuestos&gt;
-        &lt;verifactu:TipoFactura&gt;${invoice.tipoFactura}&lt;/verifactu:TipoFactura&gt;
-        &lt;verifactu:ClaveRegimenEspecialOTrascendencia&gt;${invoice.claveRegimen}&lt;/verifactu:ClaveRegimenEspecialOTrascendencia&gt;
-      &lt;/verifactu:Factura&gt;
-    &lt;/verifactu:Baja&gt;
-  &lt;/soap:Body&gt;
-&lt;/soap:Envelope&gt;`;
+&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ver="urn:aeat:verifactu:schema"&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+    &lt;ver:MensajeBaja&gt;
+      &lt;ver:Cabecera&gt;
+        &lt;ver:NIFEmisor&gt;${invoice.nifEmisor}&lt;/ver:NIFEmisor&gt;
+        &lt;ver:FechaEnvio&gt;${invoice.fechaEnvio}&lt;/ver:FechaEnvio&gt;
+        &lt;ver:TiempoEsperaEnvio&gt;${waitTime}&lt;/ver:TiempoEsperaEnvio&gt;
+        &lt;ver:TipoComunicacion&gt;Baja&lt;/ver:TipoComunicacion&gt;
+      &lt;/ver:Cabecera&gt;
+      &lt;ver:Registros&gt;
+        &lt;ver:Registro&gt;
+          &lt;ver:Serie&gt;${invoice.serie}&lt;/ver:Serie&gt;
+          &lt;ver:NumFactura&gt;${invoice.numero}&lt;/ver:NumFactura&gt;
+          &lt;ver:Motivo&gt;${invoice.motivo}&lt;/ver:Motivo&gt;
+        &lt;/ver:Registro&gt;
+      &lt;/ver:Registros&gt;
+    &lt;/ver:MensajeBaja&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;`;
   }
-  
-  createQueryRequest(invoice) {
+
+  createQueryRequest(filters) {
+    const waitTime = filters.tiempoEsperaEnvio ?? 60;
     return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu"
-               xmlns:aeat="http://www.aeat.es/verifactu"&gt;
-  &lt;soap:Header&gt;
-    &lt;aeat:Autenticacion&gt;
-      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
-    &lt;/aeat:Autenticacion&gt;
-  &lt;/soap:Header&gt;
-  &lt;soap:Body&gt;
-    &lt;verifactu:Consulta&gt;
-      &lt;verifactu:Cabecera&gt;
-        &lt;verifactu:NIF&gt;${invoice.nif}&lt;/verifactu:NIF&gt;
-        &lt;verifactu:Fecha&gt;${invoice.fecha}&lt;/verifactu:Fecha&gt;
-        &lt;verifactu:Hora&gt;${invoice.hora}&lt;/verifactu:Hora&gt;
-        &lt;verifactu:Serie&gt;${invoice.serie || ''}&lt;/verifactu:Serie&gt;
-        &lt;verifactu:NumFactura&gt;${invoice.numero}&lt;/verifactu:NumFactura&gt;
-      &lt;/verifactu:Cabecera&gt;
-      &lt;verifactu:Factura&gt;
-        &lt;verifactu:ImporteTotal&gt;${invoice.importeTotal}&lt;/verifactu:ImporteTotal&gt;
-        &lt;verifactu:ImporteTotalConImpuestos&gt;${invoice.importeTotalConImpuestos}&lt;/verifactu:ImporteTotalConImpuestos&gt;
-        &lt;verifactu:TipoFactura&gt;${invoice.tipoFactura}&lt;/verifactu:TipoFactura&gt;
-        &lt;verifactu:ClaveRegimenEspecialOTrascendencia&gt;${invoice.claveRegimen}&lt;/verifactu:ClaveRegimenEspecialOTrascendencia&gt;
-      &lt;/verifactu:Factura&gt;
-    &lt;/verifactu:Consulta&gt;
-  &lt;/soap:Body&gt;
-&lt;/soap:Envelope&gt;`;
+&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ver="urn:aeat:verifactu:schema"&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+    &lt;ver:MensajeConsulta&gt;
+      &lt;ver:Cabecera&gt;
+        &lt;ver:NIFEmisor&gt;${filters.nifEmisor}&lt;/ver:NIFEmisor&gt;
+        &lt;ver:FechaEnvio&gt;${filters.fechaEnvio}&lt;/ver:FechaEnvio&gt;
+        &lt;ver:TiempoEsperaEnvio&gt;${waitTime}&lt;/ver:TiempoEsperaEnvio&gt;
+        &lt;ver:TipoComunicacion&gt;Consulta&lt;/ver:TipoComunicacion&gt;
+      &lt;/ver:Cabecera&gt;
+      ${filters.clavePaginacion ? `&lt;ver:Paginacion&gt;
+        &lt;ver:ClavePaginacion&gt;${filters.clavePaginacion}&lt;/ver:ClavePaginacion&gt;
+      &lt;/ver:Paginacion&gt;` : `&lt;ver:Filtros&gt;
+        &lt;ver:RangoFechaDesde&gt;${filters.fechaDesde}&lt;/ver:RangoFechaDesde&gt;
+        &lt;ver:RangoFechaHasta&gt;${filters.fechaHasta}&lt;/ver:RangoFechaHasta&gt;
+      &lt;/ver:Filtros&gt;`}
+    &lt;/ver:MensajeConsulta&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;`;
   }
-  
-  makeRequest(soapBody, soapAction) {
+
+  makeRequest(soapBody) {
     return new Promise((resolve, reject) => {
       const options = {
-        ...this.config,
+        ...this.httpConfig,
         ...this.certificate,
+        method: 'POST',
         headers: {
           'Content-Type': 'text/xml; charset=utf-8',
-          'SOAPAction': soapAction
+          'SOAPAction': ''
         }
       };
-      
+
       const req = https.request(options, (res) => {
         let data = '';
-        res.on('data', (chunk) => {
-          data += chunk;
-        });
-        res.on('end', () => {
-          resolve(data);
-        });
+        res.on('data', chunk => { data += chunk; });
+        res.on('end', () => resolve(data));
       });
-      
-      req.on('error', (error) => {
-        reject(error);
-      });
-      
+
+      req.on('error', reject);
       req.write(soapBody);
       req.end();
     });
   }
-  
-  parseResponse(xmlResponse) {
-    const csvMatch = xmlResponse.match(/<verifactu:CSV>(.*?)<\/verifactu:CSV>/);
-    const codigoMatch = xmlResponse.match(/<verifactu:Codigo>(.*?)<\/verifactu:Codigo>/);
-    const descripcionMatch = xmlResponse.match(/<verifactu:Descripcion>(.*?)<\/verifactu:Descripcion>/);
-    
+
+  parseAltaResponse(xml) {
+    const estado = this.capture(xml, /<ver:EstadoEnvio>(.*?)<\/ver:EstadoEnvio>/);
+    const csv = this.capture(xml, /<ver:CSV>(.*?)<\/ver:CSV>/);
+    const waitTime = this.capture(xml, /<ver:TiempoEsperaEnvio>(.*?)<\/ver:TiempoEsperaEnvio>/);
+    return { estadoEnvio: estado, csv, tiempoEsperaEnvio: waitTime ? Number(waitTime) : null };
+  }
+
+  parseBajaResponse(xml) {
+    const estado = this.capture(xml, /<ver:EstadoEnvio>(.*?)<\/ver:EstadoEnvio>/);
+    const waitTime = this.capture(xml, /<ver:TiempoEsperaEnvio>(.*?)<\/ver:TiempoEsperaEnvio>/);
+    return { estadoEnvio: estado, tiempoEsperaEnvio: waitTime ? Number(waitTime) : null };
+  }
+
+  parseConsultaResponse(xml) {
+    const estado = this.capture(xml, /<ver:EstadoEnvio>(.*?)<\/ver:EstadoEnvio>/);
+    const indicador = this.capture(xml, /<ver:IndicadorPaginacion>(.*?)<\/ver:IndicadorPaginacion>/);
+    const clave = this.capture(xml, /<ver:ClavePaginacion>(.*?)<\/ver:ClavePaginacion>/);
+    const csvs = [...xml.matchAll(/<ver:CSV>(.*?)<\/ver:CSV>/g)].map(m => m[1]);
     return {
-      csv: csvMatch ? csvMatch[1] : null,
-      codigo: codigoMatch ? codigoMatch[1] : null,
-      descripcion: descripcionMatch ? descripcionMatch[1] : null,
-      success: codigoMatch && codigoMatch[1] === '0'
+      estadoEnvio: estado,
+      indicadorPaginacion: indicador,
+      clavePaginacion: clave || null,
+      csv: csvs
     };
+  }
+
+  capture(xml, regex) {
+    const match = xml.match(regex);
+    return match ? match[1] : null;
   }
 }
 
@@ -399,30 +396,26 @@ async function main() {
   const client = new AEATClient({
     keyPath: '/path/to/client-key.pem',
     certPath: '/path/to/client-cert.pem',
-    caPath: '/path/to/ca-cert.pem'
+    caPath: '/path/to/ca-chain.pem'
   });
-  
+
   const invoice = {
-    nif: '12345678A',
-    fecha: '2024-01-15',
-    hora: '10:30:00',
-    serie: 'A',
-    numero: '00001',
-    importeTotal: '100.00',
-    importeTotalConImpuestos: '121.00',
-    tipoFactura: 'F1',
-    claveRegimen: '01'
+    nifEmisor: 'B12345678',
+    fechaEnvio: '2025-11-07T10:00:00',
+    tiempoEsperaEnvio: 60,
+    serie: 'F2025',
+    numero: '000123',
+    fechaExpedicion: '2025-11-07',
+    importeTotal: '121.00'
   };
-  
-  try {
-    const result = await client.registerInvoice(invoice);
-    console.log('Invoice registered successfully:', result);
-  } catch (error) {
-    console.error('Registration failed:', error.message);
-  }
+
+  const response = await client.registerInvoice(invoice);
+  console.log('Estado envío:', response.estadoEnvio);
+  console.log('CSV:', response.csv);
+  console.log('Siguiente tiempo de espera:', response.tiempoEsperaEnvio);
 }
 
-main();</code></pre>
+main().catch(console.error);</code></pre>
                     </div>
                 </div>
                 
@@ -431,7 +424,7 @@ main();</code></pre>
                     
                     <h3 class="text-lg font-semibold mb-3">MySQL Integration Example</h3>
                     <div class="bg-muted p-4 rounded-md">
-                        <pre class="text-sm font-mono"><code>const mysql = require('mysql2/promise');
+                        <pre class="text-sm font-mono"><code class="language-javascript">const mysql = require('mysql2/promise');
 
 class InvoiceService {
   constructor(dbConfig) {
@@ -504,7 +497,7 @@ class InvoiceService {
                     
                     <h3 class="text-lg font-semibold mb-3">Comprehensive Error Handling</h3>
                     <div class="bg-muted p-4 rounded-md">
-                        <pre class="text-sm font-mono"><code>class AEATService {
+                        <pre class="text-sm font-mono"><code class="language-javascript">class AEATService {
   constructor(config) {
     this.config = config;
     this.retryAttempts = 3;
@@ -556,7 +549,7 @@ class InvoiceService {
                     
                     <h3 class="text-lg font-semibold mb-3">Unit Test Example</h3>
                     <div class="bg-muted p-4 rounded-md">
-                        <pre class="text-sm font-mono"><code>const assert = require('assert');
+                        <pre class="text-sm font-mono"><code class="language-javascript">const assert = require('assert');
 const AEATClient = require('./aeat-client');
 
 describe('AEAT Client', () => {

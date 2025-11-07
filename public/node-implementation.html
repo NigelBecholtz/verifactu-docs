@@ -91,6 +91,14 @@
             --input: 217.2 32.6% 17.5%;
             --ring: 224.3 76.3% 94.1%;
         }
+
+        pre {
+            overflow: auto;
+        }
+
+        pre code {
+            white-space: pre;
+        }
     </style>
 </head>
 <body class="h-full bg-background text-foreground">
@@ -228,7 +236,7 @@
                     <h3 class="text-lg font-semibold mb-3">Database Changes</h3>
                     <p class="text-muted-foreground mb-4">Add these columns to your invoices table:</p>
                     <div class="bg-muted p-4 rounded-md">
-                        <pre class="text-sm font-mono"><code>-- Add these columns to your invoices table
+                        <pre class="text-sm font-mono"><code class="language-none">-- Add these columns to your invoices table
 ALTER TABLE invoices ADD COLUMN aeat_csv_code VARCHAR(100);
 ALTER TABLE invoices ADD COLUMN aeat_status VARCHAR(20);
 ALTER TABLE invoices ADD COLUMN aeat_error TEXT;</code></pre>
@@ -249,7 +257,7 @@ ALTER TABLE invoices ADD COLUMN aeat_error TEXT;</code></pre>
                     
                     <h3 class="text-lg font-semibold mb-3">Basic function to send invoice</h3>
                     <div class="bg-muted p-4 rounded-md">
-                        <pre class="text-sm font-mono"><code>// This is the main function you call
+                        <pre class="text-sm font-mono"><code class="language-javascript">// This is the main function you call
 async function sendInvoiceToAEAT(invoice) {
   try {
     console.log('📤 Sending invoice to AEAT...');
@@ -271,14 +279,14 @@ async function sendInvoiceToAEAT(invoice) {
                     
                     <h3 class="text-lg font-semibold mb-3 mt-6">Complete implementation example</h3>
                     <div class="bg-muted p-4 rounded-md">
-                        <pre class="text-sm font-mono"><code>const https = require('https');
+                        <pre class="text-sm font-mono"><code class="language-javascript">const https = require('https');
 const fs = require('fs');
 
 // Certificate configuration
 const certificate = {
   key: fs.readFileSync('/path/to/your/client-key.pem'),
   cert: fs.readFileSync('/path/to/your/client-cert.pem'),
-  ca: fs.readFileSync('/path/to/your/ca-cert.pem')
+  ca: fs.existsSync('/path/to/your/ca-cert.pem') ? fs.readFileSync('/path/to/your/ca-cert.pem') : undefined
 };
 
 // AEAT configuration
@@ -299,6 +307,8 @@ async function sendInvoiceToAEAT(invoice) {
     console.log('📤 Sending invoice to AEAT...');
     
     // Create SOAP request
+    // invoice must include: nifEmisor, fechaEnvio (ISO 8601), serie, numero, fechaExpedicion,
+    // importeTotal and tiempoEsperaEnvio (mirrored from the previous AEAT response whenever possible).
     const soapBody = createSOAPRequest(invoice);
     
     // Make HTTPS request
@@ -322,33 +332,31 @@ async function sendInvoiceToAEAT(invoice) {
 
 // Create SOAP request XML
 function createSOAPRequest(invoice) {
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu"
-               xmlns:aeat="http://www.aeat.es/verifactu">
-  <soap:Header>
-    <aeat:Autenticacion>
-      <aeat:Certificado>BASE64_ENCODED_CERTIFICATE</aeat:Certificado>
-    </aeat:Autenticacion>
-  </soap:Header>
-  <soap:Body>
-    <verifactu:Alta>
-      <verifactu:Cabecera>
-        <verifactu:NIF>${invoice.nif}</verifactu:NIF>
-        <verifactu:Fecha>${invoice.fecha}</verifactu:Fecha>
-        <verifactu:Hora>${invoice.hora}</verifactu:Hora>
-        <verifactu:Serie>${invoice.serie || ''}</verifactu:Serie>
-        <verifactu:NumFactura>${invoice.numero}</verifactu:NumFactura>
-      </verifactu:Cabecera>
-      <verifactu:Factura>
-        <verifactu:ImporteTotal>${invoice.importeTotal}</verifactu:ImporteTotal>
-        <verifactu:ImporteTotalConImpuestos>${invoice.importeTotalConImpuestos}</verifactu:ImporteTotalConImpuestos>
-        <verifactu:TipoFactura>${invoice.tipoFactura}</verifactu:TipoFactura>
-        <verifactu:ClaveRegimenEspecialOTrascendencia>${invoice.claveRegimen}</verifactu:ClaveRegimenEspecialOTrascendencia>
-      </verifactu:Factura>
-    </verifactu:Alta>
-  </soap:Body>
-</soap:Envelope>`;
+  const waitTime = invoice.tiempoEsperaEnvio ?? 60; // mirror AEAT response value when available
+  return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ver="urn:aeat:verifactu:schema"&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+    &lt;ver:MensajeAlta&gt;
+      &lt;ver:Cabecera&gt;
+        &lt;ver:NIFEmisor&gt;${invoice.nifEmisor}&lt;/ver:NIFEmisor&gt;
+        &lt;ver:FechaEnvio&gt;${invoice.fechaEnvio}&lt;/ver:FechaEnvio&gt;
+        &lt;ver:TiempoEsperaEnvio&gt;${waitTime}&lt;/ver:TiempoEsperaEnvio&gt;
+        &lt;ver:TipoComunicacion&gt;Alta&lt;/ver:TipoComunicacion&gt;
+      &lt;/ver:Cabecera&gt;
+      &lt;ver:Registros&gt;
+        &lt;ver:Registro&gt;
+          &lt;ver:Serie&gt;${invoice.serie}&lt;/ver:Serie&gt;
+          &lt;ver:NumFactura&gt;${invoice.numero}&lt;/ver:NumFactura&gt;
+          &lt;ver:FechaExpedicion&gt;${invoice.fechaExpedicion}&lt;/ver:FechaExpedicion&gt;
+          &lt;ver:ImporteTotal&gt;${invoice.importeTotal}&lt;/ver:ImporteTotal&gt;
+          &lt;!-- TODO: include DetalleDesglose, Encadenamiento, SistemaInformatico and ds:Signature per XSD --&gt;
+        &lt;/ver:Registro&gt;
+      &lt;/ver:Registros&gt;
+    &lt;/ver:MensajeAlta&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;`;
 }
 
 // Make HTTPS request with mutual TLS
@@ -381,15 +389,14 @@ function makeHTTPSRequest(soapBody) {
 // Parse SOAP response
 function parseSOAPResponse(xmlResponse) {
   // Simple XML parsing (in production, use a proper XML parser)
-  const csvMatch = xmlResponse.match(/<verifactu:CSV>(.*?)<\/verifactu:CSV>/);
-  const codigoMatch = xmlResponse.match(/<verifactu:Codigo>(.*?)<\/verifactu:Codigo>/);
-  const descripcionMatch = xmlResponse.match(/<verifactu:Descripcion>(.*?)<\/verifactu:Descripcion>/);
-  
+  const estadoMatch = xmlResponse.match(/<ver:EstadoEnvio>(.*?)<\/ver:EstadoEnvio>/);
+  const csvMatch = xmlResponse.match(/<ver:CSV>(.*?)<\/ver:CSV>/);
+  const waitMatch = xmlResponse.match(/<ver:TiempoEsperaEnvio>(.*?)<\/ver:TiempoEsperaEnvio>/);
+
   return {
+    estadoEnvio: estadoMatch ? estadoMatch[1] : null,
     csv: csvMatch ? csvMatch[1] : null,
-    codigo: codigoMatch ? codigoMatch[1] : null,
-    descripcion: descripcionMatch ? descripcionMatch[1] : null,
-    success: codigoMatch && codigoMatch[1] === '0'
+    tiempoEsperaEnvio: waitMatch ? Number(waitMatch[1]) : null
   };
 }
 
@@ -457,7 +464,7 @@ async function saveError(invoiceId, errorMessage) {
                     
                     <h3 class="text-lg font-semibold mb-3 mt-6">Error Handling Best Practices</h3>
                     <div class="bg-muted p-4 rounded-md">
-                        <pre class="text-sm font-mono"><code>// Robust error handling
+                        <pre class="text-sm font-mono"><code class="language-javascript">// Robust error handling
 async function sendInvoiceToAEAT(invoice) {
   try {
     // Validate input
@@ -510,7 +517,7 @@ async function sendInvoiceToAEAT(invoice) {
                     
                     <h3 class="text-lg font-semibold mb-3 mt-6">Test Data</h3>
                     <div class="bg-muted p-4 rounded-md">
-                        <pre class="text-sm font-mono"><code>// Test invoice data
+                        <pre class="text-sm font-mono"><code class="language-javascript">// Test invoice data
 const testInvoice = {
   nif: '12345678A',
   fecha: '2024-01-15',

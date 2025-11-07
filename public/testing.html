@@ -70,6 +70,14 @@
             --input: 214.3 31.8% 91.4%;
             --ring: 221.2 83.2% 53.3%;
         }
+
+        pre {
+            overflow: auto;
+        }
+
+        pre code {
+            white-space: pre;
+        }
     </style>
 </head>
 <body class="h-full bg-background text-foreground">
@@ -238,7 +246,7 @@
                                 
                                 <div class="bg-blue-50 p-4 rounded-md">
                                     <h4 class="font-semibold text-blue-800 mb-2">Certificate Conversion</h4>
-                                    <pre class="text-sm text-blue-700"><code># Convert P12 to PEM format
+                                    <pre class="text-sm text-blue-700"><code class="language-none"># Convert P12 to PEM format
 openssl pkcs12 -in certificado.p12 -out certificado.pem -nodes
 
 # Extract private key
@@ -396,9 +404,10 @@ openssl pkcs12 -in certificado.p12 -nocerts -out private-key.pem -nodes</code></
                     </div>
                     
                     <div class="rounded-lg border bg-card p-6 mb-8">
-                        <h2 class="text-2xl font-semibold mb-4">Test Implementation Examples</h2>
-                        <p class="text-muted-foreground mb-4">Practical code examples for implementing comprehensive tests.</p>
-                        
+                        <h2 class="text-2xl font-semibold mb-4">Automated Testing Strategy</h2>
+                        <p class="text-muted-foreground mb-4">A robust testing strategy ensures that your AEAT integration remains reliable and compliant.</p>
+                        <div class="p-3 bg-yellow-50 border border-yellow-100 rounded-md text-sm text-yellow-800 mb-4">
+                            Always feed the <code>TiempoEsperaEnvio</code> returned by the last AEAT response into your next test call. Hard-coded delays will cause rate-limit and parser errors.</div>
                         <div class="space-y-6">
                             <div>
                                 <h3 class="text-lg font-semibold mb-3">Node.js Test Suite</h3>
@@ -406,7 +415,7 @@ openssl pkcs12 -in certificado.p12 -nocerts -out private-key.pem -nodes</code></
                                     <p class="text-sm text-yellow-800"><strong>⚠️ Disclaimer:</strong> This is a non-official example implementation. </p>
                                 </div>
                                 <div class="bg-muted p-4 rounded-md mb-4">
-                                    <pre class="text-sm font-mono overflow-x-auto"><code>const https = require('https');
+                                    <pre class="text-sm font-mono overflow-x-auto"><code class="language-javascript">const https = require('https');
 const fs = require('fs');
 const assert = require('assert');
 
@@ -455,22 +464,25 @@ class AEATTestSuite {
     console.log('Testing invoice registration...');
     
     const testInvoice = {
-      nif: '12345678Z',
+      nifEmisor: '12345678Z',
+      fechaEnvio: '2025-11-07T10:00:00',
+      tiempoEsperaEnvio: 60,
+      serie: 'TEST',
       numero: 'TEST-2024-001',
-      fecha: '2024-01-15',
-      importe: 100.00,
+      fechaExpedicion: '2025-11-07',
+      importe: '100.00',
       iva: 21.00
     };
 
     try {
       const soapBody = this.createRegisterSOAPRequest(testInvoice);
-      const options = this.createRequestOptions('urn:VeriFactu/Alta');
+      const options = this.createRequestOptions();
       
       const response = await this.makeRequest(options, soapBody);
       
       // Parse response
-      const csvMatch = response.body.match(/&lt;verifactu:CSV&gt;(.*?)&lt;\/verifactu:CSV&gt;/);
-      const estadoMatch = response.body.match(/&lt;verifactu:EstadoEnvio&gt;(.*?)&lt;\/verifactu:EstadoEnvio&gt;/);
+      const csvMatch = response.body.match(/&lt;ver:CSV&gt;(.*?)&lt;\/ver:CSV&gt;/);
+      const estadoMatch = response.body.match(/&lt;ver:EstadoEnvio&gt;(.*?)&lt;\/ver:EstadoEnvio&gt;/);
       
       assert(csvMatch, 'Expected CSV in response');
       assert(estadoMatch[1] === 'Correcto', 'Expected successful registration');
@@ -490,17 +502,17 @@ class AEATTestSuite {
     const errorTests = [
       {
         name: 'Invalid NIF',
-        data: { nif: 'INVALID', numero: 'TEST-001', fecha: '2024-01-15' },
+        data: { nifEmisor: 'INVALID', numero: 'TEST-001', fechaExpedicion: '2025-11-07' },
         expectedError: 'Invalid NIF format'
       },
       {
         name: 'Missing Required Field',
-        data: { nif: '12345678Z', fecha: '2024-01-15' }, // Missing numero
+        data: { nifEmisor: '12345678Z', fechaEnvio: '2025-11-07T10:00:00' }, // Missing numero
         expectedError: 'Missing required field'
       },
       {
         name: 'Invalid Date Format',
-        data: { nif: '12345678Z', numero: 'TEST-001', fecha: 'invalid-date' },
+        data: { nifEmisor: '12345678Z', numero: 'TEST-001', fechaExpedicion: 'invalid-date' },
         expectedError: 'Invalid date format'
       }
     ];
@@ -508,7 +520,7 @@ class AEATTestSuite {
     for (const test of errorTests) {
       try {
         const soapBody = this.createRegisterSOAPRequest(test.data);
-        const options = this.createRequestOptions('urn:VeriFactu/Alta');
+        const options = this.createRequestOptions();
         
         const response = await this.makeRequest(options, soapBody);
         
@@ -533,14 +545,17 @@ class AEATTestSuite {
     // Create multiple concurrent requests
     for (let i = 0; i < concurrentRequests; i++) {
       const testInvoice = {
-        nif: '12345678Z',
+        nifEmisor: '12345678Z',
+        fechaEnvio: '2025-11-07T10:00:00',
+        tiempoEsperaEnvio: 60,
+        serie: 'PERF',
         numero: `TEST-2024-${String(i).padStart(3, '0')}`,
-        fecha: '2024-01-15',
-        importe: 100.00 + i
+        fechaExpedicion: '2025-11-07',
+        importe: (100.00 + i).toFixed(2)
       };
       
       const soapBody = this.createRegisterSOAPRequest(testInvoice);
-      const options = this.createRequestOptions('urn:VeriFactu/Alta');
+      const options = this.createRequestOptions();
       
       requests.push(this.makeRequest(options, soapBody));
     }
@@ -567,50 +582,58 @@ class AEATTestSuite {
 
   createTestSOAPRequest() {
     return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu"
-               xmlns:aeat="http://www.aeat.es/verifactu"&gt;
-  &lt;soap:Header&gt;
-    &lt;aeat:Autenticacion&gt;
-      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
-    &lt;/aeat:Autenticacion&gt;
-  &lt;/soap:Header&gt;
-  &lt;soap:Body&gt;
-    &lt;verifactu:Alta&gt;
-      &lt;verifactu:Cabecera&gt;
-        &lt;verifactu:NIF&gt;12345678Z&lt;/verifactu:NIF&gt;
-        &lt;verifactu:NumFactura&gt;TEST-2024-001&lt;/verifactu:NumFactura&gt;
-        &lt;verifactu:Fecha&gt;2024-01-15&lt;/verifactu:Fecha&gt;
-      &lt;/verifactu:Cabecera&gt;
-    &lt;/verifactu:Alta&gt;
-  &lt;/soap:Body&gt;
-&lt;/soap:Envelope&gt;`;
+&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ver="urn:aeat:verifactu:schema"&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+    &lt;ver:MensajeAlta&gt;
+      &lt;ver:Cabecera&gt;
+        &lt;ver:NIFEmisor&gt;12345678Z&lt;/ver:NIFEmisor&gt;
+        &lt;ver:FechaEnvio&gt;2025-11-07T10:00:00&lt;/ver:FechaEnvio&gt;
+        &lt;ver:TiempoEsperaEnvio&gt;60&lt;/ver:TiempoEsperaEnvio&gt;
+        &lt;ver:TipoComunicacion&gt;Alta&lt;/ver:TipoComunicacion&gt;
+      &lt;/ver:Cabecera&gt;
+      &lt;ver:Registros&gt;
+        &lt;ver:Registro&gt;
+          &lt;ver:Serie&gt;TEST&lt;/ver:Serie&gt;
+          &lt;ver:NumFactura&gt;TEST-2024-001&lt;/ver:NumFactura&gt;
+          &lt;ver:FechaExpedicion&gt;2025-11-07&lt;/ver:FechaExpedicion&gt;
+          &lt;ver:ImporteTotal&gt;121.00&lt;/ver:ImporteTotal&gt;
+        &lt;/ver:Registro&gt;
+      &lt;/ver:Registros&gt;
+    &lt;/ver:MensajeAlta&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;`;
   }
 
   createRegisterSOAPRequest(invoice) {
+    const wait = invoice.tiempoEsperaEnvio ?? 60;
     return `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu"
-               xmlns:aeat="http://www.aeat.es/verifactu"&gt;
-  &lt;soap:Header&gt;
-    &lt;aeat:Autenticacion&gt;
-      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
-    &lt;/aeat:Autenticacion&gt;
-  &lt;/soap:Header&gt;
-  &lt;soap:Body&gt;
-    &lt;verifactu:Alta&gt;
-      &lt;verifactu:Cabecera&gt;
-        &lt;verifactu:NIF&gt;${invoice.nif}&lt;/verifactu:NIF&gt;
-        &lt;verifactu:NumFactura&gt;${invoice.numero}&lt;/verifactu:NumFactura&gt;
-        &lt;verifactu:Fecha&gt;${invoice.fecha}&lt;/verifactu:Fecha&gt;
-        &lt;verifactu:ImporteTotal&gt;${invoice.importe}&lt;/verifactu:ImporteTotal&gt;
-      &lt;/verifactu:Cabecera&gt;
-    &lt;/verifactu:Alta&gt;
-  &lt;/soap:Body&gt;
-&lt;/soap:Envelope&gt;`;
+&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ver="urn:aeat:verifactu:schema"&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+    &lt;ver:MensajeAlta&gt;
+      &lt;ver:Cabecera&gt;
+        &lt;ver:NIFEmisor&gt;${invoice.nifEmisor}&lt;/ver:NIFEmisor&gt;
+        &lt;ver:FechaEnvio&gt;${invoice.fechaEnvio}&lt;/ver:FechaEnvio&gt;
+        &lt;ver:TiempoEsperaEnvio&gt;${wait}&lt;/ver:TiempoEsperaEnvio&gt;
+        &lt;ver:TipoComunicacion&gt;Alta&lt;/ver:TipoComunicacion&gt;
+      &lt;/ver:Cabecera&gt;
+      &lt;ver:Registros&gt;
+        &lt;ver:Registro&gt;
+          &lt;ver:Serie&gt;${invoice.serie ?? ''}&lt;/ver:Serie&gt;
+          &lt;ver:NumFactura&gt;${invoice.numero}&lt;/ver:NumFactura&gt;
+          &lt;ver:FechaExpedicion&gt;${invoice.fechaExpedicion}&lt;/ver:FechaExpedicion&gt;
+          &lt;ver:ImporteTotal&gt;${invoice.importe}&lt;/ver:ImporteTotal&gt;
+        &lt;/ver:Registro&gt;
+      &lt;/ver:Registros&gt;
+    &lt;/ver:MensajeAlta&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;`;
   }
 
-  createRequestOptions(soapAction) {
+  createRequestOptions() {
     return {
       hostname: this.testEndpoint,
       port: 443,
@@ -682,7 +705,7 @@ testSuite.runAllTests().catch(console.error);</code></pre>
                                     <p class="text-sm text-yellow-800"><strong>⚠️ Disclaimer:</strong> This is a non-official example implementation. </p>
                                 </div>
                                 <div class="bg-muted p-4 rounded-md mb-4">
-                                    <pre class="text-sm font-mono overflow-x-auto"><code>import requests
+                                    <pre class="text-sm font-mono overflow-x-auto"><code class="language-python">import requests
 import xml.etree.ElementTree as ET
 from datetime import datetime
 import pytest
@@ -739,7 +762,7 @@ class AEATTestSuite:
         print('Testing invoice registration...')
         
         test_invoice = {
-            'nif': '12345678Z',
+            'nif_emisor': '12345678Z',
             'numero': 'TEST-2024-001',
             'fecha': '2024-01-15',
             'importe': 100.00,
@@ -765,7 +788,7 @@ class AEATTestSuite:
             
             # Parse response for CSV
             root = ET.fromstring(response.text)
-            csv_elements = root.findall('.//{urn:VeriFactu}CSV')
+            csv_elements = root.findall('.//{urn:aeat:verifactu:schema}CSV')
             
             if csv_elements:
                 csv_code = csv_elements[0].text
@@ -786,12 +809,12 @@ class AEATTestSuite:
         error_tests = [
             {
                 'name': 'Invalid NIF',
-                'data': {'nif': 'INVALID', 'numero': 'TEST-001', 'fecha': '2024-01-15'},
+                'data': {'nif_emisor': 'INVALID', 'numero': 'TEST-001', 'fecha_expedicion': '2025-11-07'},
                 'expected_error': 'Invalid NIF'
             },
             {
                 'name': 'Missing Required Field',
-                'data': {'nif': '12345678Z', 'fecha': '2024-01-15'},  # Missing numero
+                'data': {'nif_emisor': '12345678Z', 'fecha_envio': '2025-11-07T10:00:00'},  # Missing numero
                 'expected_error': 'Missing required field'
             }
         ]
@@ -836,7 +859,7 @@ class AEATTestSuite:
         
         def make_test_request(request_id):
             test_invoice = {
-                'nif': '12345678Z',
+                'nif_emisor': '12345678Z',
                 'numero': f'TEST-2024-{request_id:03d}',
                 'fecha': '2024-01-15',
                 'importe': 100.00 + request_id
@@ -895,28 +918,32 @@ class AEATTestSuite:
         
         return len(successful_requests) == num_requests
     
-    def create_register_soap_request(self, invoice_data):
-        """Create SOAP request for invoice registration"""
-        return f'''&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:verifactu="urn:VeriFactu"
-               xmlns:aeat="http://www.aeat.es/verifactu"&gt;
-  &lt;soap:Header&gt;
-    &lt;aeat:Autenticacion&gt;
-      &lt;aeat:Certificado&gt;BASE64_ENCODED_CERTIFICATE&lt;/aeat:Certificado&gt;
-    &lt;/aeat:Autenticacion&gt;
-  &lt;/soap:Header&gt;
-  &lt;soap:Body&gt;
-    &lt;verifactu:Alta&gt;
-      &lt;verifactu:Cabecera&gt;
-        &lt;verifactu:NIF&gt;{invoice_data.get('nif', '')}&lt;/verifactu:NIF&gt;
-        &lt;verifactu:NumFactura&gt;{invoice_data.get('numero', '')}&lt;/verifactu:NumFactura&gt;
-        &lt;verifactu:Fecha&gt;{invoice_data.get('fecha', '')}&lt;/verifactu:Fecha&gt;
-        &lt;verifactu:ImporteTotal&gt;{invoice_data.get('importe', 0)}&lt;/verifactu:ImporteTotal&gt;
-      &lt;/verifactu:Cabecera&gt;
-    &lt;/verifactu:Alta&gt;
-  &lt;/soap:Body&gt;
-&lt;/soap:Envelope&gt;'''
+    def create_register_soap_request(self, invoice_data: dict) -> str:
+        """Create SOAP payload for registration"""
+        wait_time = invoice_data.get('tiempo_espera_envio', 60)
+        return f"""&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ver="urn:aeat:verifactu:schema"&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+    &lt;ver:MensajeAlta&gt;
+      &lt;ver:Cabecera&gt;
+        &lt;ver:NIFEmisor&gt;{invoice_data.get('nif_emisor', '')}&lt;/ver:NIFEmisor&gt;
+        &lt;ver:FechaEnvio&gt;{invoice_data.get('fecha_envio', '')}&lt;/ver:FechaEnvio&gt;
+        &lt;ver:TiempoEsperaEnvio&gt;{wait_time}&lt;/ver:TiempoEsperaEnvio&gt;
+        &lt;ver:TipoComunicacion&gt;Alta&lt;/ver:TipoComunicacion&gt;
+      &lt;/ver:Cabecera&gt;
+      &lt;ver:Registros&gt;
+        &lt;ver:Registro&gt;
+          &lt;ver:Serie&gt;{invoice_data.get('serie', '')}&lt;/ver:Serie&gt;
+          &lt;ver:NumFactura&gt;{invoice_data.get('numero', '')}&lt;/ver:NumFactura&gt;
+          &lt;ver:FechaExpedicion&gt;{invoice_data.get('fecha_expedicion', '')}&lt;/ver:FechaExpedicion&gt;
+          &lt;ver:ImporteTotal&gt;{invoice_data.get('importe', 0)}&lt;/ver:ImporteTotal&gt;
+        &lt;/ver:Registro&gt;
+      &lt;/ver:Registros&gt;
+    &lt;/ver:MensajeAlta&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;"""
     
     def run_all_tests(self):
         """Run all tests and return results"""

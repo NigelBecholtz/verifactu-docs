@@ -70,6 +70,14 @@
             --input: 214.3 31.8% 91.4%;
             --ring: 221.2 83.2% 53.3%;
         }
+
+        pre {
+            overflow: auto;
+        }
+
+        pre code {
+            white-space: pre;
+        }
     </style>
 </head>
 <body class="h-full bg-background text-foreground">
@@ -247,26 +255,31 @@
                     
                     <h3 class="text-lg font-semibold mb-3">SOAP Fault Structure</h3>
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;soap:Fault xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
-  &lt;soap:Code&gt;
-    &lt;soap:Value&gt;soap:Client&lt;/soap:Value&gt;
-    &lt;soap:Subcode&gt;
-      &lt;soap:Value&gt;aeat:ValidationError&lt;/soap:Value&gt;
-    &lt;/soap:Subcode&gt;
-  &lt;/soap:Code&gt;
-  &lt;soap:Reason&gt;
-    &lt;soap:Text xml:lang="en"&gt;Invalid NIF format&lt;/soap:Text&gt;
-  &lt;/soap:Reason&gt;
-  &lt;soap:Detail&gt;
-    &lt;aeat:Error&gt;
-      &lt;aeat:CodigoError&gt;E001&lt;/aeat:CodigoError&gt;
-      &lt;aeat:DescripcionError&gt;Invalid NIF format&lt;/aeat:DescripcionError&gt;
-      &lt;aeat:Timestamp&gt;2024-01-15T10:30:30&lt;/aeat:Timestamp&gt;
-    &lt;/aeat:Error&gt;
-  &lt;/soap:Detail&gt;
-&lt;/soap:Fault&gt;</code></pre>
+                        <pre class="text-sm font-mono overflow-x-auto"><code class="language-xml">&lt;soapenv:Fault xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+  &lt;faultcode&gt;soapenv:Client&lt;/faultcode&gt;
+  &lt;faultstring&gt;Cabecera inválida: FechaEnvio ausente&lt;/faultstring&gt;
+  &lt;detail&gt;
+    &lt;ver:Codigo xmlns:ver="urn:aeat:verifactu:schema"&gt;Error-001&lt;/ver:Codigo&gt;
+    &lt;ver:Descripcion xmlns:ver="urn:aeat:verifactu:schema"&gt;FechaEnvio es obligatoria&lt;/ver:Descripcion&gt;
+  &lt;/detail&gt;
+&lt;/soapenv:Fault&gt;</code></pre>
                     </div>
+                    <p class="text-sm text-red-700 bg-red-50 border border-red-100 rounded-md p-3 mb-4"><strong>Cabecera faults</strong> trigger a rechazo completo: AEAT discards the entire envío. None of the contained registros are processed.</p>
                     
+                    <div class="p-4 bg-blue-50 border border-blue-100 rounded-md mb-6">
+                        <h4 class="font-semibold text-blue-800 mb-2">Decision tree after a SOAPFault</h4>
+                        <ol class="list-decimal pl-6 space-y-2 text-sm text-blue-800">
+                            <li><strong>Identify the channel</strong>: determine whether the envío belongs to remisión voluntaria (VERI*FACTU) or remisión bajo requerimiento.</li>
+                            <li><strong>Remisión voluntaria</strong>: correct only the records marked as Incorrecto and resend them inside a new envío.</li>
+                            <li><strong>Remisión bajo requerimiento</strong>: do <em>not</em> subsanar through this service; follow the instructions included in the requerimiento notification.</li>
+                        </ol>
+                    </div>
+                    <ul class="list-disc list-inside text-sm text-muted-foreground mb-6 space-y-1">
+                        <li><strong>Cabecera error</strong>: full rejection (<em>rechazo completo</em>, SOAPFault). Do not parse business payload.</li>
+                        <li><strong>Remisión voluntaria</strong>: re-send only the failed <em>registros</em>.</li>
+                        <li><strong>Bajo requerimiento</strong>: do <em>not</em> subsanar via this channel.</li>
+                    </ul>
+
                     <div class="grid gap-4 md:grid-cols-2">
                         <div class="p-4 bg-blue-50 rounded-md">
                             <h4 class="font-semibold text-blue-800 mb-2">Fault Codes</h4>
@@ -287,6 +300,40 @@
                                 <li><strong>E300-E399:</strong> System errors</li>
                             </ul>
                         </div>
+                    </div>
+
+                    <div class="overflow-x-auto mt-6">
+                        <table class="w-full border-collapse border border-border text-sm">
+                            <caption class="text-left text-muted-foreground mb-2">Error Matrix</caption>
+                            <thead class="bg-muted">
+                                <tr>
+                                    <th class="border border-border p-3 text-left font-semibold">Layer</th>
+                                    <th class="border border-border p-3 text-left font-semibold">Fault type</th>
+                                    <th class="border border-border p-3 text-left font-semibold">Admisible</th>
+                                    <th class="border border-border p-3 text-left font-semibold">Next action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-border p-3">Cabecera</td>
+                                    <td class="border border-border p-3">SOAPFault (cabecera inválida)</td>
+                                    <td class="border border-border p-3 font-mono text-red-600">No admisible</td>
+                                    <td class="border border-border p-3">Fix the cabecera and resend the entire envío. For requerimiento flows, follow the instructions in the requerimiento instead of resubmitting here.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-border p-3">Registro</td>
+                                    <td class="border border-border p-3">Business error (detalle en respuesta)</td>
+                                    <td class="border border-border p-3 font-mono text-green-600">Admisible</td>
+                                    <td class="border border-border p-3">Correct only the affected registros and resend them in a new envío (applies to remisión voluntaria).</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-border p-3">Registro</td>
+                                    <td class="border border-border p-3">Parser/Schema error (SOAPFault)</td>
+                                    <td class="border border-border p-3 font-mono text-red-600">No admisible</td>
+                                    <td class="border border-border p-3">Fix the XML payload (structure, namespaces, signature) and resend the corrected registro in a new envío.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 
@@ -416,32 +463,38 @@
                     
                     <h3 class="text-lg font-semibold mb-3">Validation Error Example</h3>
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;soap:Fault&gt;
-  &lt;faultcode&gt;soap:Client&lt;/faultcode&gt;
-  &lt;faultstring&gt;Validation error&lt;/faultstring&gt;
-  &lt;detail&gt;
-    &lt;aeat:Error&gt;
-      &lt;aeat:CodigoError&gt;E001&lt;/aeat:CodigoError&gt;
-      &lt;aeat:DescripcionError&gt;Invalid NIF format: 12345678&lt;/aeat:DescripcionError&gt;
-      &lt;aeat:Timestamp&gt;2024-01-15T10:30:30&lt;/aeat:Timestamp&gt;
-    &lt;/aeat:Error&gt;
-  &lt;/detail&gt;
-&lt;/soap:Fault&gt;</code></pre>
+                        <pre class="text-sm font-mono overflow-x-auto"><code class="language-xml">&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ver="urn:aeat:verifactu:schema"&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+    &lt;soapenv:Fault&gt;
+      &lt;faultcode&gt;soapenv:Client&lt;/faultcode&gt;
+      &lt;faultstring&gt;Validación: NIF incorrecto&lt;/faultstring&gt;
+      &lt;detail&gt;
+        &lt;ver:Codigo&gt;E001&lt;/ver:Codigo&gt;
+        &lt;ver:Descripcion&gt;El NIF 12345678 no cumple el formato válido&lt;/ver:Descripcion&gt;
+      &lt;/detail&gt;
+    &lt;/soapenv:Fault&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;</code></pre>
                     </div>
                     
                     <h3 class="text-lg font-semibold mb-3">Authentication Error Example</h3>
                     <div class="bg-muted p-4 rounded-md">
-                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;soap:Fault&gt;
-  &lt;faultcode&gt;soap:Client&lt;/faultcode&gt;
-  &lt;faultstring&gt;Authentication failed&lt;/faultstring&gt;
-  &lt;detail&gt;
-    &lt;aeat:Error&gt;
-      &lt;aeat:CodigoError&gt;E101&lt;/aeat:CodigoError&gt;
-      &lt;aeat:DescripcionError&gt;Certificate not found or invalid&lt;/aeat:DescripcionError&gt;
-      &lt;aeat:Timestamp&gt;2024-01-15T10:30:30&lt;/aeat:Timestamp&gt;
-    &lt;/aeat:Error&gt;
-  &lt;/detail&gt;
-&lt;/soap:Fault&gt;</code></pre>
+                        <pre class="text-sm font-mono overflow-x-auto"><code class="language-xml">&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ver="urn:aeat:verifactu:schema"&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+    &lt;soapenv:Fault&gt;
+      &lt;faultcode&gt;soapenv:Client&lt;/faultcode&gt;
+      &lt;faultstring&gt;Autenticación fallida&lt;/faultstring&gt;
+      &lt;detail&gt;
+        &lt;ver:Codigo&gt;E101&lt;/ver:Codigo&gt;
+        &lt;ver:Descripcion&gt;El certificado presentado es inválido o ha expirado&lt;/ver:Descripcion&gt;
+      &lt;/detail&gt;
+    &lt;/soapenv:Fault&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;</code></pre>
                     </div>
                 </div>
             </div>

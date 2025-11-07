@@ -70,6 +70,14 @@
             --input: 214.3 31.8% 91.4%;
             --ring: 221.2 83.2% 53.3%;
         }
+
+        pre {
+            overflow: auto;
+        }
+
+        pre code {
+            white-space: pre;
+        }
     </style>
 </head>
 <body class="h-full bg-background text-foreground">
@@ -193,15 +201,33 @@
                     
                     <h3 class="text-lg font-semibold mb-3">Namespace Definitions</h3>
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono overflow-x-auto"><code>xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-xmlns:verifactu="urn:VeriFactu"
-xmlns:aeat="http://www.aeat.es/verifactu"
-xmlns:factura="urn:VeriFactu:Factura"
-xmlns:cabecera="urn:VeriFactu:Cabecera"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns:xsd="http://www.w3.org/2001/XMLSchema"</code></pre>
+                        <pre class="text-sm font-mono overflow-x-auto"><code class="language-xml">xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+xmlns:ver="urn:aeat:verifactu:schema"</code></pre>
                     </div>
                     
+                    <h3>Example: SOAP Envelope with namespaces</h3>
+                    <pre><code class="language-xml">&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ver="urn:aeat:verifactu:schema"&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+    &lt;ver:MensajeAlta&gt;
+      &lt;ver:Cabecera&gt;
+        &lt;ver:NIFEmisor&gt;B12345678&lt;/ver:NIFEmisor&gt;
+        &lt;ver:FechaEnvio&gt;2025-11-07T10:00:00&lt;/ver:FechaEnvio&gt;
+        &lt;ver:TiempoEsperaEnvio&gt;60&lt;/ver:TiempoEsperaEnvio&gt;
+        &lt;ver:TipoComunicacion&gt;Alta&lt;/ver:TipoComunicacion&gt;
+      &lt;/ver:Cabecera&gt;
+      &lt;ver:Registros&gt;
+        &lt;ver:Registro&gt;
+          &lt;ver:Serie&gt;F2025&lt;/ver:Serie&gt;
+          &lt;ver:NumFactura&gt;000123&lt;/ver:NumFactura&gt;
+        &lt;/ver:Registro&gt;
+      &lt;/ver:Registros&gt;
+    &lt;/ver:MensajeAlta&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;
+</code></pre>
+                    <p class="note">This example demonstrates both namespace declarations used together in a single envelope: <code>xmlns:soapenv</code> and <code>xmlns:ver</code>.</p>
                     <h3 class="text-lg font-semibold mb-3">Schema Location</h3>
                     <div class="grid gap-4 md:grid-cols-2">
                         <div class="p-4 bg-blue-50 rounded-md">
@@ -248,7 +274,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"</code></pre>
                                 </div>
                                 <div>
                                     <p class="text-sm text-green-700"><strong>Required:</strong> Yes</p>
-                                    <p class="text-sm text-green-700"><strong>Description:</strong> Date and time of submission</p>
+                                    <p class="text-sm text-green-700"><strong>Description:</strong> Submission timestamp used in <code>ver:Mensajes</code> (Alta/Baja/Consulta)</p>
                                     <p class="text-sm text-green-700"><strong>Example:</strong> "2024-01-15T10:30:00"</p>
                                 </div>
                             </div>
@@ -259,13 +285,12 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"</code></pre>
                             <div class="grid gap-2 md:grid-cols-2">
                                 <div>
                                     <p class="text-sm text-yellow-700"><strong>XSD Type:</strong> xsd:positiveInteger</p>
-                                    <p class="text-sm text-yellow-700"><strong>MinValue:</strong> 30</p>
-                                    <p class="text-sm text-yellow-700"><strong>MaxValue:</strong> 300</p>
+                                    <p class="text-sm text-yellow-700"><strong>Used in:</strong> <code>ver:Cabecera</code> for Alta, Baja and Consulta</p>
                                 </div>
                                 <div>
                                     <p class="text-sm text-yellow-700"><strong>Required:</strong> Yes</p>
-                                    <p class="text-sm text-yellow-700"><strong>Description:</strong> Expected processing time in seconds</p>
-                                    <p class="text-sm text-yellow-700"><strong>Examples:</strong> 30, 60, 120</p>
+                                    <p class="text-sm text-yellow-700"><strong>Description:</strong> Seconds to wait before the next submission. Always reuse the value returned by AEAT.</p>
+                                    <p class="text-sm text-yellow-700"><strong>Typical responses:</strong> 30&nbsp;–&nbsp;300 seconds (not a fixed contract; treat new values as authoritative).</p>
                                 </div>
                             </div>
                         </div>
@@ -377,7 +402,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"</code></pre>
                     
                     <h3 class="text-lg font-semibold mb-3">DetalleFactura (Invoice Line)</h3>
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;xsd:complexType name="DetalleFactura"&gt;
+                        <pre class="text-sm font-mono overflow-x-auto"><code class="language-xml">&lt;xsd:complexType name="DetalleFactura"&gt;
   &lt;xsd:sequence&gt;
     &lt;xsd:element name="IDDetalleFactura" type="xsd:positiveInteger"/&gt;
     &lt;xsd:element name="DescripcionDetalle" type="xsd:string" maxLength="500"/&gt;
@@ -390,7 +415,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"</code></pre>
                     
                     <h3 class="text-lg font-semibold mb-3">DesgloseIVA (VAT Breakdown)</h3>
                     <div class="bg-muted p-4 rounded-md">
-                        <pre class="text-sm font-mono overflow-x-auto"><code>&lt;xsd:complexType name="DesgloseIVA"&gt;
+                        <pre class="text-sm font-mono overflow-x-auto"><code class="language-xml">&lt;xsd:complexType name="DesgloseIVA"&gt;
   &lt;xsd:sequence&gt;
     &lt;xsd:element name="TipoImpositivo" type="xsd:decimal" minInclusive="0" maxInclusive="100"/&gt;
     &lt;xsd:element name="BaseImponible" type="xsd:decimal" minInclusive="0.01"/&gt;
@@ -402,5 +427,8 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"</code></pre>
             </div>
         </div>
     </div>
+
+<h3>Timestamp format</h3>
+<p><code>FechaEnvio</code> is an XML Schema <code>xsd:dateTime</code> and should follow the pattern <code>YYYY-MM-DDThh:mm:ss</code>.</p>
 </body>
 </html>

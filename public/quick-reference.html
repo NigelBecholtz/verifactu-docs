@@ -91,6 +91,35 @@
             --input: 217.2 32.6% 17.5%;
             --ring: 224.3 76.3% 94.1%;
         }
+        .callout {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border-left: 4px solid #2563eb;
+            background-color: #eff6ff;
+            margin-bottom: 2rem;
+        }
+        .callout.warning {
+            border-left-color: #d97706;
+            background-color: #fff7ed;
+            color: #92400e;
+        }
+        .note {
+            display: block;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            background-color: #fff7ed;
+            border-left: 4px solid #d97706;
+            color: #92400e;
+            margin: 2rem 0;
+        }
+
+        pre {
+            overflow: auto;
+        }
+
+        pre code {
+            white-space: pre;
+        }
     </style>
 </head>
 <body class="h-full bg-background text-foreground">
@@ -203,6 +232,9 @@
                 <h1 class="group relative text-4xl font-extrabold flex gap-3.5 items-center mb-6">
                     Quick Reference
                 </h1>
+                <div class="callout warning">
+  <strong>Important:</strong> Consulta services are <u>only</u> available for <strong>remisión voluntaria (VERI*FACTU)</strong>. They do not apply to <em>remisión bajo requerimiento</em>.
+</div>
                 
                 <div class="rounded-lg border bg-card p-6 mb-8">
                     <h2 class="text-2xl font-semibold mb-4">API Endpoints</h2>
@@ -219,33 +251,52 @@
                             <tbody>
                                 <tr class="border-b">
                                     <td class="p-3">Register Invoice</td>
-                                    <td class="p-3"><code class="bg-muted px-2 py-1 rounded text-sm">urn:VeriFactu/Alta</code></td>
+                                    <td class="p-3"><code class="bg-muted px-2 py-1 rounded text-sm">""</code></td>
                                     <td class="p-3">Register new invoices with AEAT</td>
                                 </tr>
                                 <tr class="border-b">
                                     <td class="p-3">Cancel Invoice</td>
-                                    <td class="p-3"><code class="bg-muted px-2 py-1 rounded text-sm">urn:VeriFactu/Baja</code></td>
+                                    <td class="p-3"><code class="bg-muted px-2 py-1 rounded text-sm">""</code></td>
                                     <td class="p-3">Cancel previously registered invoices</td>
                                 </tr>
                                 <tr class="border-b">
                                     <td class="p-3">Query Invoice</td>
-                                    <td class="p-3"><code class="bg-muted px-2 py-1 rounded text-sm">urn:VeriFactu/Consulta</code></td>
+                                    <td class="p-3"><code class="bg-muted px-2 py-1 rounded text-sm">""</code></td>
                                     <td class="p-3">Query invoice status and details</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+                    <pre class="mt-4 text-sm font-mono bg-muted p-4 rounded"><code class="language-none">POST /... HTTP/1.1
+Content-Type: text/xml; charset=utf-8
+SOAPAction: ''
+</code></pre>
                 </div>
                 
-                <div class="grid gap-6 md:grid-cols-2 mb-8">
-                    <div class="rounded-lg border bg-card p-6">
-                        <h3 class="text-lg font-semibold mb-3">Test Environment</h3>
-                        <code class="block p-3 bg-muted rounded text-sm font-mono break-all">https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP</code>
-                    </div>
-                    
-                    <div class="rounded-lg border bg-card p-6">
-                        <h3 class="text-lg font-semibold mb-3">Production Environment</h3>
-                        <code class="block p-3 bg-muted rounded text-sm font-mono break-all">https://www1.agenciatributaria.gob.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP</code>
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">Endpoints</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse border border-border text-sm">
+                            <thead class="bg-muted">
+                                <tr>
+                                    <th class="border border-border p-3 text-left font-semibold">Environment</th>
+                                    <th class="border border-border p-3 text-left font-semibold">Host / URL</th>
+                                    <th class="border border-border p-3 text-left font-semibold">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-border p-3">Preproducción</td>
+                                    <td class="border border-border p-3 font-mono text-xs">&lt;PREPROD_URL&gt;</td>
+                                    <td class="border border-border p-3">Used for onboarding and continuous testing with mutual TLS.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-border p-3">Producción</td>
+                                    <td class="border border-border p-3 font-mono text-xs">&lt;PROD_URL&gt;</td>
+                                    <td class="border border-border p-3">Requires AEAT approval before live traffic.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 
@@ -266,29 +317,29 @@
                                     </thead>
                                     <tbody>
                                         <tr class="border-b">
-                                            <td class="p-2 text-sm">NIF</td>
+                                            <td class="p-2 text-sm">NIFEmisor</td>
                                             <td class="p-2 text-sm">String</td>
                                             <td class="p-2 text-sm">Yes</td>
                                         </tr>
                                         <tr class="border-b">
-                                            <td class="p-2 text-sm">Fecha</td>
-                                            <td class="p-2 text-sm">Date</td>
+                                            <td class="p-2 text-sm">FechaEnvio</td>
+                                            <td class="p-2 text-sm">DateTime (ISO 8601)</td>
                                             <td class="p-2 text-sm">Yes</td>
                                         </tr>
                                         <tr class="border-b">
-                                            <td class="p-2 text-sm">Hora</td>
-                                            <td class="p-2 text-sm">Time</td>
+                                            <td class="p-2 text-sm">TiempoEsperaEnvio</td>
+                                            <td class="p-2 text-sm">positiveInteger</td>
+                                            <td class="p-2 text-sm">Yes (mirror AEAT response)</td>
+                                        </tr>
+                                        <tr class="border-b">
+                                            <td class="p-2 text-sm">TipoComunicacion</td>
+                                            <td class="p-2 text-sm">Enumeration (Alta/Baja/Consulta)</td>
                                             <td class="p-2 text-sm">Yes</td>
                                         </tr>
                                         <tr class="border-b">
-                                            <td class="p-2 text-sm">Serie</td>
+                                            <td class="p-2 text-sm">NumeroRegistro / Observaciones</td>
                                             <td class="p-2 text-sm">String</td>
-                                            <td class="p-2 text-sm">No</td>
-                                        </tr>
-                                        <tr class="border-b">
-                                            <td class="p-2 text-sm">NumFactura</td>
-                                            <td class="p-2 text-sm">String</td>
-                                            <td class="p-2 text-sm">Yes</td>
+                                            <td class="p-2 text-sm">Optional</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -308,24 +359,29 @@
                                     </thead>
                                     <tbody>
                                         <tr class="border-b">
-                                            <td class="p-2 text-sm">ImporteTotal</td>
-                                            <td class="p-2 text-sm">Decimal</td>
-                                            <td class="p-2 text-sm">Yes</td>
-                                        </tr>
-                                        <tr class="border-b">
-                                            <td class="p-2 text-sm">ImporteTotalConImpuestos</td>
-                                            <td class="p-2 text-sm">Decimal</td>
-                                            <td class="p-2 text-sm">Yes</td>
-                                        </tr>
-                                        <tr class="border-b">
-                                            <td class="p-2 text-sm">TipoFactura</td>
+                                            <td class="p-2 text-sm">Serie / NumFactura</td>
                                             <td class="p-2 text-sm">String</td>
                                             <td class="p-2 text-sm">Yes</td>
                                         </tr>
                                         <tr class="border-b">
-                                            <td class="p-2 text-sm">ClaveRegimenEspecialOTrascendencia</td>
-                                            <td class="p-2 text-sm">String</td>
+                                            <td class="p-2 text-sm">FechaExpedicion</td>
+                                            <td class="p-2 text-sm">Date</td>
                                             <td class="p-2 text-sm">Yes</td>
+                                        </tr>
+                                        <tr class="border-b">
+                                            <td class="p-2 text-sm">DetalleDesglose</td>
+                                            <td class="p-2 text-sm">Structure (base imponible, tipo, cuota)</td>
+                                            <td class="p-2 text-sm">Yes</td>
+                                        </tr>
+                                        <tr class="border-b">
+                                            <td class="p-2 text-sm">Encadenamiento &amp; Huella</td>
+                                            <td class="p-2 text-sm">Hash chain data</td>
+                                            <td class="p-2 text-sm">Yes (Alta/Baja)</td>
+                                        </tr>
+                                        <tr class="border-b">
+                                            <td class="p-2 text-sm">SistemaInformatico</td>
+                                            <td class="p-2 text-sm">Structure</td>
+                                            <td class="p-2 text-sm">Yes (certified SIF)</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -386,18 +442,15 @@
                         </table>
                     </div>
                 </div>
+
+                <p class="note"><strong>CSV retention:</strong> The <code>CSV</code> returned by AEAT must be stored on the issuer side. It is not retrievable later via consulta.</p>
                 
                 <div class="rounded-lg border bg-card p-6 mb-8">
                     <h2 class="text-2xl font-semibold mb-4">SOAP Namespaces</h2>
                     
                     <div class="bg-muted p-4 rounded-md">
-                        <pre class="text-sm font-mono"><code>xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-xmlns:verifactu="urn:VeriFactu"
-xmlns:aeat="http://www.aeat.es/verifactu"
-xmlns:factura="urn:VeriFactu:Factura"
-xmlns:cabecera="urn:VeriFactu:Cabecera"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns:xsd="http://www.w3.org/2001/XMLSchema"</code></pre>
+                        <pre class="text-sm font-mono"><code class="language-xml">xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+xmlns:ver="urn:aeat:verifactu:schema"</code></pre>
                     </div>
                 </div>
                 
@@ -451,7 +504,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema"</code></pre>
                     <h2 class="text-2xl font-semibold mb-4">Database Schema</h2>
                     
                     <div class="bg-muted p-4 rounded-md mb-4">
-                        <pre class="text-sm font-mono"><code>-- Add these columns to your invoices table
+                        <pre class="text-sm font-mono"><code class="language-none">-- Add these columns to your invoices table
 ALTER TABLE invoices ADD COLUMN aeat_csv_code VARCHAR(100);
 ALTER TABLE invoices ADD COLUMN aeat_status VARCHAR(20);
 ALTER TABLE invoices ADD COLUMN aeat_error TEXT;</code></pre>
@@ -460,7 +513,7 @@ ALTER TABLE invoices ADD COLUMN aeat_error TEXT;</code></pre>
                     <div class="p-4 bg-blue-50 rounded-md">
                         <h4 class="font-semibold text-blue-800 mb-2">Column Descriptions</h4>
                         <ul class="text-sm text-blue-700 space-y-1">
-                            <li><strong>aeat_csv_code</strong>: Secure verification code returned by AEAT</li>
+                            <li><strong>aeat_csv_code</strong>: Secure verification code returned by AEAT (store permanently; it cannot be reissued via consulta)</li>
                             <li><strong>aeat_status</strong>: Invoice status (verified, error, pending)</li>
                             <li><strong>aeat_error</strong>: Error message if registration fails</li>
                         </ul>
@@ -551,7 +604,16 @@ ALTER TABLE invoices ADD COLUMN aeat_error TEXT;</code></pre>
                         </div>
                     </div>
                 </div>
-                
+
+                <div class="rounded-lg border bg-card p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">Changelog</h2>
+                    <ul class="space-y-2 text-sm text-muted-foreground">
+                        <li><strong>2025-07-28</strong> – Errata and minor fixes.</li>
+                        <li><strong>2025-07-16</strong> – SIF consult updates.</li>
+                        <li><strong>2025-04-23</strong> – Production URLs published.</li>
+                    </ul>
+                </div>
+
                 <div class="p-4 bg-yellow-50 rounded-md">
                     <div class="flex items-start gap-3">
                         <svg class="w-5 h-5 text-yellow-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
